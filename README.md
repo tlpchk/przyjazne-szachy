@@ -1,0 +1,1 @@
+# przyjazne-szachy
