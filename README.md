@@ -1,14 +1,15 @@
-To install this example application, run the following commands:
+Aby zainstalować tę aplikację, uruchom następujące polecenia:
 
     git clone https://github.com/tlpchk/przyjazne-szachy.git
     cd przyjazne-szachy/client
     npm install
+    echo 'client/node_modules/' > ../.gitignore
 
-To run the server, cd into the server folder and run:
+Aby uruchomić serwer, przejdź do folderu server i uruchom:
 
     ./mvnw spring-boot:run
 
-To run the client, cd into the client folder and run:
+Aby uruchomić klienta, przejdź do folderu client i uruchom:
 
     npm start
-
+    
