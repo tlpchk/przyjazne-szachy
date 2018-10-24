@@ -1,0 +1,8 @@
+<div class = "board">
+    <div *ngFor="let cell of board"
+         class = "cell {{cell.cell_color}}"
+         [class.selected]="cell === selectedCell"
+         (click)="onSelect(cell)">
+        {{cell.id}}
+    </div>
+</div>
