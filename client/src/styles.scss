@@ -1,18 +1,24 @@
+*{
+  box-sizing: border-box;
+}
 .board {
-  border: 1px solid rgba(255, 0, 0, 0.8);
   height: 600px;
   width: 600px;
 }
 
 .cell {
   box-sizing: border-box;
-  border: 1px solid rgba(0, 0, 0, 0.8);
   font-size: 15px;
-  display: inline-block;
   text-align: center;
+  position: relative;
+  display: inline-block;
   height: 12.5%;
   width: 12.5%;
+  margin: 0 !important;
 }
+
+.cell:empty{margin-bottom: 0}
+
 
 .white{
   background-color: rgba(255,255,255,1);

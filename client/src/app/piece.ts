@@ -1,4 +1,4 @@
-import {Color} from './cell';
+import {Color} from './color';
 
 export enum PieceType {
     PAWN = 'pawn',
