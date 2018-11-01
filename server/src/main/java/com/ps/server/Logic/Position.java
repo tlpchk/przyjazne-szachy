@@ -1,10 +1,10 @@
 package com.ps.server.Logic;
 
 public class Position {
-    final int x,y;
+    public final int row ,col;
 
-    Position(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public Position(int row, int col) {
+        this.row = row;
+        this.col = col;
     }
 }

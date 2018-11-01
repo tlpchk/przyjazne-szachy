@@ -3,12 +3,25 @@ import com.ps.server.Logic.Pieces.*;
 import static com.ps.server.Logic.Color.*;
 
 public class Board {
-    ChessSquare[][] board;
+    private ChessSquare[][] board;
     final static int ROW_NUM = 8;
     final static int COL_NUM = 8;
 
     Board() {
         board = generateBoard();
+        initChessSquares();
+    }
+
+    private void initChessSquares() {
+        for(int row = 0; row < ROW_NUM; row++) {
+            for(int col = 0; col < COL_NUM; col++) {
+                board[row][col].makeMoveList();
+            }
+        }
+    }
+
+    public ChessSquare[][] getBoard() {
+        return board;
     }
 
     private ChessPiece generateChessPieceForSquare(int row, int column) {
@@ -33,21 +46,35 @@ public class Board {
         ChessSquare[][] board = new ChessSquare[ROW_NUM][COL_NUM];
         for(int row = 0; row < ROW_NUM; row++) {
             for(int col = 0; col < COL_NUM; col++) {
-                board[row][col] = new ChessSquare(generateChessPieceForSquare(row, col));
+                board[row][col] = new ChessSquare(
+                                            generateChessPieceForSquare(row, col),
+                                            new Position(row, col),
+                                            this
+                                        );
             }
         }
         return board;
     }
 
     boolean makeMove(Move move) {
-        //TODO:: make move
-        return true;
+        //TODO:: check king state
+        Position loc = move.loc;
+        Position dest = move.dest;
+        boolean out = board[loc.row][loc.col].makeMove(board[dest.row][dest.col], move.color);
+        //TODO:: check game state
+        return out;
     }
 
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
+        builder.append(" ");
+        for(int col = 0; col < COL_NUM; col++) {
+            builder.append("|").append(col);
+        }
+        builder.append("|\n");
         for(int row = 0; row < ROW_NUM; row++) {
+            builder.append(row);
             for(int col = 0; col < COL_NUM; col++) {
                 builder.append("|").append(board[row][col].toString());
             }
