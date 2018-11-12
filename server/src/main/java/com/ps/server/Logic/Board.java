@@ -7,7 +7,7 @@ public class Board {
     final static int ROW_NUM = 8;
     final static int COL_NUM = 8;
 
-    Board() {
+    public Board() {
         board = generateBoard();
         initChessSquares();
     }

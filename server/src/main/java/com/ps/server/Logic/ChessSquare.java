@@ -5,7 +5,7 @@ import java.util.List;
 import com.ps.server.Logic.Pieces.ChessPiece;
 import static com.ps.server.Logic.Board.*;
 
-class ChessSquare {
+public class ChessSquare {
     ChessPiece piece;
     final Position position;
     private final Board board;
