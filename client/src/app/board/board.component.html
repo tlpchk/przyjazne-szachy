@@ -3,7 +3,7 @@
          class = "cell {{cell.cell_color}}"
          [class.selected]="cell === selectedCell"
          (click)="onSelect(cell)">
-        <img *ngIf="cell.piece" src = '/assets/png/{{cell.piece.color}}_{{cell.piece.type}}.png'>
-        <p *ngIf="cell.piece === null">&nbsp;</p>
+        <img *ngIf="cell.piece" src="/assets/png/{{cell.piece.color}}_{{cell.piece.type}}.png"/>
+        <img *ngIf="cell.piece === null" src="/assets/png/none.png"/>
     </div>
 </div>

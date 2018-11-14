@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Cell} from '../cell';
 import {BoardService} from '../board.service';
+import {forkJoin} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-board',
@@ -17,10 +19,11 @@ export class BoardComponent implements OnInit {
   ngOnInit() {
     this.getBoard();
     this.move = [];
-  }
+   }
 
   onSelect(cell: Cell) {
       this.selectedCell = cell;
+      console.log(this.move.length);
       this.makeMove();
   }
 
@@ -30,13 +33,26 @@ export class BoardComponent implements OnInit {
 
       } else {
         this.move[1] = this.selectedCell;
-        this.boardService.makeMove(this.move[0], this.move[1]);
-        this.move = [];
-        this.selectedCell = null;
+        this.move[1].piece = this.move[0].piece;
+        this.move[0].piece = null;
+
+        /*TODO: uptade only changed cells*/
+        this.boardService.updateCell(this.move[0]).subscribe(() => this.getBoard());
+        this.boardService.updateCell(this.move[1]).subscribe(() => this.getBoard());
+
+        /*this.boardService.makeMove(this.move[0], this.move[1]);
+        let changes$;
+        changes$ = forkJoin(
+          this.boardService.updateCell(this.move[0]),
+          this.boardService.updateCell(this.move[1])
+        ).pipe(
+          map(([first, second]) => {this.getBoard();})
+        );*/
+          this.move = [];
       }
   }
 
-  getBoard(): void{
+  getBoard(): void {
     this.boardService.getBoard()
     .subscribe(board => this.board = board);
   }
