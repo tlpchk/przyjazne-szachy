@@ -37,8 +37,8 @@ export class BoardComponent implements OnInit {
         this.move[0].piece = null;
 
         /*TODO: uptade only changed cells*/
-        this.boardService.updateCell(this.move[0]).subscribe(() => this.getBoard());
-        this.boardService.updateCell(this.move[1]).subscribe(() => this.getBoard());
+        this.boardService.updateCell(this.move[0]).subscribe(cell => this.updateCellLocal(cell));
+        this.boardService.updateCell(this.move[1]).subscribe(cell => this.updateCellLocal(cell));
 
         /*this.boardService.makeMove(this.move[0], this.move[1]);
         let changes$;
@@ -49,7 +49,12 @@ export class BoardComponent implements OnInit {
           map(([first, second]) => {this.getBoard();})
         );*/
           this.move = [];
+          this.selectedCell = null;
       }
+  }
+
+  updateCellLocal(cell: Cell) {
+      this.board[cell.id - 1] = cell;
   }
 
   getBoard(): void {
