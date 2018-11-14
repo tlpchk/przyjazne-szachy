@@ -33,7 +33,7 @@ export class BoardService{
   }
 
 
-  updateCell(cell: Cell): Observable<any>{
+  updateCell(cell: Cell): Observable<Cell>{
       return this.http.put(this.boardUrl,
           cell
           , httpOptions).pipe(

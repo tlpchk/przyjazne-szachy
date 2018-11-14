@@ -1,28 +1,33 @@
 *{
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 .board {
   height: 600px;
   width: 600px;
-}
+  }
+
 
 .cell {
   box-sizing: border-box;
-  font-size: 15px;
-  text-align: center;
   position: relative;
+  text-align: center;
   display: inline-block;
   height: 12.5%;
   width: 12.5%;
   margin: 0 !important;
   img{
+    position: relative;
     -webkit-filter: drop-shadow(2px 0 0 white)
                     drop-shadow(-2px 0 0 white)
                     drop-shadow(0 -1px 0 white)
-                     drop-shadow(0 1px 0 white);
-
+                    drop-shadow(0 1px 0 white);
+    /* TODO: Good layout with full image
+    width: 100%;
+    height: auto;
+    */
   }
-
 }
 
 .cell:empty{margin-bottom: 0}
