@@ -30,6 +30,7 @@
   }
 }
 
+
 .cell:empty{margin-bottom: 0}
 
 
@@ -43,5 +44,8 @@
 
 .selected {
   background-color: lightgreen !important;
-  color: white;
+ }
+
+.possible{
+  background-color: lightblue !important;
 }

@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { BoardComponent } from './board/board.component'
 import {HttpClientModule} from '@angular/common/http';
-import {InMemoryDataService} from './in-memory-data.service';
+import {InMemoryDataService} from './services/in-memory-data.service';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import {FormsModule} from '@angular/forms';
 import {AppRoutingModule} from './app-routing.module';

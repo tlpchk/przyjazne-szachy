@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Cell} from '../cell';
-import {BoardService} from '../board.service';
 import {forkJoin} from 'rxjs';
+import {BoardService} from '../services/board.service';
 
 @Component({
   selector: 'app-board',
@@ -18,6 +18,7 @@ export class BoardComponent implements OnInit {
   ngOnInit() {
     this.getBoard();
     this.move = [];
+    this.selectedCell = null;
    }
 
   onSelect(cell: Cell) {
@@ -32,12 +33,14 @@ export class BoardComponent implements OnInit {
         }
       } else {
         this.move[1] = this.selectedCell;
-        this.move[1].piece = this.move[0].piece;
-        this.move[0].piece = null;
-        forkJoin(
-          this.boardService.updateCell(this.move[0]),
-          this.boardService.updateCell(this.move[1])
-        ).subscribe();
+        if (this.move[0] !== this.move[1]) {
+            this.move[1].piece = this.move[0].piece;
+            this.move[0].piece = null;
+            forkJoin(
+                this.boardService.updateCell(this.move[0]),
+                this.boardService.updateCell(this.move[1])
+            ).subscribe();
+        }
         this.move = [];
         this.selectedCell = null;
       }
