@@ -7,6 +7,8 @@ import java.util.Arrays;
 
 import static com.ps.server.Logic.Color.BLACK;
 import static com.ps.server.Logic.Color.WHITE;
+import static com.ps.server.Logic.Move.MoveType.EN_PASSANT;
+import static com.ps.server.Logic.Pieces.Piece.PieceType.PAWN;
 
 public class BoardTest {
     Rook whiteRook = new Rook(WHITE, new Position(1, 4));
@@ -38,4 +40,12 @@ public class BoardTest {
         assert(board.validatePlayersMove(new Position(1, 4), new Position(1, 3), WHITE) == null);
     }
 
+    @Test
+    public void getListOfChanges() {
+        assert(Board.getListOfChanges(new Move(PAWN, WHITE, new Position(1, 4), new Position(2, 3), EN_PASSANT))
+                .stream()
+                .filter(e -> e.eq(new Change(new Position(1,3), null,  null)))
+                .findFirst()
+                .orElse(null) != null);
+    }
 }

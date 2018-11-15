@@ -52,9 +52,6 @@ public abstract class Piece {
 
     public Move getMoveTo(Position dest) {
         return legalMoves.stream().filter(move -> move.dest.equalsToPos(dest)).findFirst().orElse(null);
-//        for(int i = 0; i < legalMoves.size(); i++) {
-//            if(legalMoves.get(i).dest.equals())
-//        }
     }
 
     public boolean canMove() {

@@ -3,11 +3,17 @@ package com.ps.server.Logic;
 import com.ps.server.Logic.Pieces.Piece;
 import com.ps.server.Logic.Pieces.Queen;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.ps.server.Logic.Color.WHITE;
+import static com.ps.server.Logic.Pieces.Piece.PieceType.KING;
+import static com.ps.server.Logic.Pieces.Piece.PieceType.QUEEN;
+import static com.ps.server.Logic.Pieces.Piece.PieceType.ROOK;
 
 public class Board {
-    final static int COL_NUM = 8;
-    final static int ROW_NUM = 8;
+    public final static int COL_NUM = 8;
+    public final static int ROW_NUM = 8;
     Piece[][] board;
     Set whiteSet;
     Set blackSet;
@@ -64,7 +70,30 @@ public class Board {
         }
     }
 
-    //TODO:: method with list of changes from move
+    static List<Change> getListOfChanges(Move move) {
+        List<Change> changes = new ArrayList<>();
+        Position loc = move.loc;
+        Position dest = move.dest;
+        Color color = move.pieceColor;
+        switch (move.type) {
+            case PROMOTION:
+                changes.add(new Change(loc, null, null));
+                changes.add(new Change(dest, QUEEN, color));
+                break;
+            case EN_PASSANT:
+                changes.add(new Change(new Position(loc.row, dest.col), null, null));
+            case LONG_PAWN_MOVE:
+            case NORMAL:
+                changes.add(new Change(loc, null, null));
+                changes.add(new Change(dest, move.pieceType, color));
+                break;
+            case CASTLE:
+                changes.add(new Change(dest, KING, color));
+                changes.add(new Change(loc, ROOK, color));
+                break;
+        }
+        return changes;
+    }
 
     void updateGame(Color turn) {
         Set playingSet = (turn == WHITE) ? whiteSet : blackSet;
