@@ -1,5 +1,5 @@
-<div class = "board">
-    <div *ngFor="let cell of board"
+<div *ngIf="this.board === null" class = "board">
+    <div  *ngFor="let cell of board"
          class = "cell {{cell.cell_color}}"
          [class.selected]="cell === selectedCell"
          [class.possible]="selectedCell !== null

@@ -49,6 +49,6 @@ export class BoardComponent implements OnInit {
 
   getBoard(): void {
     this.boardService.getBoard()
-    .subscribe(board => this.board = board);
+    .subscribe(board => this.board = board)
   }
 }

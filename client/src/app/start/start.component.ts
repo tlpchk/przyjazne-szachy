@@ -25,6 +25,6 @@ export class StartComponent implements OnInit {
   }
 
   createNewGame(){
-    this.startService.createNewGame().subscribe();
+    this.startService.createNewGame().subscribe(newGame => console.log(newGame.id));
   }
 }
