@@ -1,18 +1,17 @@
 package com.ps.server.Logic.Pieces;
 
-import com.ps.server.Logic.Color;
-import com.ps.server.Logic.Move;
-import com.ps.server.Logic.Position;
+import com.ps.server.Logic.*;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static com.ps.server.Logic.Color.WHITE;
 
 public class PawnTest {
-    Pawn pawn = new Pawn(Color.WHITE);
+    Pawn pawn = new Pawn(WHITE, new Position(2,2));
 
     @Test
-    public void movePawnTest() {
-        assert(pawn.checkMove(new Position(6, 7), new Position(5, 7)));
-    }
+    public void name() {
+        pawn.addBoard(new Board(new Set(WHITE, null), new Set(WHITE, null)));
 
+        assert(pawn.semiLegalMoves().size() == 2);
+    }
 }
