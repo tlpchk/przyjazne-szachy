@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
-import {Cell} from '../cell';
+import {Cell} from '../_models/cell';
 
 import {catchError, map, tap} from 'rxjs/operators';
 import {MessageService} from './message.service';

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {StartService} from "../services/start.service";
-import {GameInfo} from "../gameInfo";
+import {StartService} from "../_services/start.service";
+import {GameInfo} from "../_models/gameInfo";
 
 @Component({
   selector: 'app-start',

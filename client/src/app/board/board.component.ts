@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {Cell} from '../cell';
+import {Cell} from '../_models/cell';
 import {forkJoin} from 'rxjs';
-import {BoardService} from '../services/board.service';
+import {BoardService} from '../_services/board.service';
 
 @Component({
   selector: 'app-board',

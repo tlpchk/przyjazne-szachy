@@ -1,8 +1,8 @@
 import { InMemoryDbService } from 'angular-in-memory-web-api';
 import { Injectable } from '@angular/core';
-import {PieceType} from '../piece';
-import {Color} from '../color';
-import {Cell} from '../cell';
+import {PieceType} from '../_models/piece';
+import {Color} from '../_models/color';
+import {Cell} from '../_models/cell';
 
 @Injectable({
     providedIn: 'root',
