@@ -40,7 +40,7 @@ public class Board {
         }
     }
 
-    void makeMove(Move move) {
+    public void makeMove(Move move) {
         Position loc = move.loc;
         Position dest = move.dest;
         switch (move.type) {
@@ -66,7 +66,7 @@ public class Board {
 
     //TODO:: method with list of changes from move
 
-    void updateGame(Color turn) {
+    public void updateGame(Color turn) {
         Set playingSet = (turn == WHITE) ? whiteSet : blackSet;
         playingSet.generateLegalMoves();
         if(!playingSet.checkIfCanMove()) {
@@ -109,7 +109,7 @@ public class Board {
         return board;
     }
 
-    Board copy() {
+    public Board copy() {
         return new Board(whiteSet.copy(), blackSet.copy());
     }
 

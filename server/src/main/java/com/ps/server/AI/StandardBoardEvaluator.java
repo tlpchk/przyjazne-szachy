@@ -1,7 +1,6 @@
 package com.ps.server.AI;
 
 import com.ps.server.Logic.Board;
-import com.ps.server.Logic.ChessSquare;
 import com.ps.server.Logic.Color;
 import com.ps.server.Logic.Pieces.*;
 
@@ -13,14 +12,14 @@ public class StandardBoardEvaluator implements BoardEvaluator {
 
     private int scorePlayer(final Board board, final Color color) {
         int pieceValueScore = 0;
-        ChessSquare[][] chessBoard = board.getBoard();
+        Piece[][] chessBoard = board.getBoard();
 
         for(int i = 0; i < 8; i++) {
             for(int j = 0; j < 8; j++) {
-                if(chessBoard[i][j].getPiece() == null)
+                if(chessBoard[i][j] == null)
                     continue;
-                if(chessBoard[i][j].getPiece().color == color) {
-                    pieceValueScore += pieceValue(chessBoard[i][j].getPiece());
+                if(chessBoard[i][j].color == color) {
+                    pieceValueScore += pieceValue(chessBoard[i][j].type);
                 }
             }
         }
@@ -28,23 +27,23 @@ public class StandardBoardEvaluator implements BoardEvaluator {
         return pieceValueScore;
     }
 
-    private int pieceValue(ChessPiece piece) {
-        if(piece.getClass() == Pawn.class) {
+    private int pieceValue(Piece.PieceType piece) {
+        if(piece == Piece.PieceType.PAWN) {
             return 1;
         }
-        else if(piece.getClass() == Knight.class) {
+        else if(piece == Piece.PieceType.KNIGHT) {
             return 3;
         }
-        else if(piece.getClass() == Bishop.class) {
+        else if(piece == Piece.PieceType.BISHOP) {
             return 3;
         }
-        else if(piece.getClass() == Rook.class) {
+        else if(piece == Piece.PieceType.ROOK) {
             return 5;
         }
-        else if(piece.getClass() == Queen.class) {
+        else if(piece == Piece.PieceType.QUEEN) {
             return 9;
         }
-        else if(piece.getClass() == King.class) {
+        else if(piece == Piece.PieceType.KING) {
             return 100;
         }
         else {
