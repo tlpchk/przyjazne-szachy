@@ -24,6 +24,6 @@ export class StartService {
   }
 
     createNewGame() {
-        return this.http.post<GameInfo>(this.newGameUrl, new GameInfo(), httpOptions);
+        return this.http.post<GameInfo>(this.newGameUrl, {}, httpOptions);
     }
 }

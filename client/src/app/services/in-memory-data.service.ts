@@ -22,9 +22,7 @@ export class InMemoryDataService implements InMemoryDbService {
         const blackRook =  {type: PieceType.ROOK, color: Color.black};
         const blackKnight =  {type: PieceType.KNIGHT, color: Color.black};
         const blackBishop =  {type: PieceType.BISHOP, color: Color.black};
-
-
-        const board = [
+            const board = [
             new Cell( 1 , Color.white, whiteRook, []),
             new Cell(2 , Color.black,  whiteKnight, []),
             new Cell(3 , Color.white,  whiteBishop, []),
