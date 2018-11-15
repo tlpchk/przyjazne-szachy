@@ -10,6 +10,7 @@ import {FormsModule} from '@angular/forms';
 import {AppRoutingModule} from './app-routing.module';
 import {MessagesComponent} from './messages/messages.component';
 import {StartComponent} from "./start/start.component";
+import {SidebarComponent} from "./sidebar/sidebar.component";
 
 @NgModule({
   imports: [
@@ -29,7 +30,8 @@ import {StartComponent} from "./start/start.component";
         AppComponent,
         BoardComponent,
         MessagesComponent,
-        StartComponent
+        StartComponent,
+        SidebarComponent
     ],
     bootstrap: [ AppComponent ]
 })
