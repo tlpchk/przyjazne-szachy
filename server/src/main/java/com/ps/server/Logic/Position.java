@@ -7,4 +7,13 @@ public class Position {
         this.row = row;
         this.col = col;
     }
+
+    public boolean equalsToPos(Position position) {
+        return position.row == row && position.col == col;
+    }
+
+    @Override
+    public String toString() {
+        return "[ " + row + " , " + col + " ]";
+    }
 }
