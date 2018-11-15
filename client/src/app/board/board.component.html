@@ -1,4 +1,4 @@
-<div *ngIf="this.board === null" class = "board">
+<div *ngIf="board" class = "board">
     <div  *ngFor="let cell of board"
          class = "cell {{cell.cell_color}}"
          [class.selected]="cell === selectedCell"

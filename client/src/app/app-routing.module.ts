@@ -6,7 +6,7 @@ import {StartComponent} from "./start/start.component";
 const routes: Routes = [
     { path: 'board', component: BoardComponent },
     { path: 'start', component: StartComponent },
-    { path: '', redirectTo: '/start', pathMatch: 'full'}
+    { path: '', redirectTo: '/board', pathMatch: 'full'}
 
 ];
 

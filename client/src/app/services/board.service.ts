@@ -16,7 +16,7 @@ const httpOptions = {
 export class BoardService{
 
   board: Cell[];
-  private boardUrl = 'api/board';
+  private boardUrl = 'http://localhost:8080/board';
 
   constructor(private http: HttpClient,
               private messageService: MessageService){}
