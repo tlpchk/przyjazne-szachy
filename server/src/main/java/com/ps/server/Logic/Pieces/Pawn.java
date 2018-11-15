@@ -24,8 +24,9 @@ public class Pawn extends Piece {
     List<Move> normalLegalMoves(Piece[][] board) {
         List<Move> normalLegalMoves = new ArrayList<>();
         int newRow = (color == WHITE) ? position.row - 1 : position.row + 1;
+        if(newRow < 0 || newRow > 7) return normalLegalMoves;
         if(board[newRow][position.col] == null) {
-            MoveType type = (newRow == 0 || newRow == 8) ? PROMOTION : NORMAL;
+            MoveType type = (newRow == 0 || newRow == 7) ? PROMOTION : NORMAL;
             normalLegalMoves.add(new Move(this.type, color, position, new Position(newRow, position.col), type));
             if(isFirstMove) {
                 newRow = (color == WHITE) ? newRow -1 : newRow + 1;
@@ -39,9 +40,12 @@ public class Pawn extends Piece {
     }
 
     Move createLegalCapture(int row, int column, Piece[][] board) {
+        if(row < 0 || row > 7 || column < 0 || column > 7) {
+            return null;
+        }
         Piece captured = board[row][column];
         if(captured != null && captured.color != color) {
-            MoveType type = (row == 0 || row == 8) ? PROMOTION : NORMAL;
+            MoveType type = (row == 0 || row == 7) ? PROMOTION : NORMAL;
             return new Move(this.type, color, position, new Position(row, column), type);
         }
         return null;
