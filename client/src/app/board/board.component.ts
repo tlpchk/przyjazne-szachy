@@ -24,6 +24,7 @@ export class BoardComponent implements OnInit {
   onSelect(cell: Cell) {
       this.selectedCell = cell;
       this.makeMove();
+      console.log(JSON.stringify(this.board));
   }
 
   makeMove(): void {
