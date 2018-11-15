@@ -26,7 +26,7 @@ export class InMemoryDataService implements InMemoryDbService {
 
         const board = [
             new Cell( 1 , Color.white, whiteRook, []),
-            new Cell(2 , Color.black,  whiteKnight, [17, 19]),
+            new Cell(2 , Color.black,  whiteKnight, []),
             new Cell(3 , Color.white,  whiteBishop, []),
             new Cell(4 , Color.black,  whiteKing, []),
             new Cell(5 , Color.white,  whiteQueen, []),

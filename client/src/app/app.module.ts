@@ -9,6 +9,7 @@ import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import {FormsModule} from '@angular/forms';
 import {AppRoutingModule} from './app-routing.module';
 import {MessagesComponent} from './messages/messages.component';
+import {StartComponent} from "./start/start.component";
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ import {MessagesComponent} from './messages/messages.component';
     declarations: [
         AppComponent,
         BoardComponent,
-        MessagesComponent
+        MessagesComponent,
+        StartComponent
     ],
     bootstrap: [ AppComponent ]
 })
