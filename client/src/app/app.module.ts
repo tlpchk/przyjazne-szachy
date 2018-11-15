@@ -12,6 +12,7 @@ import {MessagesComponent} from './messages/messages.component';
 import {StartComponent} from "./start/start.component";
 import {SidebarComponent} from "./sidebar/sidebar.component";
 
+
 @NgModule({
   imports: [
       BrowserModule,
@@ -31,7 +32,7 @@ import {SidebarComponent} from "./sidebar/sidebar.component";
         BoardComponent,
         MessagesComponent,
         StartComponent,
-        SidebarComponent
+        SidebarComponent,
     ],
     bootstrap: [ AppComponent ]
 })

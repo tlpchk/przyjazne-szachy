@@ -10,7 +10,7 @@
       "prefix": "app",
       "schematics": {
         "@schematics/angular:component": {
-          "styleext": "scss"
+          "styletext": "scss"
         }
       },
       "targets": {
@@ -127,5 +127,12 @@
       }
     }
   },
-  "defaultProject": "client"
+  "defaultProject": "client",
+  "schematics": {
+    "@schematics/angular": {
+      "component": {
+        "spec": false
+      }
+    }
+  }
 }
