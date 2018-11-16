@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {BoardComponent} from "./board/board.component";
 import {HomeComponent} from "./home/home.component";
-import {UserModule} from "./user.module";
 import {UserComponent} from "./user.component";
 
 
@@ -14,7 +13,8 @@ const routes: Routes = [
             {path: 'home', component: HomeComponent},
             {path: 'board', component: BoardComponent},
         ]
-    }
+    },
+
 ];
 
 @NgModule({

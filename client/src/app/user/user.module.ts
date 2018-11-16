@@ -18,14 +18,7 @@ import {HttpClientInMemoryWebApiModule} from 'angular-in-memory-web-api/http-cli
     imports: [
         CommonModule,
         UserRoutingModule,
-        HttpClientModule,
 
-        // The HttpClientInMemoryWebApiModule module intercepts HTTP requests
-        // and returns simulated server responses.
-        // Remove it when a real server is ready to receive requests.
-        HttpClientInMemoryWebApiModule.forRoot(
-            InMemoryDataService, { dataEncapsulation: false }
-        )
     ],
     declarations: [
         UserComponent,

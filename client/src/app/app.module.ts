@@ -3,17 +3,13 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import {AppRoutingModule} from './app-routing.module';
-import { UserComponent } from './user/user.component';
-import {SidebarComponent} from "./user/sidebar/sidebar.component";
-import {MessagesComponent} from "./user/messages/messages.component";
-import {BoardComponent} from "./user/board/board.component";
-import {HomeComponent} from "./user/home/home.component";
 import {FormsModule} from "@angular/forms";
-import {UserRoutingModule} from "./user/user-routing.module";
+import {UserModule} from "./user/user.module";
 import {HttpClientModule} from "@angular/common/http";
 import {InMemoryDataService} from "./_services/in-memory-data.service";
-import {HttpClientInMemoryWebApiModule} from 'angular-in-memory-web-api/http-client-in-memory-web-api.module';
-import {UserModule} from "./user/user.module";
+import {HttpClientInMemoryWebApiModule} from 'angular-in-memory-web-api';
+import {LoginModule} from "./login/login.module";
+import { LoginComponent } from './login/login.component';
 
 
 @NgModule({
@@ -22,7 +18,15 @@ import {UserModule} from "./user/user.module";
       FormsModule,
       AppRoutingModule,
       UserModule,
+      LoginModule,
+      HttpClientModule,
 
+      // The HttpClientInMemoryWebApiModule module intercepts HTTP requests
+      // and returns simulated server responses.
+      // Remove it when a real server is ready to receive requests.
+      HttpClientInMemoryWebApiModule.forRoot(
+          InMemoryDataService, { dataEncapsulation: false }
+      )
 
   ],
     declarations: [
