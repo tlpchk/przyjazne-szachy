@@ -29,10 +29,10 @@ public class Knight extends Piece {
     }
 
     Move createMove(int row, int col) {
-        Piece captured = board.getBoard()[row][col];
         if(row < 0 || col < 0 || row > 7 || col > 7) {
             return null;
         }
+        Piece captured = board.getBoard()[row][col];
         if(captured == null || captured.color != color) {
             return new Move(this.type, color, position, new Position(row, col), NORMAL);
         }

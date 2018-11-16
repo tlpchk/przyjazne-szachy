@@ -39,10 +39,12 @@ public class Board {
 
     void giveEnPassantsRights(Position destination, Position loc, Color color) {
         for(int i = -1; i <= 2; i += 2) {
-          Piece piece = board[destination.row][destination.col + i];
-          if(piece != null && piece.color != color) {
+            int column = destination.col + i;
+            if(column < 0 || column > 7) continue;
+            Piece piece = board[destination.row][column];
+            if(piece != null && piece.color != color) {
               piece.giveEnPassantRights(loc);
-          }
+            }
         }
     }
 

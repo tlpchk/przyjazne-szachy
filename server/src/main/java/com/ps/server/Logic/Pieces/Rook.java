@@ -53,6 +53,6 @@ public class Rook extends StraightMovingPieces {
 
     @Override
     boolean hasCastleRights() {
-        return hasCastleRights();
+        return castleRights;
     }
 }
