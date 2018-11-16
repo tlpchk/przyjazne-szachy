@@ -2,16 +2,18 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { BoardComponent } from './board/board.component'
-import {HttpClientModule} from '@angular/common/http';
-import {InMemoryDataService} from './_services/in-memory-data.service';
-import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-import {FormsModule} from '@angular/forms';
 import {AppRoutingModule} from './app-routing.module';
-import {MessagesComponent} from './messages/messages.component';
-import {StartComponent} from "./start/start.component";
-import {SidebarComponent} from "./sidebar/sidebar.component";
-import { AlertComponent } from './alert/alert.component';
+import { UserComponent } from './user/user.component';
+import {SidebarComponent} from "./user/sidebar/sidebar.component";
+import {MessagesComponent} from "./user/messages/messages.component";
+import {BoardComponent} from "./user/board/board.component";
+import {HomeComponent} from "./user/home/home.component";
+import {FormsModule} from "@angular/forms";
+import {UserRoutingModule} from "./user/user-routing.module";
+import {HttpClientModule} from "@angular/common/http";
+import {InMemoryDataService} from "./_services/in-memory-data.service";
+import {HttpClientInMemoryWebApiModule} from 'angular-in-memory-web-api/http-client-in-memory-web-api.module';
+import {UserModule} from "./user/user.module";
 
 
 @NgModule({
@@ -19,22 +21,12 @@ import { AlertComponent } from './alert/alert.component';
       BrowserModule,
       FormsModule,
       AppRoutingModule,
-      HttpClientModule,
+      UserModule,
 
-      // The HttpClientInMemoryWebApiModule module intercepts HTTP requests
-      // and returns simulated server responses.
-      // Remove it when a real server is ready to receive requests.
-      HttpClientInMemoryWebApiModule.forRoot(
-          InMemoryDataService, { dataEncapsulation: false }
-      )
+
   ],
     declarations: [
         AppComponent,
-        BoardComponent,
-        MessagesComponent,
-        StartComponent,
-        SidebarComponent,
-        AlertComponent,
     ],
     bootstrap: [ AppComponent ]
 })

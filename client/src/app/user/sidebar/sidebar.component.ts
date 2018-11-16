@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {MessageService} from "../_services/message.service";
+import {MessageService} from "../../_services/message.service";
 
 @Component({
-  selector: 'app-sidebar',
+  selector: 'sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 })

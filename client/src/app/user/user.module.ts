@@ -1,0 +1,40 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import {BrowserModule} from "@angular/platform-browser";
+import {FormsModule} from "@angular/forms";
+import {HttpClientModule} from "@angular/common/http";
+import {InMemoryDataService} from "../_services/in-memory-data.service";
+import {BoardComponent} from "./board/board.component";
+import {MessagesComponent} from "./messages/messages.component";
+import {HomeComponent} from "./home/home.component";
+import {SidebarComponent} from "./sidebar/sidebar.component";
+import {AlertComponent} from "./alert/alert.component";
+import {UserComponent} from "./user.component";
+import {UserRoutingModule} from "./user-routing.module";
+import {HttpClientInMemoryWebApiModule} from 'angular-in-memory-web-api/http-client-in-memory-web-api.module';
+
+@NgModule({
+    imports: [
+        CommonModule,
+        UserRoutingModule,
+        HttpClientModule,
+
+        // The HttpClientInMemoryWebApiModule module intercepts HTTP requests
+        // and returns simulated server responses.
+        // Remove it when a real server is ready to receive requests.
+        HttpClientInMemoryWebApiModule.forRoot(
+            InMemoryDataService, { dataEncapsulation: false }
+        )
+    ],
+    declarations: [
+        UserComponent,
+        BoardComponent,
+        MessagesComponent,
+        HomeComponent,
+        SidebarComponent,
+        AlertComponent
+    ]
+})
+
+export class UserModule { }

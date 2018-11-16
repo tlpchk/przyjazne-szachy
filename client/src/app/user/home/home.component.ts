@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import {StartService} from "../_services/start.service";
-import {GameInfo} from "../_models/gameInfo";
+import {StartService} from "../../_services/start.service";
+import {GameInfo} from "../../_models/gameInfo";
 
 @Component({
   selector: 'app-start',
-  templateUrl: './start.component.html',
-  styleUrls: ['./start.component.scss']
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.scss']
 })
-export class StartComponent implements OnInit {
+export class HomeComponent implements OnInit {
 
   gameList: GameInfo[];
 

@@ -7,5 +7,6 @@ import {Subject} from "rxjs";
 export class AlertService {
 
   private subject = new Subject<any>();
-  constructor() { }
+
+  constructor(private router) { }
 }
