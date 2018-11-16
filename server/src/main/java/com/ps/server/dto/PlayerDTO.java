@@ -11,5 +11,4 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PlayerDTO {
     private Long id;
-    private Long gameId;
 }

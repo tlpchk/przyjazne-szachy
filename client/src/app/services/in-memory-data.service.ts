@@ -1,4 +1,3 @@
-import { InMemoryDbService } from 'angular-in-memory-web-api';
 import { Injectable } from '@angular/core';
 import {PieceType} from '../piece';
 import {Color} from '../color';
@@ -7,7 +6,7 @@ import {Cell} from '../cell';
 @Injectable({
     providedIn: 'root',
 })
-export class InMemoryDataService implements InMemoryDbService {
+export class InMemoryDataService {
     createDb() {
         const whiteKing =  {type: PieceType.KING, color: Color.white};
         const whiteQueen =  {type: PieceType.QUEEN, color: Color.white};

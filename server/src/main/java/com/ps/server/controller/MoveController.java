@@ -30,7 +30,7 @@ public class MoveController {
 
     @RequestMapping(value = "/turn", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public boolean isPlayerTurn(@RequestBody PlayerDTO playerDTO) {
-        return moveService.isPlayerTurn(gameService.getGame(playerDTO.getGameId()), playerService.getPlayer(playerDTO.getId()));
+        return moveService.isPlayerTurn(gameService.getGame(playerDTO.getId()), playerService.getPlayer(playerDTO.getId()));
     }
 
 //    @RequestMapping(value = "/create", method = RequestMethod.POST)

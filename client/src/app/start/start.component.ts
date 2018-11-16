@@ -1,30 +1,40 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {StartService} from "../services/start.service";
-import {GameInfo} from "../gameInfo";
+import {GameDTO} from "../gameDTO";
+import {GameService} from "../services/game.service";
 
 @Component({
-  selector: 'app-start',
-  templateUrl: './start.component.html',
-  styleUrls: ['./start.component.scss']
+    selector: 'app-start',
+    templateUrl: './start.component.html',
+    styleUrls: ['./start.component.scss']
 })
 export class StartComponent implements OnInit {
 
-  gameList: GameInfo[];
+    gameList: GameDTO[];
+    game: GameDTO;
 
 
-  constructor(private startService: StartService,
+    constructor(private startService: StartService,
+                private gameService: GameService) {
+    }
 
-  ) { }
+    ngOnInit() {
+        this.getGameList()
+    }
 
-  ngOnInit() {
-    this.getGameList()
-  }
+    getGameList() {
+        this.startService.getGameList().subscribe(list => this.gameList = list);
+    }
 
-  private getGameList() {
-    this.startService.getGameList().subscribe(list => this.gameList = list);
-  }
+    createNewGame() {
+        this.startService.createNewGame().subscribe(newGame => {
+            this.gameService.setGame(newGame);
+        });
+    }
 
-  createNewGame(){
-    this.startService.createNewGame().subscribe(newGame => console.log(newGame.id));
-  }
+    joinGame(gameId: number) {
+        this.startService.joinGame(gameId).subscribe(newGame => {
+            this.gameService.setGame(newGame);
+        });
+    }
 }

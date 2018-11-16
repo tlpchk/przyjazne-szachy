@@ -1,4 +1,9 @@
 <h1> Zaprzyjaźnij się z szachami!</h1>
 
-<button (click)="createNewGame()" routerLink="/board">Create New Game</button>
-<div *ngFor='let game of gameList'> {{game.id}} </div>
+<button (click)="createNewGame()" routerLink="/board">Nowa gra</button>
+<p>Dostępne gry:</p>
+<button (click)="getGameList()">Odśwież listę</button>
+<div *ngFor='let game of gameList'>
+    <p> {{game.id}} </p>
+    <button (click)="joinGame(game.id)" routerLink="/board">Dołącz</button>
+</div>
