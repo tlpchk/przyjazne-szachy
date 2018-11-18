@@ -14,9 +14,9 @@ import static com.ps.server.Logic.Pieces.Piece.PieceType.ROOK;
 public class Board {
     public final static int COL_NUM = 8;
     public final static int ROW_NUM = 8;
-    Piece[][] board;
-    Set whiteSet;
-    Set blackSet;
+    private Piece[][] board;
+    private Set whiteSet;
+    private Set blackSet;
 
     public Board(Set whiteSet, Set blackSet) {
         this.whiteSet = whiteSet;
@@ -24,20 +24,34 @@ public class Board {
         board = generateBoardFromSets(whiteSet, blackSet);
     }
 
-    public Piece[][] getBoard() { return board;}
+    public ChessSquareState getChessSquareState(Position position) {
+        if(position.row < 0 || position.col < 0 || position.col > 7 || position.row > 7)
+            return null;
+        return new ChessSquareState(board[position.row][position.col]);
+    }
 
-    Piece removePiece(Position loc) {
+    public boolean ifEmpty(Position position) {
+        ChessSquareState state = getChessSquareState(position);
+        return state != null && state.state == ChessSquareState.State.EMPTY;
+    }
+
+    public boolean ifOccupiedByOpponent(Position position, Color color) {
+        ChessSquareState state = getChessSquareState(position);
+        return state != null && state.state == ChessSquareState.State.OCCUPIED && state.getPiece().color != color;
+    }
+
+    private Piece removePiece(Position loc) {
         Piece p = board[loc.row][loc.col];
         board[loc.row][loc.col] = null;
         return p;
     }
 
-    void addPiece(Piece piece, Position loc) {
+    private void addPiece(Piece piece, Position loc) {
         board[loc.row][loc.col] = piece;
         piece.move(loc);
     }
 
-    void giveEnPassantsRights(Position destination, Position loc, Color color) {
+    private void giveEnPassantsRights(Position destination, Position loc, Color color) {
         for(int i = -1; i <= 2; i += 2) {
             int column = destination.col + i;
             if(column < 0 || column > 7) continue;
@@ -114,7 +128,7 @@ public class Board {
         return piece.getMoveTo(dest);
     }
 
-    public boolean checkIfKingInCapture(Color color) {
+    private boolean checkIfKingInCapture(Color color) {
         Set thisSet = (color == WHITE) ? whiteSet : blackSet;
         Set oppositeSet = (color == WHITE) ? blackSet : whiteSet;
         return oppositeSet.checkIfCanCaptureKingOn(thisSet.getKingsPosition());
@@ -128,7 +142,7 @@ public class Board {
     }
 
 
-    Piece[][] generateBoardFromSets(Set set1, Set set2) {
+    private Piece[][] generateBoardFromSets(Set set1, Set set2) {
         Piece[][] board = new Piece[ROW_NUM][];
         for(int i = 0; i < ROW_NUM; i++) {
             board[i] = new Piece[COL_NUM];
@@ -144,6 +158,9 @@ public class Board {
         return new Board(whiteSet.copy(), blackSet.copy());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();

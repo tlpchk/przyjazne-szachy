@@ -11,7 +11,7 @@ import static com.ps.server.Logic.Color.*;
 import static com.ps.server.Logic.Pieces.Piece.PieceType.ROOK;
 
 public class Rook extends StraightMovingPieces {
-    boolean castleRights;
+    private boolean castleRights;
 
     public Rook(Color color, Position position) {
         super(color, ROOK, position);
