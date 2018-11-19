@@ -47,8 +47,8 @@ public abstract class SetFactory {
         public static final Position[] rookPositions = {new Position(7, 0), new Position(7, 7)};
         public static final Position[] knightPositions = {new Position(7, 1), new Position(7, 6)};
         public static final Position[] bishopPositions = {new Position(7, 2), new Position(7, 5)};
-        public static final Position kingsPosition = new Position(7, 3);
-        public static final Position queensPosition = new Position(7, 4);
+        public static final Position kingsPosition = new Position(7, 4);
+        public static final Position queensPosition = new Position(7, 3);
         public static final Color color = Color.WHITE;
 
         WhiteSetFactory() {
@@ -62,8 +62,8 @@ public abstract class SetFactory {
         public static final Position[] rookPositions = {new Position(0, 0), new Position(0, 7)};
         public static final Position[] knightPositions = {new Position(0, 1), new Position(0, 6)};
         public static final Position[] bishopPositions = {new Position(0, 2), new Position(0, 5)};
-        public static final Position kingsPosition = new Position(0, 3);
-        public static final Position queensPosition = new Position(0, 4);
+        public static final Position kingsPosition = new Position(0, 4);
+        public static final Position queensPosition = new Position(0, 3);
         public static final Color color = Color.BLACK;
 
         BlackSetFactory() {

@@ -27,7 +27,8 @@ public class King extends StraightMovingPieces {
         for(int i = 0; i < 2; i++) {
             Piece rook = board.getChessSquareState(rooks[i]).getPiece();
             if(rook != null && rook.hasCastleRights() && rook.color == color && !checkIfSomethingBetween(rooks[i])) {
-                legalMoves.add(new Move(this.type, this.color, this.position, rooks[i], CASTLE));
+                Move.MoveType moveType = (i == 0) ? LONG_CASTLE : SHORT_CASTLE;
+                legalMoves.add(new Move(this.type, this.color, this.position, rooks[i], moveType));
             }
         }
         return legalMoves;

@@ -18,6 +18,6 @@ public class Move {
     }
 
     public enum MoveType {
-        NORMAL, CASTLE, EN_PASSANT, PROMOTION, LONG_PAWN_MOVE
+        NORMAL, SHORT_CASTLE, EN_PASSANT, PROMOTION, LONG_PAWN_MOVE, LONG_CASTLE
     }
 }

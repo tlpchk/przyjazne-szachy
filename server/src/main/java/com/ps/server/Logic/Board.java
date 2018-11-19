@@ -77,12 +77,20 @@ public class Board {
             case NORMAL:
                 addPiece(removePiece(loc), dest);
                 break;
-            case CASTLE:
+            case LONG_CASTLE: {
                 Piece rook = removePiece(dest);
                 Piece king = removePiece(loc);
-                addPiece(king, dest);
-                addPiece(rook, loc);
+                addPiece(king, new Position(loc.row, loc.col - 2));
+                addPiece(rook, new Position(dest.row, dest.col + 3));
                 break;
+            }
+            case SHORT_CASTLE: {
+                Piece rook = removePiece(dest);
+                Piece king = removePiece(loc);
+                addPiece(king, new Position(loc.row, loc.col + 2));
+                addPiece(rook, new Position(dest.row, dest.col - 2));
+                break;
+            }
         }
     }
 
@@ -103,9 +111,17 @@ public class Board {
                 changes.add(new Change(loc, null, null));
                 changes.add(new Change(dest, move.pieceType, color));
                 break;
-            case CASTLE:
-                changes.add(new Change(dest, KING, color));
-                changes.add(new Change(loc, ROOK, color));
+            case LONG_CASTLE:
+                changes.add(new Change(loc, null, null));
+                changes.add(new Change(dest, null, null));
+                changes.add(new Change(new Position(loc.row, loc.col - 2), KING, color));
+                changes.add(new Change(new Position(dest.row, dest.col + 3), ROOK, color));
+                break;
+            case SHORT_CASTLE:
+                changes.add(new Change(loc, null, null));
+                changes.add(new Change(dest, null, null));
+                changes.add(new Change(new Position(loc.row, loc.col + 2), KING, color));
+                changes.add(new Change(new Position(dest.row, dest.col - 2), ROOK, color));
                 break;
         }
         return changes;
