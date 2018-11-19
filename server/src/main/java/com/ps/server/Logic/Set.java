@@ -14,8 +14,12 @@ public class Set {
         this.set = set;
     }
 
-    List<Move> generateSemiLegalMoves() {
+    List<Move> semiLegalMoves() {
         return set.stream().flatMap(piece -> piece.semiLegalMoves().stream()).collect(Collectors.toList());
+    }
+
+    List<Move> legalMoves() {
+        return set.stream().flatMap(piece -> piece.getListOfMoves().stream()).collect(Collectors.toList());
     }
 
     void generateLegalMoves() {

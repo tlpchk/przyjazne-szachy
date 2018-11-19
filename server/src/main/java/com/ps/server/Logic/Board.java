@@ -40,6 +40,11 @@ public class Board {
         return state != null && state.state == ChessSquareState.State.OCCUPIED && state.getPiece().color != color;
     }
 
+    public List<Move> getLegalMoves(Color color) {
+        Set set = (color == WHITE) ? whiteSet : blackSet;
+        return set.legalMoves();
+    }
+
     private Piece removePiece(Position loc) {
         Piece p = board[loc.row][loc.col];
         board[loc.row][loc.col] = null;

@@ -5,11 +5,12 @@ import com.ps.server.Logic.Color;
 import com.ps.server.Logic.Move;
 import com.ps.server.Logic.Position;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public abstract class Piece {
-    List<Move> legalMoves;
+    List<Move> legalMoves = new ArrayList<>();
     final public Color color;
     final PieceType type;
     Board board;
