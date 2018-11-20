@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
-import {Cell} from '../cell';
+import {Cell} from '../_models/cell';
 
 import {catchError, map, tap} from 'rxjs/operators';
 import {MessageService} from './message.service';
@@ -16,7 +16,7 @@ const httpOptions = {
 export class BoardService{
 
   board: Cell[];
-  private boardUrl = 'http://localhost:8080/board/mock';
+  private boardUrl = 'api/board';//'http://localhost:8080/board';
 
   constructor(private http: HttpClient,
               private messageService: MessageService){}

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import {PieceType} from '../piece';
-import {Color} from '../color';
-import {Cell} from '../cell';
+import {PieceType} from '../_models/piece';
+import {Color} from '../_models/color';
+import {Cell} from '../_models/cell';
 
 @Injectable({
     providedIn: 'root',
@@ -23,7 +23,7 @@ export class InMemoryDataService {
         const blackBishop =  {type: PieceType.BISHOP, color: Color.black};
             const board = [
             new Cell( 1 , Color.white, whiteRook, []),
-            new Cell(2 , Color.black,  whiteKnight, []),
+            new Cell(2 , Color.black,  whiteKnight, [17,19]),
             new Cell(3 , Color.white,  whiteBishop, []),
             new Cell(4 , Color.black,  whiteKing, []),
             new Cell(5 , Color.white,  whiteQueen, []),

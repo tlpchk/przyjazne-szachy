@@ -1,12 +1,22 @@
 import { NgModule } from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {BoardComponent} from './board/board.component';
-import {StartComponent} from "./start/start.component";
+import {UserModule} from "./user/user.module";
+import {LoginModule} from "./login/login.module";
+
 
 const routes: Routes = [
-    { path: 'board', component: BoardComponent },
-    { path: 'start', component: StartComponent },
-    { path: '', redirectTo: '/board', pathMatch: 'full'}
+    {   path: 'user',
+        loadChildren: () => UserModule,
+       //loadChildren: './user/user.module.#UserModule'
+    },
+    {   path: 'login',
+        loadChildren: () => LoginModule,
+    },
+    {
+        path: '',
+        redirectTo: 'login',
+        pathMatch: 'full'
+    }
 
 ];
 
