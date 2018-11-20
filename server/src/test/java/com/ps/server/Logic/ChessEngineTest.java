@@ -5,7 +5,6 @@ import com.ps.server.Logic.Pieces.King;
 import com.ps.server.Logic.Pieces.Pawn;
 import org.junit.Test;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 import static com.ps.server.Logic.Color.BLACK;
@@ -60,5 +59,15 @@ public class ChessEngineTest {
 
         Board board = new Board(whiteSet, blackSet);
         assert(testMakingMove(board, new Position(6,7), new Position(2, 3), WHITE));
+    }
+
+    @Test
+    public void moveAfterSetUp() {
+        Set whiteset = new SetFactory.WhiteSetFactory().createSet();
+        Set blackset = new SetFactory.BlackSetFactory().createSet();
+
+        Board board = new Board(whiteset, blackset);
+
+        testMakingMove(board, new Position(7, 1), new Position(5, 2), WHITE);
     }
 }

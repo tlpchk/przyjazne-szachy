@@ -4,6 +4,7 @@ import com.ps.server.Logic.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.ps.server.Logic.Color.WHITE;
 import static com.ps.server.Logic.Move.MoveType.*;
@@ -11,22 +12,23 @@ import static com.ps.server.Logic.Pieces.Piece.PieceType.KING;
 
 public class King extends StraightMovingPieces {
     private boolean castleRights;
-    private static Position[] whiteRooks = {new Position(7, 0), new Position(7, 7)};
-    private static Position[] blackRooks = {new Position(0, 0), new Position(0, 7)};
+    private static Position[] whiteRooks = SetFactory.WhiteSetFactory.rookPositions;
+    private static Position[] blackRooks = SetFactory.BlackSetFactory.rookPositions;
 
     public King(Color color, Position position) {
         super(color, KING, position);
         castleRights = true;
     }
 
-    List<Move> generateCastleMoves() {
+    private List<Move> generateCastleMoves() {
         if(!castleRights) return null;
         List<Move> legalMoves = new ArrayList<>();
         Position[] rooks = (color == WHITE) ? whiteRooks : blackRooks;
         for(int i = 0; i < 2; i++) {
-            Piece rook = board.getBoard()[rooks[i].row][rooks[i].col];
+            Piece rook = board.getChessSquareState(rooks[i]).getPiece();
             if(rook != null && rook.hasCastleRights() && rook.color == color && !checkIfSomethingBetween(rooks[i])) {
-                legalMoves.add(new Move(this.type, this.color, this.position, rooks[i], CASTLE));
+                Move.MoveType moveType = (i == 0) ? LONG_CASTLE : SHORT_CASTLE;
+                legalMoves.add(new Move(this.type, this.color, this.position, rooks[i], moveType));
             }
         }
         return legalMoves;
@@ -38,12 +40,14 @@ public class King extends StraightMovingPieces {
         for(int i = -1; i <= 1; i++) {
             for(int j = -1; j <= 1; j++) {
                 Position destination = new Position(position.row + i, position.col + j);
-                if(moveOrCaptureOrNoMove(destination) != -1) {
+                if(board.ifEmpty(destination) || board.ifOccupiedByOpponent(destination, color)) {
                     legalMoves.add(new Move(this.type, color, this.position, destination, NORMAL));
                 }
             }
         }
-        legalMoves.addAll(generateCastleMoves());
+        List<Move> castleMoves = generateCastleMoves();
+        if(castleMoves != null)
+            legalMoves.addAll(castleMoves);
         return legalMoves;
     }
 
