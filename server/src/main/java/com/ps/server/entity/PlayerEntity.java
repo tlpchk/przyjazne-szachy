@@ -19,6 +19,6 @@ public class PlayerEntity {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name="color")
+    @Column(name = "color")
     private Color color;
 }

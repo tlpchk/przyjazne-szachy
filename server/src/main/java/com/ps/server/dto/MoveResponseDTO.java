@@ -1,5 +1,7 @@
 package com.ps.server.dto;
 
+import com.ps.server.Logic.Change;
+import com.ps.server.Logic.Move;
 import com.ps.server.Logic.Position;
 import javafx.util.Pair;
 import lombok.AllArgsConstructor;
@@ -17,9 +19,7 @@ import java.util.List;
 public class MoveResponseDTO {
 
     @NotNull
-    public boolean isMoveValid;
+    public boolean wasMoveValid;
 
-    public List<Pair<Position, Position>> additionalMoves;
-
-    public String message;
+    public List<Change> listOfChanges;
 }

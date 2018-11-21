@@ -1,11 +1,17 @@
 package com.ps.server.Logic;
 
 import com.ps.server.Logic.Pieces.Piece;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 public class Change {
-    public final Position location;
-    public final Piece.PieceType type;
-    public final Color color;
+    public Position location;
+    public Piece.PieceType type;
+    public Color color;
 
     /**
      * Class constructor.

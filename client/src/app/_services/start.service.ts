@@ -1,29 +1,37 @@
-import { Injectable } from '@angular/core';
-import {GameInfo} from "../_models/gameInfo";
+import {Injectable} from '@angular/core';
+import {GameDTO} from "../_models/gameDTO";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {PlayerDTO} from "../_models/playerDTO";
 
 const httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
 
+const firstPlayerColor = "WHITE";
+
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 
 export class StartService {
 
-  private gameListUrl = 'http://localhost:8080/gameEntity/list';
-  private newGameUrl = 'http://localhost:8080/gameEntity/create';
+    private gamesUrl = 'http://localhost:8080/games';
+    private playersUrl = 'http://localhost:8080/players';
 
-  constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) {
+    }
 
 
-  getGameList() : Observable<GameInfo[]>{
-    return this.http.get<GameInfo[]>(this.gameListUrl);
-  }
+    getGameList(): Observable<GameDTO[]> {
+        return this.http.get<GameDTO[]>(this.gamesUrl);
+    }
 
-    createNewGame() {
-        return this.http.post<GameInfo>(this.newGameUrl, {}, httpOptions);
+    createNewGame(player: PlayerDTO): Observable<GameDTO> {
+        return this.http.post<GameDTO>(this.gamesUrl, player, httpOptions);
+    }
+
+    createNewPlayer(): Observable<PlayerDTO> {
+        return this.http.post<PlayerDTO>(this.playersUrl, firstPlayerColor, httpOptions);
     }
 }

@@ -1,6 +1,7 @@
 package com.ps.server.entity;
 
 import com.ps.server.enums.GameStatus;
+import com.ps.server.enums.GameType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,13 +27,16 @@ public class GameEntity {
     private PlayerEntity firstPlayer;
 
     @ManyToOne
-    @JoinColumn(name = "second_player_id", nullable = true)
+    @JoinColumn(name = "second_player_id")
     private PlayerEntity secondPlayer;
 
     @Enumerated(EnumType.STRING)
     private GameStatus gameStatus;
 
-    @Column(name = "created", nullable = false)
-    private Date created;
+    @Enumerated(EnumType.STRING)
+    private GameType gameType;
+
+    @Column(name = "starting_time")
+    private Date startingTime;
 
 }

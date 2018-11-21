@@ -17,12 +17,11 @@ public class PlayerController {
     @Autowired
     PlayerService playerService;
 
-
-    //TODO RS: change that to JSON
     @RequestMapping(method = RequestMethod.POST)
-    public PlayerDTO createPlayer(@RequestBody String colorStr) {
-        Color color = colorStr.toLowerCase().equals("white") ? Color.WHITE : Color.BLACK;
+    public PlayerDTO createPlayer(@RequestBody String colorString) {
+        Color color = (colorString.toUpperCase().equals("WHITE")) ? Color.WHITE : Color.BLACK;
         PlayerEntity player = playerService.createNewPlayer(color);
+        System.out.println("player created");
         return new PlayerDTO(player.getId());
     }
 }

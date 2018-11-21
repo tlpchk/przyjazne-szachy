@@ -53,7 +53,7 @@ public abstract class SetFactory {
         public static final Position queensPosition = new Position(7, 3);
         public static final Color color = Color.WHITE;
 
-        WhiteSetFactory() {
+        public WhiteSetFactory() {
             super(pawnRow, rookPositions, bishopPositions, knightPositions, kingsPosition, queensPosition, color);
         }
     }
@@ -69,7 +69,7 @@ public abstract class SetFactory {
         public static final Position queensPosition = new Position(0, 3);
         public static final Color color = Color.BLACK;
 
-        BlackSetFactory() {
+        public BlackSetFactory() {
             super(pawnRow, rookPositions, bishopPositions, knightPositions, kingsPosition, queensPosition, color);
         }
 

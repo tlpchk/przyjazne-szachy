@@ -94,7 +94,7 @@ public class Board {
         }
     }
 
-    static List<Change> getListOfChanges(Move move) {
+    public static List<Change> getListOfChanges(Move move) {
         List<Change> changes = new ArrayList<>();
         Position loc = move.loc;
         Position dest = move.dest;
@@ -127,7 +127,7 @@ public class Board {
         return changes;
     }
 
-    void updateGame(Color turn) {
+    public void updateGame(Color turn) {
         Set playingSet = (turn == WHITE) ? whiteSet : blackSet;
         playingSet.generateLegalMoves();
         if(!playingSet.checkIfCanMove()) {
@@ -138,7 +138,7 @@ public class Board {
         }
     }
 
-    Move validatePlayersMove(Position loc, Position dest, Color color) {
+    public Move validatePlayersMove(Position loc, Position dest, Color color) {
         Piece piece = board[loc.row][loc.col];
         if(piece == null || piece.color != color) { return null; }
         return piece.getMoveTo(dest);
