@@ -1,5 +1,6 @@
 package com.ps.server.Logic.Pieces;
 
+import com.ps.server.Logic.ChessSquareState;
 import com.ps.server.Logic.Color;
 import com.ps.server.Logic.Move;
 import com.ps.server.Logic.Position;
@@ -17,23 +18,13 @@ public class Knight extends Piece {
         super(color, KNIGHT, position);
     }
 
-    public boolean checkMove(Position loc, Position dest) {
-        int distX = Math.abs(loc.col - dest.col);
-        int distY = Math.abs(loc.row - dest.row);
-        return (distY == 1 && distX == 2) || (distY == 2 && distX == 1);
-    }
-
     @Override
     public String toString() {
         return color == WHITE ? "♞" : "♘";
     }
 
-    Move createMove(int row, int col) {
-        Piece captured = board.getBoard()[row][col];
-        if(row < 0 || col < 0 || row > 8 || col > 8) {
-            return null;
-        }
-        if(captured == null || captured.color != color) {
+    private Move createMove(int row, int col) {
+        if(board.ifEmpty(position) || board.ifOccupiedByOpponent(position, color)) {
             return new Move(this.type, color, position, new Position(row, col), NORMAL);
         }
         return null;

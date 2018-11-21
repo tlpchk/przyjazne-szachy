@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 public abstract class Piece {
     List<Move> legalMoves;
     final public Color color;
-    final public PieceType type;
+    final PieceType type;
     Board board;
     Position position;
 
@@ -52,23 +52,10 @@ public abstract class Piece {
 
     public Move getMoveTo(Position dest) {
         return legalMoves.stream().filter(move -> move.dest.equalsToPos(dest)).findFirst().orElse(null);
-//        for(int i = 0; i < legalMoves.size(); i++) {
-//            if(legalMoves.get(i).dest.equals())
-//        }
     }
 
     public boolean canMove() {
         return legalMoves.size() != 0;
-    }
-
-    int moveOrCaptureOrNoMove(Position position) { //0 move, 1 capture, 2 no move
-        if(position.col < 0 || position.row < 0 || position.row > 7 || position.col > 7) {
-            return -1;
-        }
-        Piece captured = board.getBoard()[position.row][position.col];
-        if(captured == null ) return 0;
-        if(captured.color != color) return 1;
-        return -1;
     }
 
     boolean hasCastleRights() {

@@ -3,14 +3,20 @@ package com.ps.server.Logic;
 import com.ps.server.Logic.Pieces.Piece;
 import com.ps.server.Logic.Pieces.Queen;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.ps.server.Logic.Color.WHITE;
+import static com.ps.server.Logic.Pieces.Piece.PieceType.KING;
+import static com.ps.server.Logic.Pieces.Piece.PieceType.QUEEN;
+import static com.ps.server.Logic.Pieces.Piece.PieceType.ROOK;
 
 public class Board {
-    final static int COL_NUM = 8;
-    final static int ROW_NUM = 8;
-    Piece[][] board;
-    Set whiteSet;
-    Set blackSet;
+    public final static int COL_NUM = 8;
+    public final static int ROW_NUM = 8;
+    private Piece[][] board;
+    private Set whiteSet;
+    private Set blackSet;
 
     public Board(Set whiteSet, Set blackSet) {
         this.whiteSet = whiteSet;
@@ -18,25 +24,41 @@ public class Board {
         board = generateBoardFromSets(whiteSet, blackSet);
     }
 
-    public Piece[][] getBoard() { return board;}
+    public ChessSquareState getChessSquareState(Position position) {
+        if(position.row < 0 || position.col < 0 || position.col > 7 || position.row > 7)
+            return null;
+        return new ChessSquareState(board[position.row][position.col]);
+    }
 
-    Piece removePiece(Position loc) {
+    public boolean ifEmpty(Position position) {
+        ChessSquareState state = getChessSquareState(position);
+        return state != null && state.state == ChessSquareState.State.EMPTY;
+    }
+
+    public boolean ifOccupiedByOpponent(Position position, Color color) {
+        ChessSquareState state = getChessSquareState(position);
+        return state != null && state.state == ChessSquareState.State.OCCUPIED && state.getPiece().color != color;
+    }
+
+    private Piece removePiece(Position loc) {
         Piece p = board[loc.row][loc.col];
         board[loc.row][loc.col] = null;
         return p;
     }
 
-    void addPiece(Piece piece, Position loc) {
+    private void addPiece(Piece piece, Position loc) {
         board[loc.row][loc.col] = piece;
         piece.move(loc);
     }
 
-    void giveEnPassantsRights(Position destination, Position loc, Color color) {
+    private void giveEnPassantsRights(Position destination, Position loc, Color color) {
         for(int i = -1; i <= 2; i += 2) {
-          Piece piece = board[destination.row][destination.col + i];
-          if(piece != null && piece.color != color) {
+            int column = destination.col + i;
+            if(column < 0 || column > 7) continue;
+            Piece piece = board[destination.row][column];
+            if(piece != null && piece.color != color) {
               piece.giveEnPassantRights(loc);
-          }
+            }
         }
     }
 
@@ -55,16 +77,55 @@ public class Board {
             case NORMAL:
                 addPiece(removePiece(loc), dest);
                 break;
-            case CASTLE:
+            case LONG_CASTLE: {
                 Piece rook = removePiece(dest);
                 Piece king = removePiece(loc);
-                addPiece(king, dest);
-                addPiece(rook, loc);
+                addPiece(king, new Position(loc.row, loc.col - 2));
+                addPiece(rook, new Position(dest.row, dest.col + 3));
                 break;
+            }
+            case SHORT_CASTLE: {
+                Piece rook = removePiece(dest);
+                Piece king = removePiece(loc);
+                addPiece(king, new Position(loc.row, loc.col + 2));
+                addPiece(rook, new Position(dest.row, dest.col - 2));
+                break;
+            }
         }
     }
 
-    //TODO:: method with list of changes from move
+    static List<Change> getListOfChanges(Move move) {
+        List<Change> changes = new ArrayList<>();
+        Position loc = move.loc;
+        Position dest = move.dest;
+        Color color = move.pieceColor;
+        switch (move.type) {
+            case PROMOTION:
+                changes.add(new Change(loc, null, null));
+                changes.add(new Change(dest, QUEEN, color));
+                break;
+            case EN_PASSANT:
+                changes.add(new Change(new Position(loc.row, dest.col), null, null));
+            case LONG_PAWN_MOVE:
+            case NORMAL:
+                changes.add(new Change(loc, null, null));
+                changes.add(new Change(dest, move.pieceType, color));
+                break;
+            case LONG_CASTLE:
+                changes.add(new Change(loc, null, null));
+                changes.add(new Change(dest, null, null));
+                changes.add(new Change(new Position(loc.row, loc.col - 2), KING, color));
+                changes.add(new Change(new Position(dest.row, dest.col + 3), ROOK, color));
+                break;
+            case SHORT_CASTLE:
+                changes.add(new Change(loc, null, null));
+                changes.add(new Change(dest, null, null));
+                changes.add(new Change(new Position(loc.row, loc.col + 2), KING, color));
+                changes.add(new Change(new Position(dest.row, dest.col - 2), ROOK, color));
+                break;
+        }
+        return changes;
+    }
 
     public void updateGame(Color turn) {
         Set playingSet = (turn == WHITE) ? whiteSet : blackSet;
@@ -83,7 +144,7 @@ public class Board {
         return piece.getMoveTo(dest);
     }
 
-    public boolean checkIfKingInCapture(Color color) {
+    private boolean checkIfKingInCapture(Color color) {
         Set thisSet = (color == WHITE) ? whiteSet : blackSet;
         Set oppositeSet = (color == WHITE) ? blackSet : whiteSet;
         return oppositeSet.checkIfCanCaptureKingOn(thisSet.getKingsPosition());
@@ -97,7 +158,7 @@ public class Board {
     }
 
 
-    Piece[][] generateBoardFromSets(Set set1, Set set2) {
+    private Piece[][] generateBoardFromSets(Set set1, Set set2) {
         Piece[][] board = new Piece[ROW_NUM][];
         for(int i = 0; i < ROW_NUM; i++) {
             board[i] = new Piece[COL_NUM];
@@ -113,6 +174,9 @@ public class Board {
         return new Board(whiteSet.copy(), blackSet.copy());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
