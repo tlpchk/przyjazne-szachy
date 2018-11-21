@@ -1,12 +1,21 @@
 package com.ps.server.Logic;
 
-public class Position {
-    public final int row ,col;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-    public Position(int row, int col) {
-        this.row = row;
-        this.col = col;
-    }
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class Position {
+    public int row ,col;
+
+//    public Position(int row, int col) {
+//        this.row = row;
+//        this.col = col;
+//    }
 
     /**
      * Checks if two Position objects are equal in terms of parameters

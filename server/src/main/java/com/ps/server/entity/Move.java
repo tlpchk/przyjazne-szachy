@@ -1,4 +1,4 @@
-package com.ps.server.domain;
+package com.ps.server.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,11 +34,11 @@ public class Move {
 
     @ManyToOne
     @JoinColumn(name = "game_id", nullable = false)
-    private Game game;
+    private GameEntity gameEntity;
 
     @ManyToOne
     @JoinColumn(name = "player_id", nullable = true)
-    private Player player;
+    private PlayerEntity player;
 
     @Column(name = "created", nullable = false)
     private Date created;

@@ -1,6 +1,6 @@
 package com.ps.server.repository;
 
-import com.ps.server.domain.Move;
+import com.ps.server.entity.Move;
 import org.springframework.data.repository.CrudRepository;
 
 

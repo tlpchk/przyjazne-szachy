@@ -1,9 +1,7 @@
 package com.ps.server.service;
 
-import com.ps.server.domain.Game;
-import com.ps.server.domain.Move;
-import com.ps.server.domain.Player;
-import com.ps.server.dto.CreateMoveDTO;
+import com.ps.server.entity.GameEntity;
+import com.ps.server.entity.PlayerEntity;
 import com.ps.server.enums.GameStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,14 +18,14 @@ public class MoveService {
     @Autowired
     private PlayerService playerService;
 
-    public boolean isPlayerTurn(Game game, Player player) {
-        return (game.getGameStatus() == GameStatus.FIRST_PLAYER_TURN && game.getFirstPlayer().equals(player))
-                || (game.getGameStatus() == GameStatus.SECOND_PLAYER_TURN && game.getSecondPlayer().equals(player));
+    public boolean isPlayerTurn(GameEntity gameEntity, PlayerEntity player) {
+        return (gameEntity.getGameStatus() == GameStatus.FIRST_PLAYER_TURN && gameEntity.getFirstPlayer().equals(player))
+                || (gameEntity.getGameStatus() == GameStatus.SECOND_PLAYER_TURN && gameEntity.getSecondPlayer().equals(player));
     }
 
 //    public Move createMove(CreateMoveDTO createMoveDTO) {
 //        Move move = new Move();
-//        move.setGame(gameService.getGame(createMoveDTO.getGameId()));
+//        move.setGameEntity(gameService.getGameEntity(createMoveDTO.getGameId()));
 //        move.setPlayer(playerService.getPlayer());
 //    }
 }

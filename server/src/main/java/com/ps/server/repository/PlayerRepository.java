@@ -1,7 +1,7 @@
 package com.ps.server.repository;
 
-import com.ps.server.domain.Player;
+import com.ps.server.entity.PlayerEntity;
 import org.springframework.data.repository.CrudRepository;
 
-public interface PlayerRepository extends CrudRepository<Player,Long> {
+public interface PlayerRepository extends CrudRepository<PlayerEntity,Long> {
 }

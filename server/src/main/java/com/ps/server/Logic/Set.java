@@ -60,4 +60,7 @@ public class Set {
         return false;
     }
 
+    public List<Piece> getSet() {
+        return set;
+    }
 }

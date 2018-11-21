@@ -13,8 +13,8 @@ const httpOptions = {
 
 export class StartService {
 
-  private gameListUrl = 'http://localhost:8080/game/list';
-  private newGameUrl = 'http://localhost:8080/game/create';
+  private gameListUrl = 'http://localhost:8080/gameEntity/list';
+  private newGameUrl = 'http://localhost:8080/gameEntity/create';
 
   constructor(private http: HttpClient) { }
 

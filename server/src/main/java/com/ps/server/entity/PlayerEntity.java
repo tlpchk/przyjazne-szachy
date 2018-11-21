@@ -1,5 +1,6 @@
-package com.ps.server.domain;
+package com.ps.server.entity;
 
+import com.ps.server.Logic.Color;
 import lombok.*;
 
 import javax.persistence.*;
@@ -10,10 +11,14 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class Player {
+public class PlayerEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name="color")
+    private Color color;
 }

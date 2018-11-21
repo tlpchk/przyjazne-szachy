@@ -11,7 +11,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateMoveDTO {
-    private Long gameId;
     private Long playerId;
     private Position origin;
     private Position destination;

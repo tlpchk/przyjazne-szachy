@@ -1,6 +1,7 @@
 package com.ps.server.Logic;
 
 import com.ps.server.Logic.Pieces.*;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +43,7 @@ public abstract class SetFactory {
         return new Set(color, set);
     }
 
+    @Component
     public static class WhiteSetFactory extends SetFactory {
         public static final int pawnRow = 6;
         public static final Position[] rookPositions = {new Position(7, 0), new Position(7, 7)};
@@ -57,6 +59,7 @@ public abstract class SetFactory {
     }
 
 
+    @Component
     public static class BlackSetFactory extends SetFactory {
         public static final int pawnRow = 1;
         public static final Position[] rookPositions = {new Position(0, 0), new Position(0, 7)};

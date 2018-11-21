@@ -1,4 +1,4 @@
-package com.ps.server.domain;
+package com.ps.server.entity;
 
 import com.ps.server.enums.GameStatus;
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Game {
+public class GameEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,11 +23,11 @@ public class Game {
 
     @ManyToOne
     @JoinColumn(name = "first_player_id", nullable = false)
-    private Player firstPlayer;
+    private PlayerEntity firstPlayer;
 
     @ManyToOne
     @JoinColumn(name = "second_player_id", nullable = true)
-    private Player secondPlayer;
+    private PlayerEntity secondPlayer;
 
     @Enumerated(EnumType.STRING)
     private GameStatus gameStatus;

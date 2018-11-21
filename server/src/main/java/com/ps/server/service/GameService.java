@@ -1,10 +1,10 @@
 package com.ps.server.service;
 
-import com.ps.server.domain.Game;
-import com.ps.server.domain.Player;
+import com.ps.server.Logic.SetFactory;
+import com.ps.server.entity.GameEntity;
+import com.ps.server.entity.PlayerEntity;
 import com.ps.server.enums.GameStatus;
 import com.ps.server.repository.GameRepository;
-import com.ps.server.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,34 +20,34 @@ public class GameService {
     private GameRepository gameRepository;
 
     @Autowired
-    private PlayerService playerService;
+    private PieceService pieceService;
 
-    public Game createNewGame() {
-        Game game = new Game();
-        Player firstPlayer = playerService.createNewPlayer();
-        game.setFirstPlayer(firstPlayer);
-        game.setGameStatus(GameStatus.WAITING_FOR_PLAYER);
-        game.setCreated(new Date());
-        gameRepository.save(game);
-        return game;
+    public GameEntity createNewGame(PlayerEntity firstPlayer) {
+        GameEntity gameEntity = new GameEntity();
+        gameEntity.setFirstPlayer(firstPlayer);
+        gameEntity.setGameStatus(GameStatus.WAITING_FOR_PLAYER);
+        gameEntity.setCreated(new Date());
+        gameRepository.save(gameEntity);
+        pieceService.createWhiteSetEntity(gameEntity);
+        pieceService.createBlackSetEntity(gameEntity);
+        return gameEntity;
     }
 
-    public List<Game> getGamesToJoin() {
+    public List<GameEntity> getGamesToJoin() {
         return gameRepository.findByGameStatus(GameStatus.WAITING_FOR_PLAYER);
     }
 
-    public Game joinGame(Long gameId) {
-        Game game = getGame(gameId);
-        if (game != null) {
-            Player secondPlayer = playerService.createNewPlayer();
-            game.setSecondPlayer(secondPlayer);
-            game.setGameStatus(GameStatus.FIRST_PLAYER_TURN);
-            gameRepository.save(game);
+    public GameEntity joinGame(Long gameId, PlayerEntity secondPlayer) {
+        GameEntity gameEntity = getGame(gameId);
+        if (gameEntity != null) {
+            gameEntity.setSecondPlayer(secondPlayer);
+            gameEntity.setGameStatus(GameStatus.FIRST_PLAYER_TURN);
+            gameRepository.save(gameEntity);
         }
-        return game;
+        return gameEntity;
     }
 
-    public Game getGame(Long gameId){
+    public GameEntity getGame(Long gameId){
         return gameRepository.findById(gameId).orElse(null);
     }
 }
