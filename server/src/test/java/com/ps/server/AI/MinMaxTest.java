@@ -8,7 +8,6 @@ import com.ps.server.Logic.Pieces.Rook;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.List;
 
 import static com.ps.server.Logic.Color.BLACK;
 import static com.ps.server.Logic.Color.WHITE;

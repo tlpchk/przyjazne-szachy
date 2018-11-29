@@ -67,4 +67,8 @@ public abstract class Piece {
     public List<Move> getListOfMoves() {
         return legalMoves;
     }
+
+    public PieceType getType() {
+        return type;
+    }
 }

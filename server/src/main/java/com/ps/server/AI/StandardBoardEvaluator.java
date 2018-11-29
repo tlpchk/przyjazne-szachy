@@ -10,7 +10,11 @@ public class StandardBoardEvaluator implements BoardEvaluator {
         return scorePlayer(board, Color.WHITE) - scorePlayer(board, Color.BLACK);
     }
 
-    private int scorePlayer(final Board board, final Color color) {
+    protected int scorePlayer(final Board board, final Color color) {
+        return scorePieces(board, color);
+    }
+
+    protected int scorePieces(final Board board, final Color color) {
         int pieceValueScore = 0;
         Piece[][] chessBoard = board.getBoard();
 
@@ -19,7 +23,7 @@ public class StandardBoardEvaluator implements BoardEvaluator {
                 if(chessBoard[i][j] == null)
                     continue;
                 if(chessBoard[i][j].color == color) {
-                    pieceValueScore += pieceValue(chessBoard[i][j].type);
+                    pieceValueScore += pieceValue(chessBoard[i][j].getType());
                 }
             }
         }
@@ -27,7 +31,7 @@ public class StandardBoardEvaluator implements BoardEvaluator {
         return pieceValueScore;
     }
 
-    private int pieceValue(Piece.PieceType piece) {
+    protected int pieceValue(Piece.PieceType piece) {
         if(piece == Piece.PieceType.PAWN) {
             return 1;
         }
