@@ -201,4 +201,7 @@ public class Board {
         return builder.toString();
     }
 
+    public Piece[][] getBoard() {
+        return board;
+    }
 }
