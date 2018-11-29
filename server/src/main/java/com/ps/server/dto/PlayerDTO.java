@@ -12,4 +12,12 @@ import lombok.Setter;
 public class PlayerDTO {
     private Long id;
     private Long gameId;
+
+    public Long getGameId() {
+        return gameId;
+    }
+
+    public Long getId() {
+        return id;
+    }
 }
