@@ -1,17 +1,17 @@
-package com.ps.server.logic;
+package com.ps.server.Logic;
 
-import com.ps.server.logic.pieces.*;
+import com.ps.server.Logic.Pieces.*;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
 
-import static com.ps.server.logic.Color.BLACK;
-import static com.ps.server.logic.Color.WHITE;
-import static com.ps.server.logic.Move.MoveType.EN_PASSANT;
-import static com.ps.server.logic.Move.MoveType.LONG_CASTLE;
-import static com.ps.server.logic.pieces.Piece.PieceType.KING;
-import static com.ps.server.logic.pieces.Piece.PieceType.PAWN;
+import static com.ps.server.Logic.Color.BLACK;
+import static com.ps.server.Logic.Color.WHITE;
+import static com.ps.server.Logic.Move.MoveType.EN_PASSANT;
+import static com.ps.server.Logic.Move.MoveType.LONG_CASTLE;
+import static com.ps.server.Logic.Pieces.Piece.PieceType.KING;
+import static com.ps.server.Logic.Pieces.Piece.PieceType.PAWN;
 
 public class BoardTest {
     Rook whiteRook = new Rook(WHITE, new Position(1, 4));

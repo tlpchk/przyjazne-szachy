@@ -1,6 +1,6 @@
-package com.ps.server.Logic;
+package com.ps.server.logic;
 
-import com.ps.server.Logic.Pieces.*;
+import com.ps.server.logic.pieces.*;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

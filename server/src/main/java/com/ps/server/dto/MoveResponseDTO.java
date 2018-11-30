@@ -1,9 +1,6 @@
 package com.ps.server.dto;
 
-import com.ps.server.Logic.Change;
-import com.ps.server.Logic.Move;
-import com.ps.server.Logic.Position;
-import javafx.util.Pair;
+import com.ps.server.logic.Change;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

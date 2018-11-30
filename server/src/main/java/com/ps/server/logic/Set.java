@@ -1,6 +1,6 @@
-package com.ps.server.Logic;
+package com.ps.server.logic;
 
-import com.ps.server.Logic.Pieces.Piece;
+import com.ps.server.logic.pieces.Piece;
 
 import java.util.List;
 import java.util.stream.Collectors;

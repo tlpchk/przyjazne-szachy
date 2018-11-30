@@ -1,6 +1,6 @@
 package com.ps.server.controller;
 
-import com.ps.server.Logic.Position;
+import com.ps.server.logic.Position;
 import com.ps.server.dto.*;
 import com.ps.server.entity.GameEntity;
 import com.ps.server.entity.PlayerEntity;

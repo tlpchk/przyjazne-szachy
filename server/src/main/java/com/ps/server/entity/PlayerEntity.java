@@ -1,6 +1,6 @@
 package com.ps.server.entity;
 
-import com.ps.server.Logic.Color;
+import com.ps.server.logic.Color;
 import lombok.*;
 
 import javax.persistence.*;

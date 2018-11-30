@@ -1,11 +1,11 @@
 package com.ps.server.service;
 
-import com.ps.server.Logic.*;
-import com.ps.server.Logic.Pieces.Piece;
-import com.ps.server.Logic.Set;
+import com.ps.server.logic.*;
+import com.ps.server.logic.pieces.Piece;
+import com.ps.server.logic.Set;
 import com.ps.server.dto.GameDTO;
 import com.ps.server.dto.MoveResponseDTO;
-import com.ps.server.Logic.Game;
+import com.ps.server.logic.Game;
 import com.ps.server.dto.MoveUpdateDTO;
 import com.ps.server.dto.PieceDTO;
 import com.ps.server.entity.GameEntity;

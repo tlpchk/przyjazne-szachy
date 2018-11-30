@@ -1,6 +1,6 @@
 package com.ps.server.service;
 
-import com.ps.server.Logic.Color;
+import com.ps.server.logic.Color;
 import com.ps.server.entity.PlayerEntity;
 import com.ps.server.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;

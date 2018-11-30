@@ -1,4 +1,4 @@
-package com.ps.server.logic;
+package com.ps.server.Logic;
 
 import org.junit.Test;
 

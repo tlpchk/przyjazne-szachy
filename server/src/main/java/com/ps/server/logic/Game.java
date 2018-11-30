@@ -1,4 +1,4 @@
-package com.ps.server.Logic;
+package com.ps.server.logic;
 
 import com.ps.server.entity.PlayerEntity;
 import lombok.Getter;

@@ -1,15 +1,15 @@
-package com.ps.server.Logic;
+package com.ps.server.logic;
 
-import com.ps.server.Logic.Pieces.Piece;
-import com.ps.server.Logic.Pieces.Queen;
+import com.ps.server.logic.pieces.Piece;
+import com.ps.server.logic.pieces.Queen;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ps.server.Logic.Color.WHITE;
-import static com.ps.server.Logic.Pieces.Piece.PieceType.KING;
-import static com.ps.server.Logic.Pieces.Piece.PieceType.QUEEN;
-import static com.ps.server.Logic.Pieces.Piece.PieceType.ROOK;
+import static com.ps.server.logic.Color.WHITE;
+import static com.ps.server.logic.pieces.Piece.PieceType.KING;
+import static com.ps.server.logic.pieces.Piece.PieceType.QUEEN;
+import static com.ps.server.logic.pieces.Piece.PieceType.ROOK;
 
 public class Board {
     public final static int COL_NUM = 8;

@@ -1,6 +1,6 @@
 package com.ps.server.controller;
 
-import com.ps.server.Logic.Color;
+import com.ps.server.logic.Color;
 import com.ps.server.dto.PlayerDTO;
 import com.ps.server.entity.PlayerEntity;
 import com.ps.server.service.PlayerService;
