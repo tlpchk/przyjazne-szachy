@@ -19,13 +19,13 @@ public class BoardFactory {
         switch(s) {
             case "♖": return new Rook(BLACK, position);
             case "♘": return new Knight(BLACK, position);
-            case "♗": return new Pawn(BLACK, position);
+            case "♗": return new Bishop(BLACK, position);
             case "♕": return new Queen(BLACK, position);
             case "♔": return new King(BLACK, position);
             case "♙": return new Pawn(BLACK, position);
             case "♜": return new Rook(WHITE, position);
             case "♞": return new Knight(WHITE, position);
-            case "♝": return new Pawn(WHITE, position);
+            case "♝": return new Bishop(WHITE, position);
             case "♛": return new Queen(WHITE, position);
             case "♚": return new King(WHITE, position);
             case "♟": return new Pawn(WHITE, position);
@@ -57,15 +57,22 @@ public class BoardFactory {
             for(int j = 0; j < 8; j++) {
                 Piece piece = getPiece(pawns.get(i).get(j), i, j);
                 if(piece != null) {
-                    if (piece.color == WHITE) {
-                        whiteSet.add(piece);
+                    if(piece.type == Piece.PieceType.KING) {
+                        if (piece.color == WHITE) {
+                            whiteSet.add(0, piece);
+                        } else {
+                            blackSet.add(0, piece);
+                        }
                     } else {
-                        blackSet.add(piece);
+                        if (piece.color == WHITE) {
+                            whiteSet.add(piece);
+                        } else {
+                            blackSet.add(piece);
+                        }
                     }
                 }
             }
         }
-
         return new Board(new Set(WHITE, whiteSet), new Set(Color.BLACK, blackSet));
     }
 

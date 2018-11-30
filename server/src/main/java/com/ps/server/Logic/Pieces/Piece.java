@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public abstract class Piece {
     List<Move> legalMoves = new ArrayList<>();
     final public Color color;
-    final PieceType type;
+    public final PieceType type;
     Board board;
     Position position;
 
