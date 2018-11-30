@@ -8,24 +8,21 @@ import com.ps.server.Logic.Pieces.Piece;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MinMax implements MoveStrategy {
+public class AlphaBeta implements MoveStrategy {
     private final BoardEvaluator boardEvaluator;
     private int boardsEvaluated;
 
-    public MinMax() {
-        this.boardEvaluator = new StandardBoardEvaluator();
+    public AlphaBeta() {
+        boardEvaluator = new ExtendedBoardEvaluator();
         boardsEvaluated = 0;
-    }
-
-    @Override
-    public String toString() {
-        return "MinMax";
     }
 
     public int getBoardsEvaluated() {
         return boardsEvaluated;
     }
 
+    //TODO: Fix game update, think about board copies
+    @SuppressWarnings("Duplicates") //temporary
     @Override
     public Move execute(Board board, int depth, Color color) {
         final long startTime = System.currentTimeMillis();
@@ -48,11 +45,11 @@ public class MinMax implements MoveStrategy {
             Board chessBoard = board.copy();
             chessBoard.makeMove(move);
 
-            if(color == Color.WHITE) {
-                currentValue = min(chessBoard, depth - 1, otherColor);
+            if (color == Color.WHITE) {
+                currentValue = min(chessBoard, depth - 1, maxValue, minValue, otherColor);
             }
             else {
-                currentValue = max(chessBoard, depth - 1, otherColor);
+                currentValue = max(chessBoard, depth - 1, maxValue, minValue, otherColor);
             }
 
             if(color == Color.WHITE && currentValue >= maxValue) {
@@ -70,13 +67,13 @@ public class MinMax implements MoveStrategy {
         return bestMove;
     }
 
-    public int min(final Board board, final int depth, Color color) {
+    public int min(final Board board, final int depth, int highest, int lowest, Color color) {
         if(depth == 0 /*TODO checkmate*/) {
-            boardsEvaluated++;
+            this.boardsEvaluated++;
             return this.boardEvaluator.evaluate(board);
         }
 
-        int minValue = Integer.MAX_VALUE;
+        int currentLowest = lowest;
         Color otherColor;
 
         if(color == Color.WHITE)
@@ -85,24 +82,24 @@ public class MinMax implements MoveStrategy {
             otherColor = Color.WHITE;
 
         for(final Move move : getLegalMoves(board, color)) {
-            System.out.println("KURWAmin");
             board.makeMove(move);
-            final int currentValue = max(board, depth - 1, otherColor);
+            currentLowest = Math.min(currentLowest, max(board, depth - 1, highest, currentLowest, otherColor));
 
-            if(currentValue <= minValue)
-                minValue = currentValue;
+            if(currentLowest <= highest) {
+                return highest;
+            }
         }
 
-        return minValue;
+        return currentLowest;
     }
 
-    public int max(final Board board, final int depth, Color color) {
+    public int max(final Board board, final int depth, int highest, int lowest, Color color) {
         if(depth == 0 /*TODO checkmate*/) {
-            boardsEvaluated++;
+            this.boardsEvaluated++;
             return this.boardEvaluator.evaluate(board);
         }
 
-        int maxValue = Integer.MIN_VALUE;
+        int currentHighest = highest;
         Color otherColor;
 
         if(color == Color.WHITE)
@@ -110,18 +107,20 @@ public class MinMax implements MoveStrategy {
         else
             otherColor = Color.WHITE;
 
+        board.updateGame(color);
         for(final Move move : getLegalMoves(board, color)) {
-            System.out.println("KURWAmax");
             board.makeMove(move);
-            final int currentValue = min(board, depth - 1, otherColor);
+            currentHighest = Math.max(currentHighest, min(board, depth - 1, currentHighest, lowest, otherColor));
 
-            if(currentValue >= maxValue)
-                maxValue = currentValue;
+            if(currentHighest <= highest) {
+                return highest;
+            }
         }
 
-        return maxValue;
+        return currentHighest;
     }
 
+    @SuppressWarnings("Duplicates") //temporary
     public List<Move> getLegalMoves(final Board board, Color color) {
         Piece[][] chessBoard = board.getBoard();
         List<Move> legalMoves = new ArrayList<>();
