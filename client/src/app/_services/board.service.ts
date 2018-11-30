@@ -10,6 +10,7 @@ import {CreateMoveDTO} from "../_models/createMoveDTO";
 import {PieceDTO} from "../_models/pieceDTO";
 import {Color} from "../_models/color";
 import {Piece} from "../_models/piece";
+import {PositionDTO} from "../_models/positionDTO";
 
 const httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -28,6 +29,7 @@ export class BoardService {
     private moveSubUrl = '/move';
     private boardSubUrl = '/board';
     private updateSubUrl = '/update';
+    private possibleMovesSubUrl = '/possibleMoves';
 
     constructor(private http: HttpClient,
                 private messageService: MessageService,
@@ -73,8 +75,6 @@ export class BoardService {
         let destination = this.coordinatesService.frontendToBackend(cell[1].id);
         let createMoveDTO = new CreateMoveDTO(this.playerId,
             origin, destination);
-        console.log("MAKE MOVE: "+cell[0].id);
-        console.log("MAKE MOVE: "+createMoveDTO);
         return this.http.post<MoveResponseDTO>(url, createMoveDTO, httpOptions);
     }
 
@@ -99,6 +99,7 @@ export class BoardService {
     }
 
     /*TODO: Don't pipe logs*/
+
     /*makeMove(moveElement: Cell, moveElement2: Cell) {
         forkJoin(
             this.updateCell(moveElement),
@@ -113,5 +114,21 @@ export class BoardService {
     getLastUpdate(gameId: number): Observable<MoveUpdateDTO> {
         let url = this.gamesUrl + "/" + gameId + this.updateSubUrl;
         return this.http.get<MoveUpdateDTO>(url);
+    }
+
+    getPossibleMove(selectedCell: Cell, gameId: number) {
+        let url = this.gamesUrl + "/" + gameId + this.possibleMovesSubUrl;
+        let position = this.coordinatesService.frontendToBackend(selectedCell.id);
+        return this.http.post<PositionDTO[]>(url,position,httpOptions);
+    }
+
+    getPossibleMoveArray(possibleMoves: PositionDTO[]) {
+        let possibleMovesToReturn: number[] = [];
+        for (let i in possibleMoves) {
+            let possibleMove = possibleMoves[i];
+            let possibleMoveId = this.coordinatesService.backendToFrontend(possibleMove.row, possibleMove.column);
+            possibleMovesToReturn.push(possibleMoveId);
+        }
+        return possibleMovesToReturn;
     }
 }

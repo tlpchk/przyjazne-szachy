@@ -2,6 +2,7 @@ package com.ps.server.service;
 
 import com.ps.server.Logic.*;
 import com.ps.server.Logic.Pieces.Piece;
+import com.ps.server.Logic.Set;
 import com.ps.server.dto.GameDTO;
 import com.ps.server.dto.MoveResponseDTO;
 import com.ps.server.Logic.Game;
@@ -16,10 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Transactional
@@ -139,9 +137,8 @@ public class GameService {
                 board.makeMove(move);
                 listOfChanges = board.getListOfChanges(move);
                 changeTurn(gameId);
-                System.out.println(board);
             }
-            MoveResponseDTO moveDTO = new MoveResponseDTO(isMoveValid, listOfChanges);
+            MoveResponseDTO moveDTO = new MoveResponseDTO(isMoveValid, listOfChanges, "");
             Long newId = lastUpdate.get(gameId).getUpdateId() + 1;
             MoveUpdateDTO moveUpdateDTO = new MoveUpdateDTO(newId, moveDTO);
             lastUpdate.put(gameId, moveUpdateDTO);
@@ -218,5 +215,21 @@ public class GameService {
                     || (gameEntity.getGameStatus() == GameStatus.SECOND_PLAYER_TURN && gameEntity.getSecondPlayer().getId() == playerId);
         }
         return false;
+    }
+
+    public List<Position> possibleMoves(Long gameId, Position position) {
+        synchronized (gamesMap) {
+            Game game = gamesMap.get(gameId);
+            Board board = game.getBoard();
+            Piece[][] pieces = board.getBoard();
+            Piece piece = pieces[position.row][position.column];
+            List<Position> possibleMoves = new LinkedList<>();
+            if (piece != null) {
+                piece.legalMoves();
+                List<Move> legalMoves = piece.getLegalMoves();
+                possibleMoves = getPossibleMoves(legalMoves);
+            }
+            return possibleMoves;
+        }
     }
 }

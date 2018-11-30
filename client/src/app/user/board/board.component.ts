@@ -36,7 +36,9 @@ export class BoardComponent implements OnInit {
         if (this.move.length === 0) {
             if (this.selectedCell.piece !== null) {
                 this.move[0] = this.selectedCell;
-                //TODO RS: tu powinien być post żeby dostać possible moves
+                this.boardService.getPossibleMove(this.selectedCell, this.gameId).subscribe(possibleMoves => {
+                    this.selectedCell.possibleMoves = this.boardService.getPossibleMoveArray(possibleMoves);
+                });
             }
         } else {
             this.move[1] = this.selectedCell;
@@ -65,7 +67,7 @@ export class BoardComponent implements OnInit {
                         }
 
                     } else {
-                        console.log("Invalid move");
+                        console.log("Invalid move: " + moveResponse.message);
                     }
                 });
 
@@ -109,7 +111,7 @@ export class BoardComponent implements OnInit {
                     if (piece.type === null || piece.type === undefined) {
                         piece = null;
                     }
-                    // console.log(piece);
+
                     this.board[cellIndex].piece = piece;
                     this.board[cellIndex].possibleMoves = possibleMoves;
                 }

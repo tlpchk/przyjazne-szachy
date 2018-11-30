@@ -1,5 +1,6 @@
 package com.ps.server.controller;
 
+import com.ps.server.Logic.Position;
 import com.ps.server.dto.*;
 import com.ps.server.entity.GameEntity;
 import com.ps.server.entity.PlayerEntity;
@@ -54,7 +55,7 @@ public class GameController {
         if (gameService.isPlayerTurn(gameId, createMoveDTO.getPlayerId())) {
             moveResponse = gameService.makeMove(gameId, playerEntity, createMoveDTO.getOrigin(), createMoveDTO.getDestination());
         } else {
-            moveResponse = new MoveResponseDTO(false, null);
+            moveResponse = new MoveResponseDTO(false, null,"Not your turn");
         }
         return moveResponse;
     }
@@ -62,6 +63,11 @@ public class GameController {
     @RequestMapping(value = "/{gameId}/board", method = RequestMethod.GET)
     public List<PieceDTO> getBoard(@PathVariable Long gameId) {
         return gameService.getBoard(gameId);
+    }
+
+    @RequestMapping(value="/{gameId}/possibleMoves",method = RequestMethod.POST)
+    public List<Position> getPossibleMoves(@PathVariable Long gameId, @RequestBody Position position){
+        return gameService.possibleMoves(gameId,position);
     }
 
 

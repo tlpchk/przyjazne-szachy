@@ -1,6 +1,5 @@
 package com.ps.server.dto;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.ps.server.Logic.Color;
 import com.ps.server.Logic.Pieces.Piece;
 import com.ps.server.Logic.Position;
