@@ -11,6 +11,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static org.junit.Assert.assertEquals;
+
 public class BoardMoveTest {
 
     boolean test(String test) {
@@ -43,8 +45,10 @@ public class BoardMoveTest {
         File file = new File("src/test/java/com/ps/server/Logic/boardMovesTets");
         Scanner sc = new Scanner(file);
         sc.useDelimiter(";");
+        int testN = 1;
         while(sc.hasNext()) {
-            assert(test(sc.next()));
+            assertEquals("faild test no: " + testN, true, test(sc.next()));
+            testN++;
         }
     }
 
