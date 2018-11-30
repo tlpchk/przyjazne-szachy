@@ -7,7 +7,7 @@
 
     <h2>Dostępne gry</h2>
     <ul *ngIf="gameList">
-        <li *ngFor='let gameEntity of (gameList|async)'>{{gameEntity.id}}</li>
+        <li *ngFor="let game of gameList">{{game.id}} <button (click)="joinGame(game.id)" routerLink="/board">Dołącz</button></li>
     </ul>
     <p *ngIf="!gameList">Brak gier</p>
 </div>

@@ -24,13 +24,13 @@ public class Pawn extends Piece {
     private List<Move> normalLegalMoves() {
         List<Move> normalLegalMoves = new ArrayList<>();
         int newRow = (color == WHITE) ? position.row - 1 : position.row + 1;
-        if(board.ifEmpty(new Position(newRow, position.col))) {
+        if(board.ifEmpty(new Position(newRow, position.column))) {
             MoveType type = (newRow == 0 || newRow == 7) ? PROMOTION : NORMAL;
-            normalLegalMoves.add(new Move(this.type, color, position, new Position(newRow, position.col), type));
+            normalLegalMoves.add(new Move(this.type, color, position, new Position(newRow, position.column), type));
             if(isFirstMove) {
                 newRow = (color == WHITE) ? newRow -1 : newRow + 1;
-                if(board.ifEmpty(new Position(newRow, position.col))) {
-                    Move move = new Move(this.type, color, position, new Position(newRow, position.col), LONG_PAWN_MOVE);
+                if(board.ifEmpty(new Position(newRow, position.column))) {
+                    Move move = new Move(this.type, color, position, new Position(newRow, position.column), LONG_PAWN_MOVE);
                     normalLegalMoves.add(move);
                 }
             }
@@ -49,12 +49,12 @@ public class Pawn extends Piece {
     private List<Move> legalCaptures() {
         List<Move> legalCaptures = new ArrayList<>();
         int newRow = (color == WHITE) ? position.row - 1 : position.row + 1;
-        Move move = createLegalCapture(newRow, position.col + 1);
+        Move move = createLegalCapture(newRow, position.column + 1);
         if(move != null) {legalCaptures.add(move);}
-        move = createLegalCapture(newRow, position.col - 1);
+        move = createLegalCapture(newRow, position.column - 1);
         if(move != null) {legalCaptures.add(move);}
         if(enPassant != null) {
-            legalMoves.add(new Move(this.type, color, position, new Position( newRow, enPassant.col), EN_PASSANT));
+            legalMoves.add(new Move(this.type, color, position, new Position( newRow, enPassant.column), EN_PASSANT));
         }
         return legalCaptures;
     }
@@ -70,9 +70,9 @@ public class Pawn extends Piece {
     @Override
     public boolean checkIfCanCaptureKingOn(Position kingsPosition) {
         if(color == WHITE) {
-            return position.row - kingsPosition.row == -1 && Math.abs(position.col - kingsPosition.col) == 1;
+            return position.row - kingsPosition.row == -1 && Math.abs(position.column - kingsPosition.column) == 1;
         } else {
-            return position.row - kingsPosition.row == 1 && Math.abs(position.col - kingsPosition.col) == 1;
+            return position.row - kingsPosition.row == 1 && Math.abs(position.column - kingsPosition.column) == 1;
         }
     }
 

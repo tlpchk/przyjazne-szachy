@@ -4,7 +4,6 @@ import com.ps.server.Logic.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static com.ps.server.Logic.Color.WHITE;
 import static com.ps.server.Logic.Move.MoveType.*;
@@ -39,7 +38,7 @@ public class King extends StraightMovingPieces {
         List<Move> legalMoves = new ArrayList<>();
         for(int i = -1; i <= 1; i++) {
             for(int j = -1; j <= 1; j++) {
-                Position destination = new Position(position.row + i, position.col + j);
+                Position destination = new Position(position.row + i, position.column + j);
                 if(board.ifEmpty(destination) || board.ifOccupiedByOpponent(destination, color)) {
                     legalMoves.add(new Move(this.type, color, this.position, destination, NORMAL));
                 }

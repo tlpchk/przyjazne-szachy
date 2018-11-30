@@ -31,7 +31,7 @@ public class Bishop extends StraightMovingPieces {
 
     @Override
     public boolean checkIfCanCaptureKingOn(Position kingsPosition) {
-        int distX = Math.abs(position.col - kingsPosition.col);
+        int distX = Math.abs(position.column - kingsPosition.column);
         int distY = Math.abs(position.row - kingsPosition.row);
         return (distX > 0 && distX == distY) && !checkIfSomethingBetween(kingsPosition);
     }

@@ -22,4 +22,11 @@ public class MoveResponseDTO {
     public boolean wasMoveValid;
 
     public List<Change> listOfChanges;
+
+    @Override
+    public String toString() {
+        return "MoveResponseDTO{" +
+                "listOfChanges=" + listOfChanges +
+                '}';
+    }
 }

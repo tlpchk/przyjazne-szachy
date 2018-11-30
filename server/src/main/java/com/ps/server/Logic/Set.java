@@ -33,7 +33,7 @@ public class Set {
         if(set == null) return;
         set.forEach(piece -> {
             Position position = piece.getPosition();
-            board[position.row][position.col] = piece;
+            board[position.row][position.column] = piece;
         });
     }
 

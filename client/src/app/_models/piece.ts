@@ -10,6 +10,7 @@ export enum PieceType {
 }
 
 export class Piece {
-    type: PieceType;
-    color: Color;
+    constructor(public type: PieceType,
+                public color: Color) {
+    }
 }

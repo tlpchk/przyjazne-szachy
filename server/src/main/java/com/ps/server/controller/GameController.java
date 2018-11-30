@@ -1,10 +1,7 @@
 package com.ps.server.controller;
 
-import com.ps.server.dto.CreateMoveDTO;
-import com.ps.server.dto.MoveResponseDTO;
+import com.ps.server.dto.*;
 import com.ps.server.entity.GameEntity;
-import com.ps.server.dto.GameDTO;
-import com.ps.server.dto.PlayerDTO;
 import com.ps.server.entity.PlayerEntity;
 import com.ps.server.service.GameService;
 import com.ps.server.service.PlayerService;
@@ -26,14 +23,15 @@ public class GameController {
 
     @RequestMapping(method = RequestMethod.POST)
     public GameDTO createGame(@RequestBody PlayerDTO playerDTO) {
+        //TODO RS: add null checking
         PlayerEntity playerEntity = playerService.getPlayer(playerDTO.getId());
         //TODO RS: parametrizite it somehow
         GameEntity gameEntity = gameService.createNewGame(playerEntity, null);
         return new GameDTO(gameEntity.getId());
     }
 
-    @RequestMapping(method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<GameEntity> getGamesToJoin() {
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<GameDTO> getGamesToJoin() {
         return gameService.getGamesToJoin();
     }
 
@@ -52,8 +50,27 @@ public class GameController {
     @RequestMapping(value = "/{gameId}/move", method = RequestMethod.POST)
     public MoveResponseDTO createMove(@PathVariable Long gameId, @RequestBody CreateMoveDTO createMoveDTO) {
         PlayerEntity playerEntity = playerService.getPlayer(createMoveDTO.getPlayerId());
-        return gameService.makeMove(gameId, playerEntity, createMoveDTO.getOrigin(), createMoveDTO.getDestination());
+        MoveResponseDTO moveResponse;
+        if (gameService.isPlayerTurn(gameId, createMoveDTO.getPlayerId())) {
+            moveResponse = gameService.makeMove(gameId, playerEntity, createMoveDTO.getOrigin(), createMoveDTO.getDestination());
+        } else {
+            moveResponse = new MoveResponseDTO(false, null);
+        }
+        return moveResponse;
     }
+
+    @RequestMapping(value = "/{gameId}/board", method = RequestMethod.GET)
+    public List<PieceDTO> getBoard(@PathVariable Long gameId) {
+        return gameService.getBoard(gameId);
+    }
+
+
+    @RequestMapping(value = "/{gameId}/update", method = RequestMethod.GET)
+    public MoveUpdateDTO getLastUpdate(@PathVariable Long gameId) {
+        return gameService.getLastUpdate(gameId);
+    }
+
+    //TODO RS: zapytanie na "/{gameId}" zwraca info o grze, m.in czyja tura
 
 
 }

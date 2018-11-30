@@ -35,7 +35,7 @@ public class Rook extends StraightMovingPieces {
 
     @Override
     public boolean checkIfCanCaptureKingOn(Position kingsPosition) {
-        int distX = Math.abs(position.col - kingsPosition.col);
+        int distX = Math.abs(position.column - kingsPosition.column);
         int distY = Math.abs(position.row - kingsPosition.row);
         return ((distX > 0 && distY == 0) || (distX == 0 && distY > 0)) && !checkIfSomethingBetween(kingsPosition);
     }

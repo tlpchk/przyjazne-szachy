@@ -25,9 +25,9 @@ public class Board {
     }
 
     public ChessSquareState getChessSquareState(Position position) {
-        if(position.row < 0 || position.col < 0 || position.col > 7 || position.row > 7)
+        if(position.row < 0 || position.column < 0 || position.column > 7 || position.row > 7)
             return null;
-        return new ChessSquareState(board[position.row][position.col]);
+        return new ChessSquareState(board[position.row][position.column]);
     }
 
     public boolean ifEmpty(Position position) {
@@ -41,19 +41,19 @@ public class Board {
     }
 
     private Piece removePiece(Position loc) {
-        Piece p = board[loc.row][loc.col];
-        board[loc.row][loc.col] = null;
+        Piece p = board[loc.row][loc.column];
+        board[loc.row][loc.column] = null;
         return p;
     }
 
     private void addPiece(Piece piece, Position loc) {
-        board[loc.row][loc.col] = piece;
+        board[loc.row][loc.column] = piece;
         piece.move(loc);
     }
 
     private void giveEnPassantsRights(Position destination, Position loc, Color color) {
         for(int i = -1; i <= 2; i += 2) {
-            int column = destination.col + i;
+            int column = destination.column + i;
             if(column < 0 || column > 7) continue;
             Piece piece = board[destination.row][column];
             if(piece != null && piece.color != color) {
@@ -62,7 +62,7 @@ public class Board {
         }
     }
 
-    void makeMove(Move move) {
+    public void makeMove(Move move) {
         Position loc = move.loc;
         Position dest = move.dest;
         switch (move.type) {
@@ -71,7 +71,7 @@ public class Board {
                 addPiece(new Queen(move.pieceColor, dest), dest);
                 break;
             case EN_PASSANT:
-                removePiece(new Position(loc.row, dest.col));
+                removePiece(new Position(loc.row, dest.column));
             case LONG_PAWN_MOVE:
                 giveEnPassantsRights(dest, loc, move.pieceColor);
             case NORMAL:
@@ -80,15 +80,15 @@ public class Board {
             case LONG_CASTLE: {
                 Piece rook = removePiece(dest);
                 Piece king = removePiece(loc);
-                addPiece(king, new Position(loc.row, loc.col - 2));
-                addPiece(rook, new Position(dest.row, dest.col + 3));
+                addPiece(king, new Position(loc.row, loc.column - 2));
+                addPiece(rook, new Position(dest.row, dest.column + 3));
                 break;
             }
             case SHORT_CASTLE: {
                 Piece rook = removePiece(dest);
                 Piece king = removePiece(loc);
-                addPiece(king, new Position(loc.row, loc.col + 2));
-                addPiece(rook, new Position(dest.row, dest.col - 2));
+                addPiece(king, new Position(loc.row, loc.column + 2));
+                addPiece(rook, new Position(dest.row, dest.column - 2));
                 break;
             }
         }
@@ -105,7 +105,7 @@ public class Board {
                 changes.add(new Change(dest, QUEEN, color));
                 break;
             case EN_PASSANT:
-                changes.add(new Change(new Position(loc.row, dest.col), null, null));
+                changes.add(new Change(new Position(loc.row, dest.column), null, null));
             case LONG_PAWN_MOVE:
             case NORMAL:
                 changes.add(new Change(loc, null, null));
@@ -114,14 +114,14 @@ public class Board {
             case LONG_CASTLE:
                 changes.add(new Change(loc, null, null));
                 changes.add(new Change(dest, null, null));
-                changes.add(new Change(new Position(loc.row, loc.col - 2), KING, color));
-                changes.add(new Change(new Position(dest.row, dest.col + 3), ROOK, color));
+                changes.add(new Change(new Position(loc.row, loc.column - 2), KING, color));
+                changes.add(new Change(new Position(dest.row, dest.column + 3), ROOK, color));
                 break;
             case SHORT_CASTLE:
                 changes.add(new Change(loc, null, null));
                 changes.add(new Change(dest, null, null));
-                changes.add(new Change(new Position(loc.row, loc.col + 2), KING, color));
-                changes.add(new Change(new Position(dest.row, dest.col - 2), ROOK, color));
+                changes.add(new Change(new Position(loc.row, loc.column + 2), KING, color));
+                changes.add(new Change(new Position(dest.row, dest.column - 2), ROOK, color));
                 break;
         }
         return changes;
@@ -139,7 +139,7 @@ public class Board {
     }
 
     public Move validatePlayersMove(Position loc, Position dest, Color color) {
-        Piece piece = board[loc.row][loc.col];
+        Piece piece = board[loc.row][loc.column];
         if(piece == null || piece.color != color) { return null; }
         return piece.getMoveTo(dest);
     }
@@ -172,6 +172,10 @@ public class Board {
 
     Board copy() {
         return new Board(whiteSet.copy(), blackSet.copy());
+    }
+
+    public Piece[][] getBoard() {
+        return board;
     }
 
     /**

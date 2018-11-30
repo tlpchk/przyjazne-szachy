@@ -1,5 +1,6 @@
 package com.ps.server.Logic.Pieces;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.ps.server.Logic.Board;
 import com.ps.server.Logic.Color;
 import com.ps.server.Logic.Move;
@@ -37,7 +38,18 @@ public abstract class Piece {
     abstract public boolean checkIfCanCaptureKingOn(Position kingsPosition);
 
     public enum PieceType {
-        KING, QUEEN, PAWN, ROOK, KNIGHT, BISHOP
+        KING("king"), QUEEN("queen"), PAWN("pawn"), ROOK("rook"), KNIGHT("knight"), BISHOP("bishop");
+
+        private String pieceTypeString;
+
+        PieceType(String pieceTypeString) {
+            this.pieceTypeString = pieceTypeString;
+        }
+
+        @JsonValue
+        public String getPieceTypeString() {
+            return pieceTypeString;
+        }
     }
 
     public abstract Piece copy();
@@ -65,6 +77,18 @@ public abstract class Piece {
     public void giveEnPassantRights(Position position) {}
 
     public List<Move> getListOfMoves() {
+        return legalMoves;
+    }
+
+    public PieceType getType() {
+        return type;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public List<Move> getLegalMoves() {
         return legalMoves;
     }
 }

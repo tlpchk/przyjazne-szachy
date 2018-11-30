@@ -10,11 +10,11 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Position {
-    public int row ,col;
+    public int row , column;
 
-//    public Position(int row, int col) {
+//    public Position(int row, int column) {
 //        this.row = row;
-//        this.col = col;
+//        this.column = column;
 //    }
 
     /**
@@ -23,7 +23,7 @@ public class Position {
      * @return if this change equals to position given as parameter
      */
     public boolean equalsToPos(Position position) {
-        return position.row == row && position.col == col;
+        return position.row == row && position.column == column;
     }
 
     /**
@@ -31,6 +31,6 @@ public class Position {
      */
     @Override
     public String toString() {
-        return "[ " + row + " , " + col + " ]";
+        return "[ " + row + " , " + column + " ]";
     }
 }

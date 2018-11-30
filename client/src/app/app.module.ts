@@ -7,7 +7,7 @@ import {FormsModule} from "@angular/forms";
 import {UserModule} from "./user/user.module";
 import {HttpClientModule} from "@angular/common/http";
 import {InMemoryDataService} from "./_services/in-memory-data.service";
-// import {HttpClientInMemoryWebApiModule} from 'angular-in-memory-web-api';
+import {HttpClientInMemoryWebApiModule} from 'angular-in-memory-web-api';
 import {LoginModule} from "./login/login.module";
 import { LoginComponent } from './login/login.component';
 

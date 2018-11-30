@@ -1,6 +1,5 @@
 package com.ps.server.Logic.Pieces;
 
-import com.ps.server.Logic.ChessSquareState;
 import com.ps.server.Logic.Color;
 import com.ps.server.Logic.Move;
 import com.ps.server.Logic.Position;
@@ -38,9 +37,9 @@ public class Knight extends Piece {
 
         for(int i = 0; i < 2; i ++) {
             for(int j = 0; j < 2; j ++) {
-               Move move = createMove(position.row + distOne[i], position.col + distTwo[j]);
+               Move move = createMove(position.row + distOne[i], position.column + distTwo[j]);
                if(move != null) { legalMoves.add(move);}
-               move = createMove(position.row + distTwo[i], position.col + distOne[j]);
+               move = createMove(position.row + distTwo[i], position.column + distOne[j]);
                if(move != null) { legalMoves.add(move);}
             }
         }
@@ -50,7 +49,7 @@ public class Knight extends Piece {
 
     @Override
     public boolean checkIfCanCaptureKingOn(Position kingsPosition) {
-        int distX = Math.abs(position.col - kingsPosition.col);
+        int distX = Math.abs(position.column - kingsPosition.column);
         int distY = Math.abs(position.row - kingsPosition.row);
         return (distY == 1 && distX == 2) || (distY == 2 && distX == 1);
     }

@@ -8,7 +8,6 @@ const httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
 
-const firstPlayerColor = "WHITE";
 
 @Injectable({
     providedIn: 'root'
@@ -18,6 +17,7 @@ export class StartService {
 
     private gamesUrl = 'http://localhost:8080/games';
     private playersUrl = 'http://localhost:8080/players';
+    private joinSubUrl = "/join";
 
     constructor(private http: HttpClient) {
     }
@@ -31,7 +31,12 @@ export class StartService {
         return this.http.post<GameDTO>(this.gamesUrl, player, httpOptions);
     }
 
-    createNewPlayer(): Observable<PlayerDTO> {
-        return this.http.post<PlayerDTO>(this.playersUrl, firstPlayerColor, httpOptions);
+    createNewPlayer(playerColor: String): Observable<PlayerDTO> {
+        return this.http.post<PlayerDTO>(this.playersUrl, playerColor, httpOptions);
+    }
+
+    joinGame(gameId: number, player: PlayerDTO): Observable<boolean> {
+        let url = this.gamesUrl + "/" + gameId + this.joinSubUrl;
+        return this.http.post<boolean>(url, player, httpOptions);
     }
 }
