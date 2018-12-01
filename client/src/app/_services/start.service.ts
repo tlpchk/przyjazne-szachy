@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
-import {GameDTO} from "../_models/gameDTO";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {PlayerDTO} from "../_models/playerDTO";
+import {CreateGameDTO} from "../_models/createGameDTO";
 
 const httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -23,20 +22,21 @@ export class StartService {
     }
 
 
-    getGameList(): Observable<GameDTO[]> {
-        return this.http.get<GameDTO[]>(this.gamesUrl);
+    getGameList(): Observable<number[]> {
+        return this.http.get<number[]>(this.gamesUrl);
     }
 
-    createNewGame(player: PlayerDTO): Observable<GameDTO> {
-        return this.http.post<GameDTO>(this.gamesUrl, player, httpOptions);
+    createNewGame(playerId: number): Observable<number> {
+        let createGameDTO = new CreateGameDTO(playerId, null);
+        return this.http.post<number>(this.gamesUrl, createGameDTO, httpOptions);
     }
 
-    createNewPlayer(playerColor: String): Observable<PlayerDTO> {
-        return this.http.post<PlayerDTO>(this.playersUrl, playerColor, httpOptions);
+    createNewPlayer(playerColor: String): Observable<number> {
+        return this.http.post<number>(this.playersUrl, playerColor, httpOptions);
     }
 
-    joinGame(gameId: number, player: PlayerDTO): Observable<boolean> {
+    joinGame(gameId: number, playerId: number): Observable<boolean> {
         let url = this.gamesUrl + "/" + gameId + this.joinSubUrl;
-        return this.http.post<boolean>(url, player, httpOptions);
+        return this.http.post<boolean>(url, playerId, httpOptions);
     }
 }

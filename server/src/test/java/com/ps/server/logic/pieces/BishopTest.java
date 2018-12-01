@@ -1,9 +1,9 @@
-package com.ps.server.Logic.Pieces;
+package com.ps.server.logic.pieces;
 
-import com.ps.server.Logic.*;
+import com.ps.server.logic.*;
 import org.junit.Test;
 
-import static com.ps.server.Logic.Color.WHITE;
+import static com.ps.server.logic.Color.WHITE;
 
 public class BishopTest {
     Bishop bishop = new Bishop(WHITE, new Position(2,2));

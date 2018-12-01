@@ -67,7 +67,7 @@ export class BoardComponent implements OnInit {
                         }
 
                     } else {
-                        console.log("Invalid move: " + moveResponse.message);
+                        console.log("Invalid move");
                     }
                 });
 

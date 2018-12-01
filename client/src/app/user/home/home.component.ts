@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {StartService} from "../../_services/start.service";
-import {GameDTO} from "../../_models/gameDTO";
 import {BoardService} from "../../_services/board.service";
 
 const firstPlayerColor = "WHITE";
@@ -13,8 +12,8 @@ const secondPlayerColor = "BLACK";
 })
 export class HomeComponent implements OnInit {
 
-    gameList: GameDTO[];
-    gameId: number;
+    gameList: number[];
+    //gameId: number;
 
 
     constructor(private startService: StartService,
@@ -34,20 +33,20 @@ export class HomeComponent implements OnInit {
 
     //TODO RS: creating player creation should be another option
     createNewGame() {
-        this.startService.createNewPlayer(firstPlayerColor).subscribe(player => {
-            this.startService.createNewGame(player).subscribe(game => {
-                this.boardService.playerId = player.id;
-                this.boardService.gameId.next(game.id);
+        this.startService.createNewPlayer(firstPlayerColor).subscribe(playerId => {
+            this.startService.createNewGame(playerId).subscribe(gameId => {
+                this.boardService.playerId = playerId;
+                this.boardService.gameId.next(gameId);
             });
         });
     }
 
     //TODO RS: creating player creation should be another option
     joinGame(gameId: number) {
-        this.startService.createNewPlayer(secondPlayerColor).subscribe(player => {
-            this.startService.joinGame(gameId, player).subscribe(wasSuccesfull => {
-                if (wasSuccesfull) {
-                    this.boardService.playerId = player.id;
+        this.startService.createNewPlayer(secondPlayerColor).subscribe(playerId => {
+            this.startService.joinGame(gameId, playerId).subscribe(wasSuccessful => {
+                if (wasSuccessful) {
+                    this.boardService.playerId = playerId;
                     this.boardService.gameId.next(gameId);
                 } else {
                     console.log("Cannot join to game");

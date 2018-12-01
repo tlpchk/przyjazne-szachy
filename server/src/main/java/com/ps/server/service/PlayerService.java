@@ -1,5 +1,6 @@
 package com.ps.server.service;
 
+import com.ps.server.enums.PlayerType;
 import com.ps.server.exception.InvalidRequiredArgumentException;
 import com.ps.server.logic.Color;
 import com.ps.server.entity.PlayerEntity;
@@ -22,6 +23,7 @@ public class PlayerService {
     public PlayerEntity createNewPlayer(Color color) {
         PlayerEntity newPlayer = new PlayerEntity();
         newPlayer.setColor(color);
+        newPlayer.setPlayerType(PlayerType.HUMAN);
         playerRepository.save(newPlayer);
         return newPlayer;
     }

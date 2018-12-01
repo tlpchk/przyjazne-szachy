@@ -1,9 +1,9 @@
-package com.ps.server.Logic;
+package com.ps.server.logic;
 
 import org.junit.Test;
 
-import static com.ps.server.Logic.Color.BLACK;
-import static com.ps.server.Logic.Color.WHITE;
+import static com.ps.server.logic.Color.BLACK;
+import static com.ps.server.logic.Color.WHITE;
 import static org.junit.Assert.assertTrue;
 
 public class SpanishGame {
