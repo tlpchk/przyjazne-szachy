@@ -1,9 +1,9 @@
-package com.ps.server.Logic.Pieces;
+package com.ps.server.logic.pieces;
 
-import com.ps.server.Logic.*;
+import com.ps.server.logic.*;
 import org.junit.Test;
 
-import static com.ps.server.Logic.Color.WHITE;
+import static com.ps.server.logic.Color.WHITE;
 
 public class KnightTest {
     Knight knight = new Knight(WHITE, new Position(0,1));

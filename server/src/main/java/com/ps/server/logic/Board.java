@@ -50,7 +50,7 @@ public class Board {
         if(p != null) {
             p.move(null);
         }
-        board[loc.row][loc.col] = null;
+        board[loc.row][loc.column] = null;
         return p;
     }
 
