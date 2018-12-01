@@ -1,9 +1,0 @@
-<div class = "board">
-    <div *ngFor="let cell of board"
-         class = "cell {{cell.cell_color}}"
-         [class.selected]="cell === selectedCell"
-         (click)="onSelect(cell)">
-        <img *ngIf="cell.piece" src = '/assets/png/{{cell.piece.color}}_{{cell.piece.type}}.png'>
-        <p *ngIf="cell.piece === null">&nbsp;</p>
-    </div>
-</div>

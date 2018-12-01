@@ -1,24 +1,13 @@
 *{
   box-sizing: border-box;
-}
-.board {
-  height: 600px;
-  width: 600px;
+  margin: 0;
+  padding: 0;
 }
 
-.cell {
-  box-sizing: border-box;
-  font-size: 15px;
-  text-align: center;
-  position: relative;
-  display: inline-block;
-  height: 12.5%;
-  width: 12.5%;
-  margin: 0 !important;
+body {
+  background-color: #f2f2f2;
+  height: 100%;
 }
-
-.cell:empty{margin-bottom: 0}
-
 
 .white{
   background-color: rgba(255,255,255,1);
@@ -26,9 +15,4 @@
 
 .black{
   background-color: rgba(0,0,0,0.5);
-}
-
-.selected {
-  background-color: #ffff33 !important;
-  color: white;
 }

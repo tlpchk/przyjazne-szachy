@@ -1,13 +1,9 @@
 package com.ps.server.repository;
 
-import com.ps.server.domain.Game;
-import com.ps.server.enums.GameStatus;
+import com.ps.server.entity.GameEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
-public interface GameRepository extends CrudRepository<Game,Long> {
-    List<Game> findByGameStatus(GameStatus gameStatus);
+public interface GameRepository extends CrudRepository<GameEntity,Long> {
 }

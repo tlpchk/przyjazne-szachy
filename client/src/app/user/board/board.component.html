@@ -1,0 +1,11 @@
+<div *ngIf="board" id="board">
+    <div *ngFor="let cell of board"
+         class="cell {{cell.cell_color}}"
+         [class.selected]="cell === selectedCell"
+         [class.possible]="selectedCell !== null
+                        && selectedCell.possibleMoves.includes(cell.id)"
+         (click)="onSelect(cell)">
+        <img *ngIf="cell.piece !==null && cell.piece !==undefined" src="/assets/png/{{cell.piece.color}}_{{cell.piece.type}}.png"/>
+        <img *ngIf="cell.piece === null" src="/assets/png/none.png"/>
+    </div>
+</div>
