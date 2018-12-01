@@ -1,4 +1,4 @@
-package com.ps.server.enums;
+package com.ps.server.logic.game;
 
 public enum GameStatus {
     WAITING_FOR_SECOND_PLAYER,

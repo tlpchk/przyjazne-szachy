@@ -20,7 +20,6 @@ public class MoveResponseDTO {
 
     public List<Change> listOfChanges;
 
-    public String message;
 
     @Override
     public String toString() {

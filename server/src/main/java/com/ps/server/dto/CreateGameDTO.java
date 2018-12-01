@@ -9,6 +9,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PlayerDTO {
-    private Long id;
+public class CreateGameDTO {
+
+    private Long firstPlayerId;
+
+    private Long secondPlayerId;
 }

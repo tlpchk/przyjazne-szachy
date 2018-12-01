@@ -1,13 +1,13 @@
-package com.ps.server.Logic.Pieces;
+package com.ps.server.logic.pieces;
 
-import com.ps.server.Logic.*;
+import com.ps.server.logic.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ps.server.Logic.Color.WHITE;
-import static com.ps.server.Logic.Move.MoveType.*;
-import static com.ps.server.Logic.Pieces.Piece.PieceType.KING;
+import static com.ps.server.logic.Color.WHITE;
+import static com.ps.server.logic.Move.MoveType.*;
+import static com.ps.server.logic.pieces.Piece.PieceType.KING;
 
 public class King extends StraightMovingPieces {
     private boolean castleRights;

@@ -1,23 +1,23 @@
 package com.ps.server.service;
 
-import com.ps.server.logic.*;
-import com.ps.server.logic.pieces.Piece;
-import com.ps.server.logic.Set;
-import com.ps.server.dto.GameDTO;
 import com.ps.server.dto.MoveResponseDTO;
-import com.ps.server.logic.Game;
 import com.ps.server.dto.MoveUpdateDTO;
 import com.ps.server.dto.PieceDTO;
 import com.ps.server.entity.GameEntity;
 import com.ps.server.entity.PlayerEntity;
-import com.ps.server.enums.GameStatus;
 import com.ps.server.enums.GameType;
+import com.ps.server.exception.*;
+import com.ps.server.logic.*;
+import com.ps.server.logic.game.Game;
+import com.ps.server.logic.game.GameCreator;
+import com.ps.server.logic.player.Player;
 import com.ps.server.repository.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -26,210 +26,189 @@ public class GameService {
     @Autowired
     private GameRepository gameRepository;
 
+    @Autowired
+    private PlayerService playerservice;
+
+    private GameCreator gameCreator = new GameCreator();
+
     private HashMap<Long, Game> gamesMap = new HashMap<>();
 
     private HashMap<Long, MoveUpdateDTO> lastUpdate = new HashMap<>();
 
+
     /**
-     * Creates new game with {@param firstPlayer} as host.
+     * Creates new Game instance and saves it in database.
      *
-     * @param firstPlayer Player who is the host
-     * @param botPlayer   Bot Player in game. If set to null it means it's two human players game.
-     * @return Newly created GameEntity
+     * @param firstPlayerEntity  FirstPlayerEntity describes first player in game.
+     * @param secondPlayerEntity SecondPlayerEntity describes second player in game.
+     * @return Id of newly created game.
+     * @throws InvalidRequiredArgumentException when players do not have playerType set
+     * @throws SamePlayerException              when firstPlayer is the same as secondPlayer (which means they have the same color)
      */
-    public GameEntity createNewGame(PlayerEntity firstPlayer, PlayerEntity botPlayer) {
+    public Long createNewGame(PlayerEntity firstPlayerEntity, PlayerEntity secondPlayerEntity) throws InvalidRequiredArgumentException, SamePlayerException {
         synchronized (gamesMap) {
-            GameEntity gameEntity = new GameEntity();
-            gameEntity.setFirstPlayer(firstPlayer);
-            if (botPlayer != null) {
-                gameEntity.setSecondPlayer(botPlayer);
-                gameEntity.setGameType(GameType.BOT_GAME);
-                gameEntity.setGameStatus(GameStatus.FIRST_PLAYER_TURN);
-            } else {
-                gameEntity.setGameType(GameType.COMPETITION_GAME);
-                gameEntity.setGameStatus(GameStatus.WAITING_FOR_SECOND_PLAYER);
-            }
-            gameRepository.save(gameEntity);
-            createGame(firstPlayer, botPlayer, gameEntity);
-            return gameEntity;
+            Game game = createGame(firstPlayerEntity, secondPlayerEntity);
+            GameEntity gameEntity = createGameEntity(firstPlayerEntity, secondPlayerEntity);
+            Long gameId = gameEntity.getId();
+            updateGamesAfterCreation(game, gameId);
+            return gameId;
         }
     }
 
-    private void createGame(PlayerEntity firstPlayer, PlayerEntity secondPlayer, GameEntity gameEntity) {
-        Game newGame = new Game(firstPlayer, secondPlayer);
-        Set whitePieceSet = new SetFactory.WhiteSetFactory().createSet();
-        Set blackPieceSet = new SetFactory.BlackSetFactory().createSet();
-        Board board = new Board(whitePieceSet, blackPieceSet);
-        newGame.setBoard(board);
-        lastUpdate.put(gameEntity.getId(), new MoveUpdateDTO());
-        gamesMap.put(gameEntity.getId(), newGame);
+    private Game createGame(PlayerEntity firstPlayerEntity, PlayerEntity secondPlayerEntity) throws InvalidRequiredArgumentException, SamePlayerException {
+        Player firstPlayer = playerservice.createPlayerFromEntity(firstPlayerEntity);
+        Player secondPlayer = null;
+        if (secondPlayerEntity != null) {
+            secondPlayer = playerservice.createPlayerFromEntity(secondPlayerEntity);
+        }
+        return gameCreator.createGame(firstPlayer, secondPlayer);
+
     }
 
+    private GameEntity createGameEntity(PlayerEntity firstPlayer, PlayerEntity secondPlayer) {
+        GameEntity gameEntity = new GameEntity();
+        gameEntity.setFirstPlayer(firstPlayer);
+        if (secondPlayer != null) {
+            gameEntity.setSecondPlayer(secondPlayer);
+            gameEntity.setGameType(GameType.BOT_GAME);
+        } else {
+            gameEntity.setGameType(GameType.COMPETITION_GAME);
+        }
+        gameRepository.save(gameEntity);
+        return gameEntity;
+    }
+
+    private void updateGamesAfterCreation(Game game, Long gameId) {
+        gamesMap.put(gameId, game);
+        lastUpdate.put(gameId, new MoveUpdateDTO());
+    }
+
+
     /**
-     * Returns list of games to join(games in status WAITING_FOR_SECOND_PLAYER)
+     * Returns list of ids of games to join(games where secondPlayer is null)
      *
      * @return list of games to join
      */
-    public List<GameDTO> getGamesToJoin() {
+    public List<Long> getGamesToJoin() {
         synchronized (gamesMap) {
-            List<GameEntity> listOfGames = gameRepository.findByGameStatus(GameStatus.WAITING_FOR_SECOND_PLAYER);
-            List<GameDTO> listOfDTOS = new ArrayList<>();
-            if (listOfGames.isEmpty()) {
-                listOfDTOS = null;
+            Map<Long, Game> mapOfGamesToJoin = gamesMap.entrySet().stream().filter(x -> x.getValue().getSecondPlayer() == null).collect(Collectors.toMap(x -> x.getKey(), x -> x.getValue()));
+            if (mapOfGamesToJoin.isEmpty()) {
+                return Collections.emptyList();
             } else {
-                for (GameEntity gameEntity : listOfGames) {
-                    GameDTO gameDTO = new GameDTO(gameEntity.getId());
-                    listOfDTOS.add(gameDTO);
-                }
+                return new LinkedList<>(mapOfGamesToJoin.keySet());
             }
-            return listOfDTOS;
         }
     }
 
     /**
      * Joins {@param secondPlayer} to the game with {@param gameId}
      *
-     * @param gameId       Id of the game to join
-     * @param secondPlayer Player to join the game
-     * @return true if game with {@param gameId} exists, false otherwise
+     * @param gameId             Id of the game to join
+     * @param secondPlayerEntity SecondPlayerEntity describes Player who wants to join the game
+     * @throws InvalidRequiredArgumentException when player does not have playerType set
+     * @throws CannotJoinPlayerException        when game has already started (there are two players in game)
+     * @throws GameNotExistException            when game with given game id does not exist
      */
-    public boolean joinGame(Long gameId, PlayerEntity secondPlayer) {
+    public void joinGame(Long gameId, PlayerEntity secondPlayerEntity) throws InvalidRequiredArgumentException, CannotJoinPlayerException, GameNotExistException {
         synchronized (gamesMap) {
-            GameEntity gameEntity = getGameEntity(gameId);
-            boolean isGameValid = (gameEntity != null);
-            if (isGameValid) {
-                gameEntity.setSecondPlayer(secondPlayer);
-                gameEntity.setGameStatus(GameStatus.FIRST_PLAYER_TURN);
-                gameRepository.save(gameEntity);
-                Game gameToJoin = gamesMap.get(gameId);
-                gameToJoin.setSecondPlayer(secondPlayer);
-            }
-            return isGameValid;
+            Player secondPlayer = playerservice.createPlayerFromEntity(secondPlayerEntity);
+            Game game = getGameFromGames(gameId);
+            game.joinPlayer(secondPlayer);
+            joinPlayerToGameEntity(gameId, secondPlayerEntity);
         }
+    }
+
+    private Game getGameFromGames(Long gameId) throws GameNotExistException {
+        Game game = gamesMap.get(gameId);
+        if (game != null) {
+            return game;
+        } else {
+            throw new GameNotExistException();
+        }
+    }
+
+    private void joinPlayerToGameEntity(Long gameId, PlayerEntity secondPlayerEntity) {
+        GameEntity gameEntity = getGameEntity(gameId);
+        gameEntity.setSecondPlayer(secondPlayerEntity);
     }
 
     /**
      * Returns game with given {@param gameId}
      *
-     * @param gameId id of the game
+     * @param gameId Id of the game
      * @return game with given {@param gameId}, null if sucha a game does not exist
      */
     public GameEntity getGameEntity(Long gameId) {
         return gameRepository.findById(gameId).orElse(null);
     }
 
+
     /**
-     * @param gameId
-     * @param playerEntity
-     * @param origin
-     * @param destination
+     * Makes given move on board.
+     *
+     * @param gameId       Id of the game in which move has to be made.
+     * @param playerEntity PlayerEntity describes player who wants to make move.
+     * @param origin       Origin of the move.
+     * @param destination  Destination of the move.
      * @return
+     * @throws InvalidRequiredArgumentException when player does not have playerType set
+     * @throws NotPlayerTurnException           when {@param playerEntity} wants to make move when it is not its turn
+     * @throws GameNotExistException            when game with given game id does not exist
      */
-    public MoveResponseDTO makeMove(Long gameId, PlayerEntity playerEntity, Position origin, Position destination) {
+    public MoveResponseDTO makeMove(Long gameId, PlayerEntity playerEntity, Position origin, Position destination) throws InvalidRequiredArgumentException, NotPlayerTurnException, GameNotExistException {
         synchronized (gamesMap) {
-            Game game = gamesMap.get(gameId);
-            List<Change> listOfChanges = null;
-            Board board = game.getBoard();
-            board.updateGame(playerEntity.getColor());
-            Move move = board.validatePlayersMove(origin, destination, playerEntity.getColor());
-            boolean isMoveValid = move != null;
-            if (isMoveValid) {
-                board.makeMove(move);
-                listOfChanges = board.getListOfChanges(move);
-                changeTurn(gameId);
+            Game game = getGameFromGames(gameId);
+            Player player = playerservice.createPlayerFromEntity(playerEntity);
+            boolean isMoveValid = true;
+            List<Change> listOfChanges;
+            try {
+                listOfChanges = game.makeMove(origin, destination, player);
+            } catch (NotValidMoveException e) {
+                isMoveValid = false;
+                listOfChanges = Collections.emptyList();
             }
-            MoveResponseDTO moveDTO = new MoveResponseDTO(isMoveValid, listOfChanges, "");
-            Long newId = lastUpdate.get(gameId).getUpdateId() + 1;
-            MoveUpdateDTO moveUpdateDTO = new MoveUpdateDTO(newId, moveDTO);
-            lastUpdate.put(gameId, moveUpdateDTO);
+            MoveResponseDTO moveDTO = new MoveResponseDTO(isMoveValid, listOfChanges);
+            updateGamesAfterMove(gameId, moveDTO);
             return moveDTO;
         }
     }
 
-    private void changeTurn(Long gameId) {
-        GameEntity gameEntity = gameRepository.findById(gameId).orElse(null);
-        if (gameEntity != null) {
-            if (gameEntity.getGameStatus() == GameStatus.FIRST_PLAYER_TURN) {
-                gameEntity.setGameStatus(GameStatus.SECOND_PLAYER_TURN);
-            } else if (gameEntity.getGameStatus() == GameStatus.SECOND_PLAYER_TURN) {
-                gameEntity.setGameStatus(GameStatus.FIRST_PLAYER_TURN);
-            }
+    private void updateGamesAfterMove(Long gameId, MoveResponseDTO moveDTO) {
+        Long newId = lastUpdate.get(gameId).getUpdateId() + 1;
+        MoveUpdateDTO moveUpdateDTO = new MoveUpdateDTO(newId, moveDTO);
+        lastUpdate.put(gameId, moveUpdateDTO);
+    }
+
+    /**
+     * Gets board from game.
+     *
+     * @param gameId Id of the game.
+     * @return List of PieceDTO describing Board.
+     * @throws GameNotExistException when game with given game id does not exist
+     */
+    public List<PieceDTO> getBoard(Long gameId) throws GameNotExistException {
+        synchronized (gamesMap) {
+            Game game = getGameFromGames(gameId);
+            return game.getPieceDTOList();
         }
     }
 
-    public List<PieceDTO> getBoard(Long gameId) {
+    /**
+     *  Return possible moves for Piece located on Position.
+     *
+     * @param gameId Id of the game on which Piece is located.
+     * @param position Postition on which Piece is located.
+     * @return List of possible moves.
+     */
+    public List<Position> getPossibleMoves(Long gameId, Position position) {
         synchronized (gamesMap) {
             Game game = gamesMap.get(gameId);
-            Board board = game.getBoard();
-            return getPieceDTOList(board);
+            return game.getPossibleMovesForPosition(position);
         }
-    }
-
-    private List<PieceDTO> getPieceDTOList(Board board) {
-        Piece[][] pieces = board.getBoard();
-        List<PieceDTO> pieceDTOList = new ArrayList<>();
-        for (int row = 0; row < 8; row++) {
-            for (int column = 0; column < 8; column++) {
-                Piece piece = pieces[row][column];
-                List<Position> possibleMoves = null;
-                Piece.PieceType type = null;
-                Color color = null;
-                if (piece != null) {
-                    piece.legalMoves();
-                    List<Move> legalMoves = piece.getLegalMoves();
-                    possibleMoves = getPossibleMoves(legalMoves);
-                    type = piece.getType();
-                    color = piece.color;
-                }
-
-                PieceDTO pieceDTO = new PieceDTO(row,
-                        column,
-                        type,
-                        color,
-                        possibleMoves);
-                pieceDTOList.add(pieceDTO);
-            }
-        }
-        return pieceDTOList;
-    }
-
-    private List<Position> getPossibleMoves(List<Move> legalMoves) {
-        List<Position> possibleMoves = new ArrayList<>();
-        if (legalMoves != null && !legalMoves.isEmpty()) {
-            for (Move move : legalMoves) {
-                possibleMoves.add(move.dest);
-            }
-        }
-        return possibleMoves;
     }
 
     public MoveUpdateDTO getLastUpdate(Long gameId) {
-        System.out.println("GET LAST UPDATE " + gameId);
         return lastUpdate.get(gameId);
     }
 
-    public boolean isPlayerTurn(Long gameId, Long playerId) {
-        GameEntity gameEntity = gameRepository.findById(gameId).orElse(null);
-        if (gameEntity != null) {
-            return (gameEntity.getGameStatus() == GameStatus.FIRST_PLAYER_TURN && gameEntity.getFirstPlayer().getId() == playerId)
-                    || (gameEntity.getGameStatus() == GameStatus.SECOND_PLAYER_TURN && gameEntity.getSecondPlayer().getId() == playerId);
-        }
-        return false;
-    }
-
-    public List<Position> possibleMoves(Long gameId, Position position) {
-        synchronized (gamesMap) {
-            Game game = gamesMap.get(gameId);
-            Board board = game.getBoard();
-            Piece[][] pieces = board.getBoard();
-            Piece piece = pieces[position.row][position.column];
-            List<Position> possibleMoves = new LinkedList<>();
-            if (piece != null) {
-                piece.legalMoves();
-                List<Move> legalMoves = piece.getLegalMoves();
-                possibleMoves = getPossibleMoves(legalMoves);
-            }
-            return possibleMoves;
-        }
-    }
 }

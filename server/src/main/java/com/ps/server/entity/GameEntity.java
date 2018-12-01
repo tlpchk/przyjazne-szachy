@@ -1,6 +1,5 @@
 package com.ps.server.entity;
 
-import com.ps.server.enums.GameStatus;
 import com.ps.server.enums.GameType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,10 +30,10 @@ public class GameEntity {
     private PlayerEntity secondPlayer;
 
     @Enumerated(EnumType.STRING)
-    private GameStatus gameStatus;
-
-    @Enumerated(EnumType.STRING)
     private GameType gameType;
+
+    @Column(name = "isGameFinished", nullable = false)
+    private boolean isGameFinished;
 
     @Column(name = "starting_time")
     private Date startingTime;

@@ -1,14 +1,14 @@
-package com.ps.server.Logic.Pieces;
+package com.ps.server.logic.pieces;
 
-import com.ps.server.Logic.Color;
-import com.ps.server.Logic.Move;
-import com.ps.server.Logic.Position;
+import com.ps.server.logic.Color;
+import com.ps.server.logic.Move;
+import com.ps.server.logic.Position;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ps.server.Logic.ChessSquareState.State.OCCUPIED;
-import static com.ps.server.Logic.Move.MoveType.NORMAL;
+import static com.ps.server.logic.ChessSquareState.State.OCCUPIED;
+import static com.ps.server.logic.Move.MoveType.NORMAL;
 
 public abstract class StraightMovingPieces extends Piece {
 

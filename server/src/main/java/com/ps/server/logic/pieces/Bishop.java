@@ -1,12 +1,12 @@
-package com.ps.server.Logic.Pieces;
+package com.ps.server.logic.pieces;
 
-import com.ps.server.Logic.*;
+import com.ps.server.logic.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ps.server.Logic.Color.WHITE;
-import static com.ps.server.Logic.Pieces.Piece.PieceType.BISHOP;
+import static com.ps.server.logic.Color.WHITE;
+import static com.ps.server.logic.pieces.Piece.PieceType.BISHOP;
 
 public class Bishop extends StraightMovingPieces {
 

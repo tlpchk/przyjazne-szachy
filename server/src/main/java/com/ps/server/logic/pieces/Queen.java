@@ -1,14 +1,14 @@
-package com.ps.server.Logic.Pieces;
+package com.ps.server.logic.pieces;
 
-import com.ps.server.Logic.Color;
-import com.ps.server.Logic.Move;
-import com.ps.server.Logic.Position;
+import com.ps.server.logic.Color;
+import com.ps.server.logic.Move;
+import com.ps.server.logic.Position;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ps.server.Logic.Color.WHITE;
-import static com.ps.server.Logic.Pieces.Piece.PieceType.QUEEN;
+import static com.ps.server.logic.Color.WHITE;
+import static com.ps.server.logic.pieces.Piece.PieceType.QUEEN;
 
 public class Queen extends StraightMovingPieces {
     public Queen(Color color, Position position) {
