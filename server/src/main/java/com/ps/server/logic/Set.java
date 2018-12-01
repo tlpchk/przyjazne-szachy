@@ -7,15 +7,20 @@ import java.util.stream.Collectors;
 
 public class Set {
     private final Color color;
-    private final List<Piece> set;// king is the head
+    private List<Piece> set;// king is the head
 
     public Set(Color color, List<Piece> set) {
         this.color = color;
         this.set = set;
     }
 
-    List<Move> generateSemiLegalMoves() {
+    List<Move> semiLegalMoves() {
         return set.stream().flatMap(piece -> piece.semiLegalMoves().stream()).collect(Collectors.toList());
+    }
+
+    List<Move> legalMoves() {
+        set = set.stream().filter(p -> p.getPosition() != null).collect(Collectors.toList());
+        return set.stream().flatMap(piece -> piece.getListOfMoves().stream()).collect(Collectors.toList());
     }
 
     void generateLegalMoves() {
@@ -24,7 +29,7 @@ public class Set {
 
     boolean checkIfCanCaptureKingOn(Position kingsPosition) {
         return set.stream()
-                .filter(p -> p.checkIfCanCaptureKingOn(kingsPosition))
+                .filter(p -> p.getPosition() != null && p.checkIfCanCaptureKingOn(kingsPosition))
                 .findFirst()
                 .orElse(null) != null;
     }

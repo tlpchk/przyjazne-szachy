@@ -22,9 +22,9 @@ public class SpanishGame {
 
         board.updateGame(BLACK);
         Move blackPinnedPawnMove = board.validatePlayersMove(new Position(1, 3), new Position(2, 3), BLACK);
-        //assertTrue(blackPinnedPawnMove == null); TODO: problem with possibility to move piece discovering bishop attack to king
-        board.makeMove(blackPinnedPawnMove);
-        System.out.println(board.toString());
+        assertTrue(blackPinnedPawnMove == null);
+//        board.makeMove(blackPinnedPawnMove);
+//        System.out.println(board.toString());
     }
 
     @Test
@@ -35,8 +35,8 @@ public class SpanishGame {
 
         board.updateGame(WHITE);
         Move whiteKnightMoves = board.validatePlayersMove(new Position(7, 6), new Position(5, 5), WHITE);
-        //board.makeMove(whiteKnightMoves); TODO: knight cant move legally when it should
-        //assertTrue(board.getChessSquareState(new Position(5, 5)).state == ChessSquareState.State.OCCUPIED);
+        board.makeMove(whiteKnightMoves);
+        assertTrue(board.getChessSquareState(new Position(5, 5)).state == ChessSquareState.State.OCCUPIED);
     }
 
     private Board setOpening() {

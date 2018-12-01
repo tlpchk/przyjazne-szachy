@@ -36,7 +36,7 @@ public abstract class SetFactory {
             set.add(new Knight(color, knightPositions[i]));
         }
 
-        set.add(new King(color, kingsPosition));
+        set.add(0, new King(color, kingsPosition));
         set.add(new Queen(color, queensPosition));
 
         return new Set(color, set);

@@ -23,8 +23,9 @@ public class Knight extends Piece {
     }
 
     private Move createMove(int row, int col) {
-        if(board.ifEmpty(position) || board.ifOccupiedByOpponent(position, color)) {
-            return new Move(this.type, color, position, new Position(row, col), NORMAL);
+        Position newPos = new Position(row, col);
+        if(board.ifEmpty(newPos) || board.ifOccupiedByOpponent(newPos, color)) {
+            return new Move(this.type, color, position, newPos, NORMAL);
         }
         return null;
     }

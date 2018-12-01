@@ -6,13 +6,14 @@ import com.ps.server.logic.Color;
 import com.ps.server.logic.Move;
 import com.ps.server.logic.Position;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public abstract class Piece {
-    List<Move> legalMoves;
+    List<Move> legalMoves = new ArrayList<>();
     final public Color color;
-    final PieceType type;
+    public final PieceType type;
     Board board;
     Position position;
 
