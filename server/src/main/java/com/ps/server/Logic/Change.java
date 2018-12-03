@@ -21,7 +21,7 @@ public class Change {
 
     /**
      * Checks if two Change objects are equal in terms of parameters
-     * @param change
+     * @param change other Change object
      * @return if this change equals to change given as parameter
      */
     public boolean eq(Change change) {

@@ -40,8 +40,16 @@ public class Board {
         return state != null && state.state == ChessSquareState.State.OCCUPIED && state.getPiece().color != color;
     }
 
+    public List<Move> getLegalMoves(Color color) {
+        Set set = (color == WHITE) ? whiteSet : blackSet;
+        return set.legalMoves();
+    }
+
     private Piece removePiece(Position loc) {
         Piece p = board[loc.row][loc.col];
+        if(p != null) {
+            p.move(null);
+        }
         board[loc.row][loc.col] = null;
         return p;
     }
@@ -67,6 +75,7 @@ public class Board {
         Position dest = move.dest;
         switch (move.type) {
             case PROMOTION:
+                removePiece(dest);
                 removePiece(loc);
                 addPiece(new Queen(move.pieceColor, dest), dest);
                 break;
@@ -75,6 +84,7 @@ public class Board {
             case LONG_PAWN_MOVE:
                 giveEnPassantsRights(dest, loc, move.pieceColor);
             case NORMAL:
+                removePiece(dest);
                 addPiece(removePiece(loc), dest);
                 break;
             case LONG_CASTLE: {
