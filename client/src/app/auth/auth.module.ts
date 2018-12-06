@@ -1,17 +1,23 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {LoginComponent} from "./login.component";
-import {LoginRoutingModule} from "./login-routing.module";
-import { AdminComponent } from './admin/admin.component';
+import {AuthComponent} from "./auth.component";
+import {AuthRoutingModule} from "./auth-routing.module";
+import {AuthService} from "../_services/auth.service";
+import {LoginComponent} from "./login/login.component";
+import {RegistComponent} from "./regist/regist.component";
 
 @NgModule({
   imports: [
     CommonModule,
-    LoginRoutingModule
+    AuthRoutingModule
   ],
   declarations: [
+      AuthComponent,
       LoginComponent,
-      AdminComponent
-  ]
+      RegistComponent
+  ],
+    providers:[
+        AuthService
+    ]
 })
-export class LoginModule { }
+export class AuthModule { }
