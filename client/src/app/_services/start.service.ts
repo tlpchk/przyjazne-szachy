@@ -1,29 +1,42 @@
-import { Injectable } from '@angular/core';
-import {GameInfo} from "../_models/gameInfo";
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {CreateGameDTO} from "../_models/createGameDTO";
 
 const httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
 
+
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 
 export class StartService {
 
-  private gameListUrl = 'http://localhost:8080/game/list';
-  private newGameUrl = 'http://localhost:8080/game/create';
+    private gamesUrl = 'http://localhost:8080/games';
+    private playersUrl = 'http://localhost:8080/players';
+    private joinSubUrl = "/join";
 
-  constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) {
+    }
 
 
-  getGameList() : Observable<GameInfo[]>{
-    return this.http.get<GameInfo[]>(this.gameListUrl);
-  }
+    getGameList(): Observable<number[]> {
+        return this.http.get<number[]>(this.gamesUrl);
+    }
 
-    createNewGame() {
-        return this.http.post<GameInfo>(this.newGameUrl, {}, httpOptions);
+    createNewGame(playerId: number): Observable<number> {
+        let createGameDTO = new CreateGameDTO(playerId, null);
+        return this.http.post<number>(this.gamesUrl, createGameDTO, httpOptions);
+    }
+
+    createNewPlayer(playerColor: String): Observable<number> {
+        return this.http.post<number>(this.playersUrl, playerColor, httpOptions);
+    }
+
+    joinGame(gameId: number, playerId: number): Observable<boolean> {
+        let url = this.gamesUrl + "/" + gameId + this.joinSubUrl;
+        return this.http.post<boolean>(url, playerId, httpOptions);
     }
 }

@@ -12,7 +12,7 @@ import {SidebarComponent} from "./sidebar/sidebar.component";
 import {AlertComponent} from "../alert/alert.component";
 import {UserComponent} from "./user.component";
 import {UserRoutingModule} from "./user-routing.module";
-import {HttpClientInMemoryWebApiModule} from 'angular-in-memory-web-api/http-client-in-memory-web-api.module';
+// import {HttpClientInMemoryWebApiModule} from 'angular-in-memory-web-api/http-client-in-memory-web-api.module';
 
 @NgModule({
     imports: [
