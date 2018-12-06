@@ -1,7 +1,6 @@
-package com.ps.server.Logic;
+package com.ps.server.logic;
 
-import com.ps.server.Logic.Pieces.*;
-import org.junit.Test;
+import com.ps.server.logic.pieces.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,8 +8,8 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static com.ps.server.Logic.Color.BLACK;
-import static com.ps.server.Logic.Color.WHITE;
+import static com.ps.server.logic.Color.BLACK;
+import static com.ps.server.logic.Color.WHITE;
 
 public class BoardFactory {
 

@@ -1,4 +1,4 @@
-package com.ps.server.Logic;
+package com.ps.server.logic;
 
 import org.junit.Test;
 
@@ -42,7 +42,7 @@ public class BoardMoveTest {
 
     @Test
     public void testBoardMoves() throws FileNotFoundException {
-        File file = new File("src/test/java/com/ps/server/Logic/boardMovesTets");
+        File file = new File("src/test/java/com/ps/server/logic/boardMovesTets");
         Scanner sc = new Scanner(file);
         sc.useDelimiter(";");
         int testN = 1;
