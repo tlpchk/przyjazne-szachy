@@ -47,7 +47,7 @@ public class BoardMoveTest {
         sc.useDelimiter(";");
         int testN = 1;
         while(sc.hasNext()) {
-            assertEquals("faild test no: " + testN, true, test(sc.next()));
+            assertEquals("failed test no: " + testN, true, test(sc.next()));
             testN++;
         }
     }

@@ -24,6 +24,7 @@ public class Set {
     }
 
     void generateLegalMoves() {
+        set = set.stream().filter(p -> p.getPosition() != null).collect(Collectors.toList());
         set.forEach(Piece::legalMoves);
     }
 
@@ -38,7 +39,8 @@ public class Set {
         if(set == null) return;
         set.forEach(piece -> {
             Position position = piece.getPosition();
-            board[position.row][position.col] = piece;
+            if(position != null)
+                board[position.row][position.col] = piece;
         });
     }
 
