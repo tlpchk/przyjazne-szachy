@@ -9,7 +9,7 @@ interface myData {
 
 @Injectable()
 export class AuthService {
-    private host = '/api/users';
+    private host = 'http://localhost:8080/login';
     private loggedInStatus = false ;
 
     constructor(private http: HttpClient) { }
