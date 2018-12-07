@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
+import {Observable, of} from "rxjs";
 
 interface myData {
     success: boolean,
@@ -8,7 +9,7 @@ interface myData {
 
 @Injectable()
 export class AuthService {
-
+    private host = '/api/users';
     private loggedInStatus = false ;
 
     constructor(private http: HttpClient) { }
@@ -21,9 +22,10 @@ export class AuthService {
         return this.loggedInStatus
     }
 
-    getUserDetails(username, password) {
-        // post these details to API server return user info if correct
-        return this.http.post<myData>('/api/auth.php', {
+    getUserDetails(username, password):Observable<myData> {
+        return of({success: true , message: "Please log in"}) ;
+        //TODO: request to the server
+        return this.http.post<myData>( this.host, {
             username,
             password
         });
