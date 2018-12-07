@@ -70,7 +70,7 @@ public class Board {
         }
     }
 
-    void makeMove(Move move) {
+    public void makeMove(Move move) {
         Position loc = move.loc;
         Position dest = move.dest;
         switch (move.type) {
@@ -86,6 +86,7 @@ public class Board {
             case NORMAL:
                 removePiece(dest);
                 addPiece(removePiece(loc), dest);
+
                 break;
             case LONG_CASTLE: {
                 Piece rook = removePiece(dest);
@@ -137,7 +138,7 @@ public class Board {
         return changes;
     }
 
-    void updateGame(Color turn) {
+    public void updateGame(Color turn) {
         Set playingSet = (turn == WHITE) ? whiteSet : blackSet;
         playingSet.generateLegalMoves();
         if(!playingSet.checkIfCanMove()) {
@@ -180,7 +181,7 @@ public class Board {
         return board;
     }
 
-    Board copy() {
+    public Board copy() {
         return new Board(whiteSet.copy(), blackSet.copy());
     }
 
@@ -211,4 +212,7 @@ public class Board {
         return builder.toString();
     }
 
+    public Piece[][] getBoard() {
+        return board;
+    }
 }
