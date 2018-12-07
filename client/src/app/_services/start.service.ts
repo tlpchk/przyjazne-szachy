@@ -15,7 +15,8 @@ const httpOptions = {
 export class StartService {
 
     private gamesUrl = 'http://localhost:8080/games';
-    private playersUrl = 'http://localhost:8080/players';
+    private humanPlayersUrl = 'http://localhost:8080/players/humans';
+    private botPlayersUrl = 'http://localhost:8080/players/bots';
     private joinSubUrl = "/join";
 
     constructor(private http: HttpClient) {
@@ -26,13 +27,17 @@ export class StartService {
         return this.http.get<number[]>(this.gamesUrl);
     }
 
-    createNewGame(playerId: number): Observable<number> {
-        let createGameDTO = new CreateGameDTO(playerId, null);
+    createNewGame(fisrtPlayerId: number, secondPlayerId: number): Observable<number> {
+        let createGameDTO = new CreateGameDTO(fisrtPlayerId, secondPlayerId);
         return this.http.post<number>(this.gamesUrl, createGameDTO, httpOptions);
     }
 
-    createNewPlayer(playerColor: String): Observable<number> {
-        return this.http.post<number>(this.playersUrl, playerColor, httpOptions);
+    createNewHumanPlayer(playerColor: String): Observable<number> {
+        return this.http.post<number>(this.humanPlayersUrl, playerColor, httpOptions);
+    }
+
+    createNewBotPlayer(playerColor: String): Observable<number> {
+        return this.http.post<number>(this.botPlayersUrl, playerColor, httpOptions);
     }
 
     joinGame(gameId: number, playerId: number): Observable<boolean> {

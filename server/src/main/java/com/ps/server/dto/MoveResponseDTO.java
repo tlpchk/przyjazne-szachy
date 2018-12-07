@@ -1,6 +1,6 @@
 package com.ps.server.dto;
 
-import com.ps.server.logic.Change;
+import com.ps.server.Logic.Change;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

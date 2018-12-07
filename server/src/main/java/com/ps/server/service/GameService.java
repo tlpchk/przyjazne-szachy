@@ -1,5 +1,6 @@
 package com.ps.server.service;
 
+import com.ps.server.Logic.player.BotPlayer;
 import com.ps.server.dto.MoveResponseDTO;
 import com.ps.server.dto.MoveUpdateDTO;
 import com.ps.server.dto.PieceDTO;
@@ -7,10 +8,10 @@ import com.ps.server.entity.GameEntity;
 import com.ps.server.entity.PlayerEntity;
 import com.ps.server.enums.GameType;
 import com.ps.server.exception.*;
-import com.ps.server.logic.*;
-import com.ps.server.logic.game.Game;
-import com.ps.server.logic.game.GameCreator;
-import com.ps.server.logic.player.Player;
+import com.ps.server.Logic.*;
+import com.ps.server.Logic.game.Game;
+import com.ps.server.Logic.game.GameCreator;
+import com.ps.server.Logic.player.Player;
 import com.ps.server.repository.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

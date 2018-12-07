@@ -1,14 +1,14 @@
-package com.ps.server.logic.pieces;
+package com.ps.server.Logic.Pieces;
 
-import com.ps.server.logic.Board;
-import com.ps.server.logic.Position;
-import com.ps.server.logic.Set;
+import com.ps.server.Logic.Board;
+import com.ps.server.Logic.Position;
+import com.ps.server.Logic.Set;
 import org.junit.Test;
 
 import java.util.Arrays;
 
-import static com.ps.server.logic.Color.BLACK;
-import static com.ps.server.logic.Color.WHITE;
+import static com.ps.server.Logic.Color.BLACK;
+import static com.ps.server.Logic.Color.WHITE;
 
 public class StraightMovingPiecesTest {
     Rook whiteRook = new Rook(WHITE, new Position(1, 4));

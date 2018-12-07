@@ -2,11 +2,11 @@ package com.ps.server.service;
 
 import com.ps.server.enums.PlayerType;
 import com.ps.server.exception.InvalidRequiredArgumentException;
-import com.ps.server.logic.Color;
+import com.ps.server.Logic.Color;
 import com.ps.server.entity.PlayerEntity;
-import com.ps.server.logic.player.BotPlayer;
-import com.ps.server.logic.player.HumanPlayer;
-import com.ps.server.logic.player.Player;
+import com.ps.server.Logic.player.BotPlayer;
+import com.ps.server.Logic.player.HumanPlayer;
+import com.ps.server.Logic.player.Player;
 import com.ps.server.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,12 +20,21 @@ public class PlayerService {
     @Autowired
     private PlayerRepository playerRepository;
 
-    public PlayerEntity createNewPlayer(Color color) {
+    public PlayerEntity createNewHumanPlayer(Color color) {
+        return createNewPlayer(color, PlayerType.HUMAN);
+    }
+
+    private PlayerEntity createNewPlayer(Color color, PlayerType playerType) {
         PlayerEntity newPlayer = new PlayerEntity();
         newPlayer.setColor(color);
-        newPlayer.setPlayerType(PlayerType.HUMAN);
+        newPlayer.setPlayerType(playerType);
         playerRepository.save(newPlayer);
         return newPlayer;
+    }
+
+
+    public PlayerEntity createNewBot(Color color) {
+        return createNewPlayer(color, PlayerType.BOT);
     }
 
     /**
@@ -53,14 +62,14 @@ public class PlayerService {
         Player player;
         switch (playerEntity.getPlayerType()) {
             case BOT:
-                player = new BotPlayer();
+                player = new BotPlayer(playerEntity.getColor());
                 break;
             case HUMAN:
-                player = new HumanPlayer();
+                player = new HumanPlayer(playerEntity.getColor());
                 break;
             default:
                 throw new InvalidRequiredArgumentException();
         }
-        return player.builder().color(playerEntity.getColor()).build();
+        return player;
     }
 }
