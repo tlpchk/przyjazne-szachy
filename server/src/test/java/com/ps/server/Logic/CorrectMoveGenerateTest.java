@@ -39,7 +39,7 @@ public class CorrectMoveGenerateTest {
             System.out.println(move.loc + " " + move.dest);
         }
 
-        assertTrue(legalMoves.size() == 9); //TODO rook moves aren't generated correctly, the rook should be able to move to [4,4], [3,4], [2,4] and [1,4]
+        assertTrue(legalMoves.size() == 10);
     }
 
     private Board setBoard() {

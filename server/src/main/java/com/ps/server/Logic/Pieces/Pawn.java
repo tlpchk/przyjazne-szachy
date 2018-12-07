@@ -70,9 +70,9 @@ public class Pawn extends Piece {
     @Override
     public boolean checkIfCanCaptureKingOn(Position kingsPosition) {
         if(color == WHITE) {
-            return position.row - kingsPosition.row == -1 && Math.abs(position.col - kingsPosition.col) == 1;
-        } else {
             return position.row - kingsPosition.row == 1 && Math.abs(position.col - kingsPosition.col) == 1;
+        } else {
+            return position.row - kingsPosition.row == -1 && Math.abs(position.col - kingsPosition.col) == 1;
         }
     }
 
