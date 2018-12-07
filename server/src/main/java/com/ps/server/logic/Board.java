@@ -180,7 +180,7 @@ public class Board {
         return board;
     }
 
-    Board copy() {
+    public Board copy() {
         return new Board(whiteSet.copy(), blackSet.copy());
     }
 
@@ -215,4 +215,7 @@ public class Board {
         return builder.toString();
     }
 
+    public Piece[][] getBoard() {
+        return board;
+    }
 }
