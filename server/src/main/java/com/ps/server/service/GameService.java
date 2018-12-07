@@ -1,6 +1,5 @@
 package com.ps.server.service;
 
-import com.ps.server.Logic.player.BotPlayer;
 import com.ps.server.dto.MoveResponseDTO;
 import com.ps.server.dto.MoveUpdateDTO;
 import com.ps.server.dto.PieceDTO;
