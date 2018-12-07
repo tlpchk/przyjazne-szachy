@@ -38,7 +38,7 @@ public class AlphaBetaTest {
         MoveStrategy moveStrategy = new AlphaBeta();
         ExtendedBoardEvaluator extendedBoardEvaluator = new ExtendedBoardEvaluator();
 
-        assertEquals(105, extendedBoardEvaluator.evaluate(board));
+        assertEquals(106, extendedBoardEvaluator.evaluate(board));
         System.out.println(extendedBoardEvaluator.evaluate(board));
 
         Move move = moveStrategy.execute(board, 4, Color.WHITE);

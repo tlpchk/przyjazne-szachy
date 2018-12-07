@@ -41,7 +41,7 @@ public class MinMaxTest {
         assertEquals(1, standardBoardEvaluator.evaluate(board));
         System.out.println(standardBoardEvaluator.evaluate(board));
 
-        Move move = moveStrategy.execute(board, 4, Color.WHITE);
+        Move move = moveStrategy.execute(board, 1, Color.WHITE);
         assertSame(Piece.PieceType.PAWN ,move.pieceType);
         assertSame(Move.MoveType.NORMAL,move.type);
         assertSame(new Position(6, 5).col, move.loc.col);

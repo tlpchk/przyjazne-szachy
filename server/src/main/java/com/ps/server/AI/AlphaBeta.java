@@ -41,7 +41,7 @@ public class AlphaBeta implements MoveStrategy {
 
         System.out.println("Thinking with depth " + depth);
 
-        for(Move move : getLegalMoves(board, color)) {
+        for(Move move : board.getLegalMoves(color)) {
             Board chessBoard = board.copy();
             chessBoard.makeMove(move);
 
@@ -68,6 +68,8 @@ public class AlphaBeta implements MoveStrategy {
     }
 
     public int min(final Board board, final int depth, int highest, int lowest, Color color) {
+        board.updateGame(color);
+
         if(depth == 0 /*TODO checkmate*/) {
             this.boardsEvaluated++;
             return this.boardEvaluator.evaluate(board);
@@ -81,8 +83,9 @@ public class AlphaBeta implements MoveStrategy {
         else
             otherColor = Color.WHITE;
 
-        for(final Move move : getLegalMoves(board, color)) {
-            board.makeMove(move);
+        for(final Move move : board.getLegalMoves(color)) {
+            Board chessBoard = board.copy();
+            chessBoard.makeMove(move);
             currentLowest = Math.min(currentLowest, max(board, depth - 1, highest, currentLowest, otherColor));
 
             if(currentLowest <= highest) {
@@ -94,6 +97,8 @@ public class AlphaBeta implements MoveStrategy {
     }
 
     public int max(final Board board, final int depth, int highest, int lowest, Color color) {
+        board.updateGame(color);
+
         if(depth == 0 /*TODO checkmate*/) {
             this.boardsEvaluated++;
             return this.boardEvaluator.evaluate(board);
@@ -108,8 +113,9 @@ public class AlphaBeta implements MoveStrategy {
             otherColor = Color.WHITE;
 
         board.updateGame(color);
-        for(final Move move : getLegalMoves(board, color)) {
-            board.makeMove(move);
+        for(final Move move : board.getLegalMoves(color)) {
+            Board chessBoard = board.copy();
+            chessBoard.makeMove(move);
             currentHighest = Math.max(currentHighest, min(board, depth - 1, currentHighest, lowest, otherColor));
 
             if(currentHighest <= highest) {
@@ -118,23 +124,5 @@ public class AlphaBeta implements MoveStrategy {
         }
 
         return currentHighest;
-    }
-
-    @SuppressWarnings("Duplicates") //temporary
-    public List<Move> getLegalMoves(final Board board, Color color) {
-        Piece[][] chessBoard = board.getBoard();
-        List<Move> legalMoves = new ArrayList<>();
-
-        for(int i = 0; i < 8; i++) {
-            for(int j = 0; j < 8; j++) {
-                if(chessBoard[i][j] == null)
-                    continue;
-                if(chessBoard[i][j].color == color && chessBoard[i][j].getListOfMoves() != null) {
-                    legalMoves.addAll(chessBoard[i][j].getListOfMoves());
-                }
-            }
-        }
-
-        return legalMoves;
     }
 }
