@@ -14,7 +14,8 @@ public abstract class SetFactory {
     private final Position queensPosition;
     private final Color color;
 
-    SetFactory(int pawnRow, Position[] rookPositions, Position[] bishopPositions, Position[] knightPositions, Position kingsPosition, Position queensPosition, Color color) {
+    SetFactory(int pawnRow, Position[] rookPositions, Position[] bishopPositions,
+               Position[] knightPositions, Position kingsPosition, Position queensPosition, Color color) {
         this.pawnRow = pawnRow;
         this.rookPositions = rookPositions;
         this.bishopPositions = bishopPositions;
@@ -24,6 +25,10 @@ public abstract class SetFactory {
         this.color = color;
     }
 
+    /**
+     * Creates an initial set with all pieces in initial positions.
+     * @return created set
+     */
     public Set createSet() {
         List<Piece> set = new ArrayList<>();
         for (int i = 0; i < Board.COL_NUM; i++) {

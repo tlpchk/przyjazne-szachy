@@ -14,10 +14,18 @@ import static com.ps.server.Logic.Pieces.Piece.PieceType.KNIGHT;
 
 public class Knight extends Piece {
 
+    /**
+     * Class constructor.
+     * @param position on board, where the piece stands (should be in bounds row: 0-7, column: 0-7)
+     * @param color specifies the color of chess piece (WHITE or BLACK)
+     */
     public Knight(Color color, Position position) {
         super(color, KNIGHT, position);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return color == WHITE ? "♞" : "♘";
@@ -31,6 +39,9 @@ public class Knight extends Piece {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Move> semiLegalMoves() {
         List<Move> legalMoves = new ArrayList<>();
@@ -48,7 +59,9 @@ public class Knight extends Piece {
         return legalMoves;
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean checkIfCanCaptureKingOn(Position kingsPosition) {
         int distX = Math.abs(position.col - kingsPosition.col);
@@ -56,6 +69,9 @@ public class Knight extends Piece {
         return (distY == 1 && distX == 2) || (distY == 2 && distX == 1);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Piece copy() {
         return new Knight(color, position);
