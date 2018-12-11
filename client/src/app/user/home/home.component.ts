@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {StartService} from "../../_services/start.service";
+import {UserService} from "../../_services/user.service";
 import {BoardService} from "../../_services/board.service";
 
 const firstPlayerColor = "WHITE";
@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit {
     //gameId: number;
 
 
-    constructor(private startService: StartService,
+    constructor(private userService: UserService,
                 private boardService: BoardService) {
     }
 
@@ -27,15 +27,15 @@ export class HomeComponent implements OnInit {
     }
 
     private getGameList() {
-        this.startService.getGameList().subscribe(list => {
+        this.userService.getGameList().subscribe(list => {
             this.gameList = list;
         });
     }
 
     //TODO RS: creating player creation should be another option
     createNewCompetitionGame() {
-        this.startService.createNewHumanPlayer(firstPlayerColor).subscribe(playerId => {
-            this.startService.createNewGame(playerId,null).subscribe(gameId => {
+        this.userService.createNewHumanPlayer(firstPlayerColor).subscribe(playerId => {
+            this.userService.createNewGame(playerId,null).subscribe(gameId => {
                 this.boardService.playerId = playerId;
                 this.boardService.gameId.next(gameId);
             });
@@ -43,9 +43,9 @@ export class HomeComponent implements OnInit {
     }
 
     createNewBotGame() {
-        this.startService.createNewHumanPlayer(firstPlayerColor).subscribe(playerId => {
-            this.startService.createNewBotPlayer(secondPlayerColor).subscribe(botId => {
-                this.startService.createNewGame(playerId,botId).subscribe(gameId => {
+        this.userService.createNewHumanPlayer(firstPlayerColor).subscribe(playerId => {
+            this.userService.createNewBotPlayer(secondPlayerColor).subscribe(botId => {
+                this.userService.createNewGame(playerId,botId).subscribe(gameId => {
                     this.boardService.playerId = playerId;
                     this.boardService.gameId.next(gameId);
                 });
@@ -55,8 +55,8 @@ export class HomeComponent implements OnInit {
 
     //TODO RS: creating player creation should be another option
     joinGame(gameId: number) {
-        this.startService.createNewHumanPlayer(secondPlayerColor).subscribe(playerId => {
-            this.startService.joinGame(gameId, playerId).subscribe(wasSuccessful => {
+        this.userService.createNewHumanPlayer(secondPlayerColor).subscribe(playerId => {
+            this.userService.joinGame(gameId, playerId).subscribe(wasSuccessful => {
                 if (wasSuccessful) {
                     this.boardService.playerId = playerId;
                     this.boardService.gameId.next(gameId);

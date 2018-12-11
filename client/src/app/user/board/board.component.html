@@ -5,7 +5,20 @@
          [class.possible]="selectedCell !== null
                         && selectedCell.possibleMoves.includes(cell.id)"
          (click)="onSelect(cell)">
-        <img *ngIf="cell.piece !==null && cell.piece !==undefined" src="/assets/png/{{cell.piece.color}}_{{cell.piece.type}}.png"/>
-        <img *ngIf="cell.piece === null" src="/assets/png/none.png"/>
+        <img *ngIf = "cell.piece !== null && cell.piece !== undefined"
+             then #piece;
+             else #emptyCell
+
+        />
+
+        <ng-template #piece>
+            <img src="/assets/png/{{cell.piece.color}}_{{cell.piece.type}}.png">
+        </ng-template>
+
+        <ng-template #emptyCell>
+            <img *ngIf="cell.piece === null" src="/assets/png/none.png"/>
+        </ng-template>>
     </div>
 </div>
+
+<app-timer></app-timer>
