@@ -25,7 +25,12 @@ public class King extends StraightMovingPieces {
      */
     public King(Color color, Position position) {
         super(color, KING, position);
-        castleRights = true;
+        if((color == WHITE && whiteKingPosition.equalsToPos(position)) ||
+                (color == BLACK && blackKingPosition.equalsToPos(position))) {
+            castleRights = true;
+        } else {
+            castleRights = false;
+        }
     }
 
     King(Color color, Position position, boolean castleRights) {
