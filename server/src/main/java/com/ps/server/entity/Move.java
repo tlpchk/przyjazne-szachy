@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 public class Move {
     @Id @GeneratedValue
     @Column(name = "id", nullable = false)
-    private int id;
+    private BigInteger id;
     @Column(name = "created", nullable = false)
     private Timestamp created;
     @Column(name = "destination_column", nullable = false)
@@ -28,11 +28,11 @@ public class Move {
 
 
 
-    public int getId() {
+    public BigInteger getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(BigInteger id) {
         this.id = id;
     }
 
