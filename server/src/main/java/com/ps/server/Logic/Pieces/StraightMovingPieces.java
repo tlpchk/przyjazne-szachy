@@ -1,5 +1,6 @@
 package com.ps.server.Logic.Pieces;
 
+import com.ps.server.Logic.ChessSquareState;
 import com.ps.server.Logic.Color;
 import com.ps.server.Logic.Move;
 import com.ps.server.Logic.Position;
@@ -10,7 +11,7 @@ import java.util.List;
 import static com.ps.server.Logic.ChessSquareState.State.OCCUPIED;
 import static com.ps.server.Logic.Move.MoveType.NORMAL;
 
-public abstract class StraightMovingPieces extends Piece {
+abstract class StraightMovingPieces extends Piece {
 
     StraightMovingPieces(Color color, PieceType type, Position position) {
         super(color, type, position);
@@ -53,7 +54,9 @@ public abstract class StraightMovingPieces extends Piece {
         int maxDistOnRow = Math.abs(destination.row - position.row);
 
         while(distOnRow < maxDistOnRow || distOnColumn < maxDistOnColumn) {
-            if(board.getChessSquareState(new Position(row, column)).state == OCCUPIED) return true;
+            ChessSquareState state = board.getChessSquareState(new Position(row, column));
+//            if(state == null) return false;
+            if(state.state == OCCUPIED) return true;
             column += diffOnColumn;
             row += diffOnRow;
             distOnColumn = Math.abs(column - position.col);

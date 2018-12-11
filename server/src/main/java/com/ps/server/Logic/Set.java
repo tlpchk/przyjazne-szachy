@@ -6,10 +6,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Set {
-    private final Color color;
-    private List<Piece> set;// king is the head
+    final Color color;
+    private List<Piece> set;
 
+    /**
+     * Class constructor
+     * @param color set color (WHITE, BLACK)
+     * @param set list of pieces
+     *            needs to begin with a king for rules to work properly
+     */
     public Set(Color color, List<Piece> set) {
+        assert set == null || (set.get(0).type == Piece.PieceType.KING);
         this.color = color;
         this.set = set;
     }
@@ -25,7 +32,7 @@ public class Set {
 
     void generateLegalMoves() {
         set = set.stream().filter(p -> p.getPosition() != null).collect(Collectors.toList());
-        set.forEach(Piece::legalMoves);
+        set.forEach(Piece::update);
     }
 
     boolean checkIfCanCaptureKingOn(Position kingsPosition) {

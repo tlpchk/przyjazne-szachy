@@ -25,6 +25,7 @@ public class AlphaBeta implements MoveStrategy {
     @SuppressWarnings("Duplicates") //temporary
     @Override
     public Move execute(Board board, int depth, Color color) {
+        boardsEvaluated = 0;
         final long startTime = System.currentTimeMillis();
 
         Move bestMove = null;
@@ -52,11 +53,11 @@ public class AlphaBeta implements MoveStrategy {
                 currentValue = max(chessBoard, depth - 1, maxValue, minValue, otherColor);
             }
 
-            if(color == Color.WHITE && currentValue >= maxValue) {
+            if(color == Color.WHITE && currentValue > maxValue) {
                 maxValue = currentValue;
                 bestMove = move;
             }
-            else if(color == Color.BLACK && currentValue <= minValue) {
+            else if(color == Color.BLACK && currentValue < minValue) {
                 minValue = currentValue;
                 bestMove = move;
             }
@@ -67,6 +68,7 @@ public class AlphaBeta implements MoveStrategy {
         return bestMove;
     }
 
+    @SuppressWarnings("Duplicates")
     public int min(final Board board, final int depth, int highest, int lowest, Color color) {
         board.updateGame(color);
 
@@ -86,7 +88,7 @@ public class AlphaBeta implements MoveStrategy {
         for(final Move move : board.getLegalMoves(color)) {
             Board chessBoard = board.copy();
             chessBoard.makeMove(move);
-            currentLowest = Math.min(currentLowest, max(board, depth - 1, highest, currentLowest, otherColor));
+            currentLowest = Math.min(currentLowest, max(chessBoard, depth - 1, highest, currentLowest, otherColor));
 
             if(currentLowest <= highest) {
                 return highest;
@@ -96,6 +98,7 @@ public class AlphaBeta implements MoveStrategy {
         return currentLowest;
     }
 
+    @SuppressWarnings("Duplicates")
     public int max(final Board board, final int depth, int highest, int lowest, Color color) {
         board.updateGame(color);
 
@@ -112,14 +115,13 @@ public class AlphaBeta implements MoveStrategy {
         else
             otherColor = Color.WHITE;
 
-        board.updateGame(color);
         for(final Move move : board.getLegalMoves(color)) {
             Board chessBoard = board.copy();
             chessBoard.makeMove(move);
-            currentHighest = Math.max(currentHighest, min(board, depth - 1, currentHighest, lowest, otherColor));
+            currentHighest = Math.max(currentHighest, min(chessBoard, depth - 1, currentHighest, lowest, otherColor));
 
-            if(currentHighest <= highest) {
-                return highest;
+            if(currentHighest >= lowest) {
+                return lowest;
             }
         }
 

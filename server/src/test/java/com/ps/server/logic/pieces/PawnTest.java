@@ -3,6 +3,7 @@ package com.ps.server.Logic.Pieces;
 import com.ps.server.Logic.*;
 import org.junit.Test;
 
+import static com.ps.server.Logic.Color.BLACK;
 import static com.ps.server.Logic.Color.WHITE;
 
 public class PawnTest {
@@ -10,7 +11,7 @@ public class PawnTest {
 
     @Test
     public void name() {
-        pawn.addBoard(new Board(new Set(WHITE, null), new Set(WHITE, null)));
+        pawn.addBoard(new Board(new Set(WHITE, null), new Set(BLACK, null)));
 
         assert(pawn.semiLegalMoves().size() == 2);
     }
