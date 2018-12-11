@@ -4,6 +4,7 @@ import {BoardService} from '../../_services/board.service';
 import {ChangeDTO} from "../../_models/changeDTO";
 import {CoordinatesAdapterService} from "../../_services/coordinates-adapter.service";
 import {Piece} from "../../_models/piece";
+import {MoveUpdateDTO} from "../../_models/moveUpdateDTO";
 
 @Component({
     selector: 'app-board',
@@ -65,7 +66,9 @@ export class BoardComponent implements OnInit {
                             this.board[cellIndex].piece = piece;
                             this.board[cellIndex].possibleMoves = possibleMoves;
                         }
-
+                        this.boardService.makeBotMove(this.gameId).subscribe(a=>{
+                            console.log("BOT MOVES: " + a);
+                        });
                     } else {
                         console.log("Invalid move");
                     }
@@ -95,7 +98,10 @@ export class BoardComponent implements OnInit {
 
     getLastUpdate(): void {
         this.boardService.getLastUpdate(this.gameId).subscribe(moveUpdate => {
-            if (moveUpdate.updateId !== this.lastUpdateId) {
+            console.log("Move update: " + moveUpdate.updateId);
+            console.log("My update: " + this.lastUpdateId);
+            if (moveUpdate.updateId > this.lastUpdateId) {
+                this.lastUpdateId = moveUpdate.updateId;
                 let changes: ChangeDTO[] = moveUpdate.moveDTO.listOfChanges;
                 for (let c in changes) {
                     let location = changes[c].location;
@@ -115,9 +121,13 @@ export class BoardComponent implements OnInit {
                     this.board[cellIndex].piece = piece;
                     this.board[cellIndex].possibleMoves = possibleMoves;
                 }
+
             }
             setTimeout(this.getLastUpdate(), 1000);
         });
+    }
+
+    private updateBoard(moveUpdate: MoveUpdateDTO) {
 
     }
 }

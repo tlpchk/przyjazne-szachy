@@ -104,6 +104,11 @@ public class GameController {
         return gameService.getLastUpdate(gameId);
     }
 
+    @RequestMapping(value = "/{gameId}/bot", method = RequestMethod.GET)
+    public MoveResponseDTO moveBot(@PathVariable Long gameId) throws GameNotExistException, NotPlayerTurnException {
+        return gameService.makeMoveBot(gameId);
+    }
+
     //TODO RS: zapytanie na "/{gameId}" zwraca info o grze, m.in czyja tura
 
 
