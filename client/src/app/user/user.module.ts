@@ -11,11 +11,8 @@ import {HomeComponent} from "./home/home.component";
 import {SidebarComponent} from "./sidebar/sidebar.component";
 import {UserComponent} from "./user.component";
 import {UserRoutingModule} from "./user-routing.module";
-<<<<<<< .merge_file_nZ7lya
 import {AuthGuard} from "./auth.guard";
-import { TimerComponent } from './timer/timer.component';
-=======
->>>>>>> .merge_file_U940ob
+import {TimerComponent} from "./timer/timer.component";
 // import {HttpClientInMemoryWebApiModule} from 'angular-in-memory-web-api/http-client-in-memory-web-api.module';
 
 @NgModule({
@@ -30,13 +27,9 @@ import { TimerComponent } from './timer/timer.component';
         MessagesComponent,
         HomeComponent,
         SidebarComponent,
-<<<<<<< .merge_file_nZ7lya
         TimerComponent,
     ],
     providers: [AuthGuard]
-=======
-    ]
->>>>>>> .merge_file_U940ob
 })
 
 export class UserModule { }
