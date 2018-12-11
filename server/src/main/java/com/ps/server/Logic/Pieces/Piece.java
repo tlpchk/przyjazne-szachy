@@ -122,6 +122,25 @@ public abstract class Piece {
         return type;
     }
 
+    /**
+     * Creates new piece.
+     * @param type piece type (KING, QUEEN, KNIGHT, BISHOP, ROOK, PAWN),
+     *             instance the according class will be created
+     * @param position on board, where the piece stands (should be in bounds row: 0-7, column: 0-7)
+     * @param color specifies the color of chess piece (WHITE or BLACK)
+     * @return created piece
+     */
+    static public Piece createPiece(PieceType type, Position position, Color color) {
+        switch (type) {
+            case KING: return new King(color, position);
+            case QUEEN: return new Queen(color, position);
+            case ROOK: return new Rook(color, position);
+            case KNIGHT: return new Knight(color, position);
+            case BISHOP: return new Bishop(color, position);
+            default: return new Pawn(color, position);
+        }
+    }
+
     public enum PieceType {
         KING, QUEEN, PAWN, ROOK, KNIGHT, BISHOP
     }

@@ -6,12 +6,15 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.Collections;
 
+import static com.ps.server.Logic.GameState.CHECKMATE;
+import static com.ps.server.Logic.GameState.STALEMATE;
+import static com.ps.server.Logic.Pieces.Piece.PieceType.*;
+import static org.junit.Assert.*;
+
 import static com.ps.server.Logic.Color.BLACK;
 import static com.ps.server.Logic.Color.WHITE;
 import static com.ps.server.Logic.Move.MoveType.EN_PASSANT;
 import static com.ps.server.Logic.Move.MoveType.LONG_CASTLE;
-import static com.ps.server.Logic.Pieces.Piece.PieceType.KING;
-import static com.ps.server.Logic.Pieces.Piece.PieceType.PAWN;
 
 public class BoardTest {
     Rook whiteRook = new Rook(WHITE, new Position(1, 4));
@@ -66,8 +69,59 @@ public class BoardTest {
         ));
         Board board = new Board(white, black);
         //System.out.print(board.toString());
-        board.makeMove(new Move(KING, BLACK, blackKingsPos, blackRootPos, LONG_CASTLE));
+        board.updateGame(BLACK);
+        Move move = board.validatePlayersMove(blackKingsPos, blackRootPos, BLACK);
+        board.makeMove(move);
         //System.out.print(board.toString());
         assert(king.getPosition().equalsToPos(new Position(0, 2)));
+    }
+
+    @Test
+    public void testPromotionMove() {
+            Set black = new Set(BLACK, Arrays.asList(
+                    new King(BLACK, new Position(0, 0))
+            ));
+            Set white = new Set(WHITE, Arrays.asList(
+                    new King(WHITE, new Position(6, 2)),
+                    new Pawn(WHITE, new Position(1, 5))
+            ));
+            Board board = new Board(white, black);
+            board.updateGame(WHITE);
+            Move move = board.validatePlayersMove(new Position(1, 5), new Position(0,5), WHITE);
+            move.setPromoteTo(KNIGHT);
+            board.makeMove(move);
+            assertEquals(KNIGHT, board.getChessSquareState(new Position(0,5)).getPiece().type);
+    }
+
+    @Test
+    public void testGameEnd() {
+        Set white = new Set(WHITE, Arrays.asList(
+                new King(WHITE, new Position(0, 0)),
+                new Rook(WHITE, new Position(2, 5))
+        ));
+        Set black = new Set(BLACK, Arrays.asList(
+                new King(BLACK, new Position(6, 2)),
+                new Queen(BLACK, new Position(1, 1)),
+                new Bishop(BLACK, new Position(3, 3))
+        ));
+        Board board = new Board(white, black);
+        assertEquals(CHECKMATE, board.updateGame(WHITE));
+
+    }
+
+    @Test
+    public void testStaleMate() {
+        Set black = new Set(BLACK, Arrays.asList(
+                new King(BLACK, new Position(0, 0)),
+                new Pawn(BLACK, new Position(2, 3))
+        ));
+        Set white = new Set(WHITE, Arrays.asList(
+                new King(WHITE, new Position(6, 2)),
+                new Rook(WHITE, new Position(1, 1)),
+                new Bishop(WHITE, new Position(3, 3))
+        ));
+        Board board = new Board(white, black);
+        assertEquals(STALEMATE, board.updateGame(BLACK));
+
     }
 }

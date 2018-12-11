@@ -6,14 +6,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.ps.server.Logic.Color.BLACK;
 import static com.ps.server.Logic.Color.WHITE;
 import static com.ps.server.Logic.Move.MoveType.*;
 import static com.ps.server.Logic.Pieces.Piece.PieceType.KING;
 
 public class King extends StraightMovingPieces {
     private boolean castleRights;
-    private static Position[] whiteRooks = SetFactory.WhiteSetFactory.rookPositions;
-    private static Position[] blackRooks = SetFactory.BlackSetFactory.rookPositions;
+    private static final Position[] whiteRooks = SetFactory.WhiteSetFactory.rookPositions;
+    private static final Position[] blackRooks = SetFactory.BlackSetFactory.rookPositions;
+    private static final Position whiteKingPosition = SetFactory.WhiteSetFactory.kingsPosition;
+    private static final Position blackKingPosition = SetFactory.BlackSetFactory.kingsPosition;
 
     /**
      * Class constructor.
@@ -22,7 +25,17 @@ public class King extends StraightMovingPieces {
      */
     public King(Color color, Position position) {
         super(color, KING, position);
-        castleRights = true;
+        if((color == WHITE && whiteKingPosition.equalsToPos(position)) ||
+                (color == BLACK && blackKingPosition.equalsToPos(position))) {
+            castleRights = true;
+        } else {
+            castleRights = false;
+        }
+    }
+
+    King(Color color, Position position, boolean castleRights) {
+        super(color, KING, position);
+        this.castleRights = castleRights;
     }
 
     /**
@@ -67,7 +80,8 @@ public class King extends StraightMovingPieces {
      */
     @Override
     public boolean checkIfCanCaptureKingOn(Position kingsPosition) {
-        return false;
+        return (Math.abs(kingsPosition.col - position.col) < 2 &&
+                Math.abs(kingsPosition.row - position.row) < 2);
     }
 
     /**
@@ -75,7 +89,7 @@ public class King extends StraightMovingPieces {
      */
     @Override
     public Piece copy() {
-        return new King(color, position);
+        return new King(color, position, castleRights);
     }
 
     /**
@@ -85,6 +99,10 @@ public class King extends StraightMovingPieces {
     public void move(Position destination) {
         castleRights = false;
         super.move(destination);
+    }
+
+    boolean hasCasteRights() {
+        return castleRights;
     }
 
     /**
