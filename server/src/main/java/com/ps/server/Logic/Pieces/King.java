@@ -13,10 +13,10 @@ import static com.ps.server.Logic.Pieces.Piece.PieceType.KING;
 
 public class King extends StraightMovingPieces {
     private boolean castleRights;
-    private static Position[] whiteRooks = SetFactory.WhiteSetFactory.rookPositions;
-    private static Position[] blackRooks = SetFactory.BlackSetFactory.rookPositions;
-    private static Position whiteKingPosition = SetFactory.WhiteSetFactory.kingsPosition;
-    private static Position blackKingPosition = SetFactory.BlackSetFactory.kingsPosition;
+    private static final Position[] whiteRooks = SetFactory.WhiteSetFactory.rookPositions;
+    private static final Position[] blackRooks = SetFactory.BlackSetFactory.rookPositions;
+    private static final Position whiteKingPosition = SetFactory.WhiteSetFactory.kingsPosition;
+    private static final Position blackKingPosition = SetFactory.BlackSetFactory.kingsPosition;
 
     /**
      * Class constructor.
@@ -72,7 +72,8 @@ public class King extends StraightMovingPieces {
      */
     @Override
     public boolean checkIfCanCaptureKingOn(Position kingsPosition) {
-        return false;
+        return (Math.abs(kingsPosition.col - position.col) < 2 &&
+                Math.abs(kingsPosition.row - position.row) < 2);
     }
 
     /**
