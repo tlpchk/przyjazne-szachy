@@ -187,7 +187,7 @@ public class GameService {
     private void updateGamesAfterMove(Long gameId, MoveResponseDTO moveDTO) {
         List<MoveUpdateDTO> updateList = updates.get(gameId);
         MoveUpdateDTO lastUpdate = updateList.get(updateList.size() - 1);
-        if ( lastUpdate.equals(moveDTO)){
+        if ( !lastUpdate.equals(moveDTO)){
             Long newId = lastUpdate.getUpdateId() + 1;
             System.out.println("UPDATE: " + newId);
             MoveUpdateDTO moveUpdateDTO = new MoveUpdateDTO(newId, moveDTO);

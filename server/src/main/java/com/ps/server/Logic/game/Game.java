@@ -51,15 +51,15 @@ public class Game {
                 //TODO RS: Before changing game's turn should check for CHECKMATE or PAT
                 flipTurn();
                 List<Change> listOfChanges = board.getListOfChanges(move);
-                if (secondPlayer instanceof BotPlayer) {
-                    board.updateGame(secondPlayer.getColor());
-                    BotController controller = getBotController();
-                    Move botMove = controller.execute(board, secondPlayer.getColor());
-                    board.makeMove(botMove);
-                    flipTurn();
-                    listOfChanges.addAll(board.getListOfChanges(botMove));
-                }
-                listOfChanges.addAll(makeMoveBot());
+//                if (secondPlayer instanceof BotPlayer) {
+//                    board.updateGame(secondPlayer.getColor());
+//                    BotController controller = getBotController();
+//                    Move botMove = controller.execute(board, secondPlayer.getColor());
+//                    board.makeMove(botMove);
+//                    flipTurn();
+//                    listOfChanges.addAll(board.getListOfChanges(botMove));
+//                }
+//                listOfChanges.addAll(makeMoveBot());
                 return listOfChanges;
             } else {
                 //TODO RS: Give reason why
@@ -154,7 +154,7 @@ public class Game {
         if (piece != null) {
 //            piece.legalMoves();
             piece.update();
-            List<Move> legalMoves = piece.getLegalMoves();
+            List<Move> legalMoves = piece.getListOfMoves();
             possibleMoves = getPossibleMoves(legalMoves);
             type = piece.getType();
             color = piece.color;
@@ -189,7 +189,7 @@ public class Game {
         if (piece != null) {
 //            piece.legalMoves();
             piece.update();
-            List<Move> legalMoves = piece.getLegalMoves();
+            List<Move> legalMoves = piece.getListOfMoves();
             return getPossibleMoves(legalMoves);
         }
         return Collections.emptyList();

@@ -101,7 +101,7 @@ public class GameController {
 
     @RequestMapping(value = "/{gameId}/update", method = RequestMethod.GET)
     public MoveUpdateDTO getLastUpdate(@PathVariable Long gameId) throws GameNotExistException {
-//        gameService.makeMoveBot(gameId);
+        gameService.makeMoveBot(gameId);
         return gameService.getLastUpdate(gameId);
     }
 
