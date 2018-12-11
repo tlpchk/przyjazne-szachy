@@ -111,7 +111,7 @@ public class Board {
             case PROMOTION:
                 removePiece(dest);
                 removePiece(loc);
-                addPiece(new Queen(move.pieceColor, dest), dest);
+                addPiece(Piece.createPiece(move.getPromoteTo(), dest, move.pieceColor), dest);
                 break;
             case EN_PASSANT:
                 removePiece(new Position(loc.row, dest.col));
@@ -233,7 +233,7 @@ public class Board {
         boardCopy.makeMove(move);
         return !boardCopy.checkIfKingInCapture(move.pieceColor);
     }
-    
+
     private Piece[][] generateBoardFromSets(Set set1, Set set2) {
         Piece[][] board = new Piece[ROW_NUM][];
         for(int i = 0; i < ROW_NUM; i++) {
