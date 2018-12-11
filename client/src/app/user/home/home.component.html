@@ -1,0 +1,14 @@
+<div>
+    <h1> Zaprzyjaźnij się z szachami!</h1>
+
+    <nav>
+        <a (click)="createNewCompetitionGame()" routerLink="/board">Nowa gra(Człowiek vs. Człowiek)</a>
+        <a (click)="createNewBotGame()" routerLink="/board">Nowa gra(Człowiek vs. Bot)</a>
+    </nav>
+
+    <h2>Dostępne gry</h2>
+    <ul *ngIf="gameList">
+        <li *ngFor="let game of gameList">{{game}} <button (click)="joinGame(game)" routerLink="/board">Dołącz</button></li>
+    </ul>
+    <p *ngIf="!gameList">Brak gier</p>
+</div>
