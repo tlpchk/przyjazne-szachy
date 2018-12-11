@@ -39,9 +39,9 @@ public class GameService {
     /**
      * Creates new Game instance and saves it in database.
      *
-     * @param firstPlayerEntity  FirstPlayerEntity describes first player in game.
-     * @param secondPlayerEntity SecondPlayerEntity describes second player in game.
-     * @return Id of newly created game.
+     * @param firstPlayerEntity  FirstPlayerEntity describes first Player in Game.
+     * @param secondPlayerEntity SecondPlayerEntity describes second Player in Game.
+     * @return Id of newly created Game.
      * @throws InvalidRequiredArgumentException when players do not have playerType set
      * @throws SamePlayerException              when firstPlayer is the same as secondPlayer (which means they have the same color)
      */
@@ -101,13 +101,13 @@ public class GameService {
     }
 
     /**
-     * Joins {@param secondPlayer} to the game with {@param gameId}
+     * Joins {@param secondPlayer} to the Game with {@param gameId}
      *
-     * @param gameId             Id of the game to join
-     * @param secondPlayerEntity SecondPlayerEntity describes Player who wants to join the game
-     * @throws InvalidRequiredArgumentException when player does not have playerType set
-     * @throws CannotJoinPlayerException        when game has already started (there are two players in game)
-     * @throws GameNotExistException            when game with given game id does not exist
+     * @param gameId             Id of the Game to join
+     * @param secondPlayerEntity SecondPlayerEntity describes Player who wants to join the Game
+     * @throws InvalidRequiredArgumentException when Player does not have playerType set
+     * @throws CannotJoinPlayerException        when Game has already started (there are two players in Game)
+     * @throws GameNotExistException            when Game with given Game id does not exist
      */
     public void joinGame(Long gameId, PlayerEntity secondPlayerEntity) throws InvalidRequiredArgumentException, CannotJoinPlayerException, GameNotExistException {
         synchronized (gamesMap) {
@@ -133,10 +133,10 @@ public class GameService {
     }
 
     /**
-     * Returns game with given {@param gameId}
+     * Returns Game with given {@param gameId}
      *
-     * @param gameId Id of the game
-     * @return game with given {@param gameId}, null if sucha a game does not exist
+     * @param gameId Id of the Game
+     * @return Game with given {@param gameId}, null if sucha a Game does not exist
      */
     public GameEntity getGameEntity(Long gameId) {
         return gameRepository.findById(gameId).orElse(null);
@@ -144,16 +144,16 @@ public class GameService {
 
 
     /**
-     * Makes given move on board.
+     * Makes given Move on board.
      *
-     * @param gameId       Id of the game in which move has to be made.
-     * @param playerEntity PlayerEntity describes player who wants to make move.
-     * @param origin       Origin of the move.
-     * @param destination  Destination of the move.
+     * @param gameId       Id of the Game in which Move has to be made.
+     * @param playerEntity PlayerEntity describes Player who wants to make Move.
+     * @param origin       Origin of the Move.
+     * @param destination  Destination of the Move.
      * @return
-     * @throws InvalidRequiredArgumentException when player does not have playerType set
-     * @throws NotPlayerTurnException           when {@param playerEntity} wants to make move when it is not its turn
-     * @throws GameNotExistException            when game with given game id does not exist
+     * @throws InvalidRequiredArgumentException when Player does not have playerType set
+     * @throws NotPlayerTurnException           when {@param playerEntity} wants to make Move when it is not its turn
+     * @throws GameNotExistException            when Game with given Game id does not exist
      */
     public MoveResponseDTO makeMove(Long gameId, PlayerEntity playerEntity, Position origin, Position destination) throws InvalidRequiredArgumentException, NotPlayerTurnException, GameNotExistException {
         synchronized (gamesMap) {
@@ -190,11 +190,11 @@ public class GameService {
     }
 
     /**
-     * Gets board from game.
+     * Gets board from Game.
      *
-     * @param gameId Id of the game.
+     * @param gameId Id of the Game.
      * @return List of PieceDTO describing Board.
-     * @throws GameNotExistException when game with given game id does not exist
+     * @throws GameNotExistException when Game with given Game id does not exist
      */
     public List<PieceDTO> getBoard(Long gameId) throws GameNotExistException {
         synchronized (gamesMap) {
@@ -206,7 +206,7 @@ public class GameService {
     /**
      * Return possible moves for Piece located on Position.
      *
-     * @param gameId   Id of the game on which Piece is located.
+     * @param gameId   Id of the Game on which Piece is located.
      * @param position Postition on which Piece is located.
      * @return List of possible moves.
      */
