@@ -42,23 +42,6 @@ public class ExtendedBoardEvaluator extends StandardBoardEvaluator {
 
     private int mobility(final Board board, final Color color) {
         board.updateGame(color);
-        return getLegalMoves(board, color).size();
-    }
-
-    private List<Move> getLegalMoves(final Board board, Color color) {
-        Piece[][] chessBoard = board.getBoard();
-        List<Move> legalMoves = new ArrayList<>();
-
-        for(int i = 0; i < 8; i++) {
-            for(int j = 0; j < 8; j++) {
-                if(chessBoard[i][j] == null)
-                    continue;
-                if(chessBoard[i][j].color == color && chessBoard[i][j].getListOfMoves() != null) {
-                    legalMoves.addAll(chessBoard[i][j].getListOfMoves());
-                }
-            }
-        }
-
-        return legalMoves;
+        return board.getLegalMoves(color).size();
     }
 }

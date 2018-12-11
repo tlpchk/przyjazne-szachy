@@ -3,7 +3,6 @@ package com.ps.server.AI;
 import com.ps.server.Logic.*;
 import com.ps.server.Logic.Pieces.King;
 import com.ps.server.Logic.Pieces.Pawn;
-import com.ps.server.Logic.Pieces.Piece;
 import com.ps.server.Logic.Pieces.Rook;
 import org.junit.Test;
 
@@ -11,12 +10,10 @@ import java.util.Arrays;
 
 import static com.ps.server.Logic.Color.BLACK;
 import static com.ps.server.Logic.Color.WHITE;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
 
-public class AlphaBetaTest {
+public class MultipleBotMoveTest {
     @Test
-    public void correctMoveChoiceTest() {
+    public void test() {
         Rook whiteRook = new Rook(WHITE, new Position(1, 4));
         Pawn whitePawn = new Pawn(WHITE, new Position(6, 5));
 
@@ -32,28 +29,42 @@ public class AlphaBetaTest {
         ));
 
         Board board = new Board(whiteSet, blackSet);
+
         board.updateGame(Color.WHITE);
         System.out.print(board.toString());
 
         MoveStrategy moveStrategy = new AlphaBeta();
         ExtendedBoardEvaluator extendedBoardEvaluator = new ExtendedBoardEvaluator();
-
-        assertEquals(101, extendedBoardEvaluator.evaluate(board));
-        System.out.println(extendedBoardEvaluator.evaluate(board));
-
         Move move = moveStrategy.execute(board, 4, Color.WHITE);
-        System.out.println(((AlphaBeta) moveStrategy).getBoardsEvaluated());
-        assertSame(Piece.PieceType.PAWN ,move.pieceType);
-        assertSame(Move.MoveType.NORMAL,move.type);
-        assertSame(new Position(6, 5).col, move.loc.col);
-        assertSame(new Position(6, 5).row, move.loc.row);
-        assertSame(new Position(5, 4).col, move.dest.col);
-        assertSame(new Position(5, 4).row, move.dest.row);
+
         board.makeMove(move);
 
-        System.out.print(board.toString());
+        board.updateGame(Color.BLACK);
+        System.out.println(board.toString());
 
-        assertEquals(610, extendedBoardEvaluator.evaluate(board));
+        Move blackKingMove = board.validatePlayersMove(new Position(7, 4), new Position(6, 4), BLACK);
+        board.makeMove(blackKingMove);
+
+        System.out.println(board.toString());
+
+        board.updateGame(Color.WHITE);
+        Move whiteRookMove = board.validatePlayersMove(new Position(1, 4), new Position(1, 0), WHITE);
+        board.makeMove(whiteRookMove);
+
+        System.out.println(board.toString());
+
+        board.updateGame(Color.BLACK);
+
+        Move anotherBotMove = moveStrategy.execute(board, 4, Color.BLACK);
+        System.out.println(anotherBotMove.dest);
         System.out.println(extendedBoardEvaluator.evaluate(board));
+        board.makeMove(anotherBotMove);
+
+        System.out.println(board.toString());
+        /*Move blackCapture = board.validatePlayersMove(new Position(6, 4), new Position(5, 4), BLACK);
+        board.makeMove(blackCapture);
+        System.out.println(extendedBoardEvaluator.evaluate(board));
+
+        System.out.println(board.toString());*/
     }
 }

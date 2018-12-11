@@ -71,8 +71,6 @@ public class MinMax implements MoveStrategy {
     }
 
     public int min(final Board board, final int depth, Color color) {
-        //System.out.println("1");
-        //System.out.print(board.toString());
         board.updateGame(color);
 
         if(depth == 0 /*TODO checkmate*/) {
@@ -101,13 +99,10 @@ public class MinMax implements MoveStrategy {
     }
 
     public int max(final Board board, final int depth, Color color) {
-        //System.out.println("2");
-        //System.out.print(board.toString());
         board.updateGame(color);
 
         if(depth == 0 /*TODO checkmate*/) {
             boardsEvaluated++;
-            System.out.println(boardsEvaluated);
             return this.boardEvaluator.evaluate(board);
         }
 
