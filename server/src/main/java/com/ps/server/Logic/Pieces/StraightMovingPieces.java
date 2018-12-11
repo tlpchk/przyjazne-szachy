@@ -10,7 +10,7 @@ import java.util.List;
 import static com.ps.server.Logic.ChessSquareState.State.OCCUPIED;
 import static com.ps.server.Logic.Move.MoveType.NORMAL;
 
-public abstract class StraightMovingPieces extends Piece {
+abstract class StraightMovingPieces extends Piece {
 
     StraightMovingPieces(Color color, PieceType type, Position position) {
         super(color, type, position);

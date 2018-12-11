@@ -14,11 +14,19 @@ public class King extends StraightMovingPieces {
     private static Position[] whiteRooks = SetFactory.WhiteSetFactory.rookPositions;
     private static Position[] blackRooks = SetFactory.BlackSetFactory.rookPositions;
 
+    /**
+     * Class constructor.
+     * @param position on board, where the piece stands (should be in bounds row: 0-7, column: 0-7)
+     * @param color specifies the color of chess piece (WHITE or BLACK)
+     */
     public King(Color color, Position position) {
         super(color, KING, position);
         castleRights = true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     private List<Move> generateCastleMoves() {
         if(!castleRights) return null;
         List<Move> legalMoves = new ArrayList<>();
@@ -33,6 +41,9 @@ public class King extends StraightMovingPieces {
         return legalMoves;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Move> semiLegalMoves() {
         List<Move> legalMoves = new ArrayList<>();
@@ -50,22 +61,34 @@ public class King extends StraightMovingPieces {
         return legalMoves;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean checkIfCanCaptureKingOn(Position kingsPosition) {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Piece copy() {
         return new King(color, position);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void move(Position destination) {
         castleRights = false;
         super.move(destination);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return color == WHITE ? "♚" : "♔";
