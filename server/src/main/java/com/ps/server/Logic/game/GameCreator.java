@@ -43,8 +43,7 @@ public class GameCreator {
 
     //TODO RS: Think twice if this should work like that.
     private void setGameParameters(Game game, Player secondPlayer) {
-        System.out.println("SECOND PLAYER " + secondPlayer.getClass());
-        if (secondPlayer instanceof BotPlayer) {
+        if (secondPlayer != null && secondPlayer instanceof BotPlayer) {
             game.setGameStatus(GameStatus.FIRST_PLAYER_TURN);
         } else {
             game.setGameStatus(GameStatus.WAITING_FOR_SECOND_PLAYER);

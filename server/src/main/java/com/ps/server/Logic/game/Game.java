@@ -43,19 +43,24 @@ public class Game {
      */
     public List<Change> makeMove(Position origin, Position destination, Player player) throws NotPlayerTurnException, NotValidMoveException {
         if (isPlayerTurn(player)) {
+            //jesli zwroci ze jest mat, tzn ze poprzedni gracz wygral
             board.updateGame(player.getColor());
             Move move = board.validatePlayersMove(origin, destination, player.getColor());
             if (isMoveValid(move)) {
                 board.makeMove(move);
                 //TODO RS: Before changing game's turn should check for CHECKMATE or PAT
                 flipTurn();
-                List<Change> changesList = board.getListOfChanges(move);
+                List<Change> listOfChanges = board.getListOfChanges(move);
+                ;
                 if (secondPlayer instanceof BotPlayer) {
+                    board.updateGame(secondPlayer.getColor());
                     BotController controller = getBotController();
                     Move botMove = controller.execute(board, secondPlayer.getColor());
-                    changesList.addAll(board.getListOfChanges(botMove));
+                    board.makeMove(botMove);
+                    flipTurn();
+                    listOfChanges.addAll(board.getListOfChanges(botMove));
                 }
-                return changesList;
+                return listOfChanges;
             } else {
                 //TODO RS: Give reason why
                 throw new NotValidMoveException();
@@ -63,6 +68,20 @@ public class Game {
         } else {
             throw new NotPlayerTurnException();
         }
+    }
+
+    public List<Change> makeMoveBot() {
+        if (isPlayerTurn(secondPlayer) && secondPlayer instanceof BotPlayer) {
+            System.out.println("SPT: " + isPlayerTurn(secondPlayer));
+            System.out.println("Bot: " + (secondPlayer instanceof BotPlayer));
+            board.updateGame(secondPlayer.getColor());
+            BotController controller = getBotController();
+            Move botMove = controller.execute(board, secondPlayer.getColor());
+            board.makeMove(botMove);
+            flipTurn();
+            return board.getListOfChanges(botMove);
+        }
+        return Collections.emptyList();
     }
 
     private BotController getBotController() {

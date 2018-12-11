@@ -14,6 +14,6 @@ public class BotController {
 
     //TODO determine how to calculate depth based on time left
     private int getDepth() {
-        return 4; //temporarily fixed depth
+        return 2; //temporarily fixed depth
     }
 }

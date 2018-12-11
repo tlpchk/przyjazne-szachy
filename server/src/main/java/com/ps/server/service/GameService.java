@@ -173,6 +173,16 @@ public class GameService {
         }
     }
 
+    public void makeMoveBot(Long gameId) throws GameNotExistException {
+        synchronized (gamesMap) {
+            Game game = getGameFromGames(gameId);
+            boolean isMoveValid = true;
+            List<Change> listOfChanges = game.makeMoveBot();
+            MoveResponseDTO moveDTO = new MoveResponseDTO(isMoveValid, listOfChanges);
+            updateGamesAfterMove(gameId, moveDTO);
+        }
+    }
+
     private void updateGamesAfterMove(Long gameId, MoveResponseDTO moveDTO) {
         Long newId = lastUpdate.get(gameId).getUpdateId() + 1;
         MoveUpdateDTO moveUpdateDTO = new MoveUpdateDTO(newId, moveDTO);
@@ -194,9 +204,9 @@ public class GameService {
     }
 
     /**
-     *  Return possible moves for Piece located on Position.
+     * Return possible moves for Piece located on Position.
      *
-     * @param gameId Id of the game on which Piece is located.
+     * @param gameId   Id of the game on which Piece is located.
      * @param position Postition on which Piece is located.
      * @return List of possible moves.
      */
