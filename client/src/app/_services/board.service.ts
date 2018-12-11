@@ -51,7 +51,7 @@ export class BoardService {
             let possibleMoves: number[] = [];
             for (let j in pieces[i].possibleMoves) {
                 let row = pieces[i].possibleMoves[j].row;
-                let column = pieces[i].possibleMoves[j].col;
+                let column = pieces[i].possibleMoves[j].column;
                 let possibleMoveId = this.coordinatesService.backendToFrontend(row, column);
                 possibleMoves.push(possibleMoveId);
             }
@@ -126,7 +126,7 @@ export class BoardService {
         let possibleMovesToReturn: number[] = [];
         for (let i in possibleMoves) {
             let possibleMove = possibleMoves[i];
-            let possibleMoveId = this.coordinatesService.backendToFrontend(possibleMove.row, possibleMove.col);
+            let possibleMoveId = this.coordinatesService.backendToFrontend(possibleMove.row, possibleMove.column);
             possibleMovesToReturn.push(possibleMoveId);
         }
         return possibleMovesToReturn;
