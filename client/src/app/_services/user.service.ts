@@ -12,7 +12,7 @@ const httpOptions = {
     providedIn: 'root'
 })
 
-export class StartService {
+export class UserService {
 
     private gamesUrl = 'http://localhost:8080/games';
     private humanPlayersUrl = 'http://localhost:8080/players/humans';
@@ -27,8 +27,8 @@ export class StartService {
         return this.http.get<number[]>(this.gamesUrl);
     }
 
-    createNewGame(fisrtPlayerId: number, secondPlayerId: number): Observable<number> {
-        let createGameDTO = new CreateGameDTO(fisrtPlayerId, secondPlayerId);
+    createNewGame(firstPlayerId: number, secondPlayerId: number): Observable<number> {
+        let createGameDTO = new CreateGameDTO(firstPlayerId, secondPlayerId);
         return this.http.post<number>(this.gamesUrl, createGameDTO, httpOptions);
     }
 

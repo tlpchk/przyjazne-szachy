@@ -18,8 +18,8 @@ public class Change {
     /**
      * Class constructor.
      * @param location specifies the location on board of the change
-     * @param type specifies the type of chess piece standing on that location (after change)
-     * @param color specifies the color of chess piece
+     * @param type specifies the type of chess Piece standing on that location (after change)
+     * @param color specifies the color of chess Piece
      */
     public Change(Position location, Piece.PieceType type, Color color) {
         this.location = location;

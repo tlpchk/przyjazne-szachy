@@ -11,10 +11,10 @@ import com.ps.server.Logic.player.Player;
 public class GameCreator {
 
     /**
-     * Creates new game.
+     * Creates new Game.
      *
-     * @param firstPlayer  First player in game.
-     * @param secondPlayer Second player in game. If set to null competition game is created. BotPlayer game is created otherwise.
+     * @param firstPlayer  First Player in Game.
+     * @param secondPlayer Second Player in Game. If set to null competition Game is created. BotPlayer Game is created otherwise.
      * @return Newly created Game.
      * @throws IllegalArgumentException when {@param firstPlayer} is null
      * @throws SamePlayerException      when firstPlayer is the same as secondPlayer (which means they have the same color)
@@ -50,18 +50,18 @@ public class GameCreator {
         }
     }
 
-//    private void setCompetitionGame(Game game) {
-//        game.setGameType(GameType.COMPETITION_GAME);
-//        game.setGameStatus(GameStatus.WAITING_FOR_SECOND_PLAYER);
-//        game.setSecondPlayer(null);
+//    private void setCompetitionGame(Game Game) {
+//        Game.setGameType(GameType.COMPETITION_GAME);
+//        Game.setGameStatus(GameStatus.WAITING_FOR_SECOND_PLAYER);
+//        Game.setSecondPlayer(null);
 //    }
 //
 //
-//    private void setBotGame(Game game) {
-//        game.setGameType(GameType.BOT_GAME);
-//        game.setGameStatus(GameStatus.FIRST_PLAYER_TURN);
+//    private void setBotGame(Game Game) {
+//        Game.setGameType(GameType.BOT_GAME);
+//        Game.setGameStatus(GameStatus.FIRST_PLAYER_TURN);
 //        BotController controller
-//        game.setSecondPlayer(new BotPlayer());
+//        Game.setSecondPlayer(new BotPlayer());
 //    }
 
 

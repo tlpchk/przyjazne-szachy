@@ -32,14 +32,14 @@ public class Game {
 
 
     /**
-     * Makes given move on board.
+     * Makes given Move on board.
      *
-     * @param origin      Origin of the move.
-     * @param destination Destination of the move.
-     * @param player      Player who wants to make a move.
-     * @return List of Changes on Board, which occur after move, e.g. PROMOTION.
-     * @throws NotPlayerTurnException when {@param player} wants to make move when it is not its turn
-     * @throws NotValidMoveException  when {@param move} is not valid
+     * @param origin      Origin of the Move.
+     * @param destination Destination of the Move.
+     * @param player      Player who wants to make a Move.
+     * @return List of Changes on Board, which occur after Move, e.g. PROMOTION.
+     * @throws NotPlayerTurnException when {@param Player} wants to make Move when it is not its turn
+     * @throws NotValidMoveException  when {@param Move} is not valid
      */
     public List<Change> makeMove(Position origin, Position destination, Player player) throws NotPlayerTurnException, NotValidMoveException {
         if (isPlayerTurn(player)) {
@@ -48,7 +48,7 @@ public class Game {
             Move move = board.validatePlayersMove(origin, destination, player.getColor());
             if (isMoveValid(move)) {
                 board.makeMove(move);
-                //TODO RS: Before changing game's turn should check for CHECKMATE or PAT
+                //TODO RS: Before changing Game's turn should check for CHECKMATE or PAT
                 flipTurn();
                 List<Change> listOfChanges = board.getListOfChanges(move);
 //                if (secondPlayer instanceof BotPlayer) {
@@ -109,10 +109,10 @@ public class Game {
     }
 
     /**
-     * Joins player to game.
+     * Joins Player to Game.
      *
-     * @param player to be joined to game.
-     * @throws CannotJoinPlayerException when game has already started (there are two players in game)
+     * @param player to be joined to Game.
+     * @throws CannotJoinPlayerException when Game has already started (there are two players in Game)
      */
     public void joinPlayer(Player player) throws CannotJoinPlayerException {
         if (isPossibleToJoinPlayer()) {

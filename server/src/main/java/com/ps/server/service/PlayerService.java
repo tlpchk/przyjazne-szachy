@@ -38,7 +38,7 @@ public class PlayerService {
     }
 
     /**
-     * Returns player with given {@param playerId}
+     * Returns Player with given {@param playerId}
      *
      * @param playerId Id of Player.
      * @return Player with given Id if such a Player exists, null otherwise (includes case when playerId is null).
@@ -56,7 +56,7 @@ public class PlayerService {
      *
      * @param playerEntity PlayerEntity describes Player who will be created.
      * @return Created Player.
-     * @throws InvalidRequiredArgumentException when player does not have playerType set
+     * @throws InvalidRequiredArgumentException when Player does not have playerType set
      */
     public Player createPlayerFromEntity(PlayerEntity playerEntity) throws InvalidRequiredArgumentException {
         Player player;

@@ -21,7 +21,7 @@ public class AlphaBeta implements MoveStrategy {
         return boardsEvaluated;
     }
 
-    //TODO: Fix game update, think about board copies
+    //TODO: Fix Game update, think about board copies
     @SuppressWarnings("Duplicates") //temporary
     @Override
     public Move execute(Board board, int depth, Color color) {
