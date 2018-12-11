@@ -12,7 +12,7 @@ const httpOptions = {
     providedIn: 'root'
 })
 
-export class StartService {
+export class UserService {
 
     private gamesUrl = 'http://localhost:8080/games';
     private playersUrl = 'http://localhost:8080/players';

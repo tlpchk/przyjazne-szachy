@@ -12,6 +12,7 @@ import {SidebarComponent} from "./sidebar/sidebar.component";
 import {UserComponent} from "./user.component";
 import {UserRoutingModule} from "./user-routing.module";
 import {AuthGuard} from "./auth.guard";
+import { TimerComponent } from './timer/timer.component';
 // import {HttpClientInMemoryWebApiModule} from 'angular-in-memory-web-api/http-client-in-memory-web-api.module';
 
 @NgModule({
@@ -26,6 +27,7 @@ import {AuthGuard} from "./auth.guard";
         MessagesComponent,
         HomeComponent,
         SidebarComponent,
+        TimerComponent,
     ],
     providers: [AuthGuard]
 })

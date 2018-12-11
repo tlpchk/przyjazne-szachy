@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {StartService} from "../../_services/start.service";
+import {UserService} from "../../_services/user.service";
 import {BoardService} from "../../_services/board.service";
 
 const firstPlayerColor = "WHITE";
@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit {
     //gameId: number;
 
 
-    constructor(private startService: StartService,
+    constructor(private userService: UserService,
                 private boardService: BoardService) {
     }
 
@@ -26,15 +26,15 @@ export class HomeComponent implements OnInit {
     }
 
     private getGameList() {
-        this.startService.getGameList().subscribe(list => {
+        this.userService.getGameList().subscribe(list => {
             this.gameList = list;
         });
     }
 
     //TODO RS: creating player creation should be another option
     createNewGame() {
-        this.startService.createNewPlayer(firstPlayerColor).subscribe(playerId => {
-            this.startService.createNewGame(playerId).subscribe(gameId => {
+        this.userService.createNewPlayer(firstPlayerColor).subscribe(playerId => {
+            this.userService.createNewGame(playerId).subscribe(gameId => {
                 this.boardService.playerId = playerId;
                 this.boardService.gameId.next(gameId);
             });
@@ -43,8 +43,8 @@ export class HomeComponent implements OnInit {
 
     //TODO RS: creating player creation should be another option
     joinGame(gameId: number) {
-        this.startService.createNewPlayer(secondPlayerColor).subscribe(playerId => {
-            this.startService.joinGame(gameId, playerId).subscribe(wasSuccessful => {
+        this.userService.createNewPlayer(secondPlayerColor).subscribe(playerId => {
+            this.userService.joinGame(gameId, playerId).subscribe(wasSuccessful => {
                 if (wasSuccessful) {
                     this.boardService.playerId = playerId;
                     this.boardService.gameId.next(gameId);
