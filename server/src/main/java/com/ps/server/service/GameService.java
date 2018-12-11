@@ -174,13 +174,14 @@ public class GameService {
         }
     }
 
-    public void makeMoveBot(Long gameId) throws GameNotExistException {
+    public MoveResponseDTO makeMoveBot(Long gameId) throws GameNotExistException, NotPlayerTurnException {
         synchronized (gamesMap) {
             Game game = getGameFromGames(gameId);
             boolean isMoveValid = true;
             List<Change> listOfChanges = game.makeMoveBot();
             MoveResponseDTO moveDTO = new MoveResponseDTO(isMoveValid, listOfChanges);
             updateGamesAfterMove(gameId, moveDTO);
+            return  moveDTO;
         }
     }
 
@@ -224,7 +225,6 @@ public class GameService {
     }
 
     public MoveUpdateDTO getLastUpdate(Long gameId) {
-
         List<MoveUpdateDTO> updateList = updates.get(gameId);
         return updateList.get(updateList.size() - 1);
     }

@@ -70,7 +70,7 @@ public class Game {
         }
     }
 
-    public List<Change> makeMoveBot() {
+    public List<Change> makeMoveBot() throws NotPlayerTurnException {
         if (isPlayerTurn(secondPlayer) && secondPlayer instanceof BotPlayer) {
             System.out.println("SPT: " + isPlayerTurn(secondPlayer));
             System.out.println("Bot: " + (secondPlayer instanceof BotPlayer));
@@ -81,7 +81,7 @@ public class Game {
             flipTurn();
             return board.getListOfChanges(botMove);
         }
-        return Collections.emptyList();
+        throw new NotPlayerTurnException();
     }
 
     private BotController getBotController() {

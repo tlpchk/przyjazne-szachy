@@ -71,7 +71,9 @@ export class BoardComponent implements OnInit {
                             this.board[cellIndex].piece = piece;
                             this.board[cellIndex].possibleMoves = possibleMoves;
                         }
-
+                        this.boardService.makeBotMove(this.gameId).subscribe(a=>{
+                            console.log("BOT MOVES: " + a);
+                        });
                     } else {
                         console.log("Invalid move");
                     }
@@ -104,34 +106,34 @@ export class BoardComponent implements OnInit {
         this.boardService.getLastUpdate(this.gameId).subscribe(moveUpdate => {
             console.log("Move update: " + moveUpdate.updateId);
             console.log("My update: " + this.lastUpdateId);
-            while(moveUpdate.updateId > this.lastUpdateId) {
-                this.updateBoard(moveUpdate);
+            if (moveUpdate.updateId > this.lastUpdateId) {
+                this.lastUpdateId = moveUpdate.updateId;
+                let changes: ChangeDTO[] = moveUpdate.moveDTO.listOfChanges;
+                for (let c in changes) {
+                    let location = changes[c].location;
+                    let pieceColor = changes[c].color;
+                    let type = changes[c].type;
+                    let cellId = this.coordinateService.backendToFrontend(location.row, location.col);
+                    let cellIndex = this.board.map(function (item) {
+                        return item.id;
+                    })
+                        .indexOf(cellId);
+                    let piece: Piece = new Piece(type, pieceColor);
+                    let possibleMoves: number[] = [];
+                    if (piece.type === null || piece.type === undefined) {
+                        piece = null;
+                    }
+
+                    this.board[cellIndex].piece = piece;
+                    this.board[cellIndex].possibleMoves = possibleMoves;
+                }
+
             }
             setTimeout(this.getLastUpdate(), 1000);
         });
-
     }
 
-    private updateBoard(moveUpdate: MoveUpdateDTO){
-        this.lastUpdateId++;
-        let changes: ChangeDTO[] = moveUpdate.moveDTO.listOfChanges;
-        for (let c in changes) {
-            let location = changes[c].location;
-            let pieceColor = changes[c].color;
-            let type = changes[c].type;
-            let cellId = this.coordinateService.backendToFrontend(location.row, location.col);
-            let cellIndex = this.board.map(function (item) {
-                return item.id;
-            })
-                .indexOf(cellId);
-            let piece: Piece = new Piece(type, pieceColor);
-            let possibleMoves: number[] = [];
-            if (piece.type === null || piece.type === undefined) {
-                piece = null;
-            }
+    private updateBoard(moveUpdate: MoveUpdateDTO) {
 
-            this.board[cellIndex].piece = piece;
-            this.board[cellIndex].possibleMoves = possibleMoves;
-        }
     }
 }
