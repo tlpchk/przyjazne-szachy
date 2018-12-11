@@ -33,7 +33,7 @@ public class GameService {
 
     private HashMap<Long, Game> gamesMap = new HashMap<>();
 
-    private HashMap<Long, MoveUpdateDTO> lastUpdate = new HashMap<>();
+    private HashMap<Long, List<MoveUpdateDTO>> updates = new HashMap<>();
 
 
     /**
@@ -80,7 +80,8 @@ public class GameService {
 
     private void updateGamesAfterCreation(Game game, Long gameId) {
         gamesMap.put(gameId, game);
-        lastUpdate.put(gameId, new MoveUpdateDTO());
+        updates.put(gameId, new ArrayList<>());
+        updates.get(gameId).add(new MoveUpdateDTO());
     }
 
 
@@ -184,9 +185,14 @@ public class GameService {
     }
 
     private void updateGamesAfterMove(Long gameId, MoveResponseDTO moveDTO) {
-        Long newId = lastUpdate.get(gameId).getUpdateId() + 1;
-        MoveUpdateDTO moveUpdateDTO = new MoveUpdateDTO(newId, moveDTO);
-        lastUpdate.put(gameId, moveUpdateDTO);
+        List<MoveUpdateDTO> updateList = updates.get(gameId);
+        MoveUpdateDTO lastUpdate = updateList.get(updateList.size() - 1);
+        if ( lastUpdate.equals(moveDTO)){
+            Long newId = lastUpdate.getUpdateId() + 1;
+            System.out.println("UPDATE: " + newId);
+            MoveUpdateDTO moveUpdateDTO = new MoveUpdateDTO(newId, moveDTO);
+            updateList.add(moveUpdateDTO);
+        }
     }
 
     /**
@@ -218,7 +224,13 @@ public class GameService {
     }
 
     public MoveUpdateDTO getLastUpdate(Long gameId) {
-        return lastUpdate.get(gameId);
+
+        List<MoveUpdateDTO> updateList = updates.get(gameId);
+        return updateList.get(updateList.size() - 1);
     }
+
+//    public MoveUpdateDTO getUpdateById(Long gameId, Long updateId) {
+//        updates.get(gameId)
+//    }
 
 }

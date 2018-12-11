@@ -51,7 +51,6 @@ public class Game {
                 //TODO RS: Before changing game's turn should check for CHECKMATE or PAT
                 flipTurn();
                 List<Change> listOfChanges = board.getListOfChanges(move);
-                ;
                 if (secondPlayer instanceof BotPlayer) {
                     board.updateGame(secondPlayer.getColor());
                     BotController controller = getBotController();
@@ -60,6 +59,7 @@ public class Game {
                     flipTurn();
                     listOfChanges.addAll(board.getListOfChanges(botMove));
                 }
+                listOfChanges.addAll(makeMoveBot());
                 return listOfChanges;
             } else {
                 //TODO RS: Give reason why
@@ -152,7 +152,8 @@ public class Game {
         Piece.PieceType type = null;
         Color color = null;
         if (piece != null) {
-            piece.legalMoves();
+//            piece.legalMoves();
+            piece.update();
             List<Move> legalMoves = piece.getLegalMoves();
             possibleMoves = getPossibleMoves(legalMoves);
             type = piece.getType();
@@ -186,7 +187,8 @@ public class Game {
         Piece[][] pieces = board.getBoard();
         Piece piece = pieces[position.row][position.col];
         if (piece != null) {
-            piece.legalMoves();
+//            piece.legalMoves();
+            piece.update();
             List<Move> legalMoves = piece.getLegalMoves();
             return getPossibleMoves(legalMoves);
         }

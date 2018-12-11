@@ -101,7 +101,10 @@ export class BoardComponent implements OnInit {
 
     getLastUpdate(): void {
         this.boardService.getLastUpdate(this.gameId).subscribe(moveUpdate => {
+            console.log("My update: " + this.lastUpdateId);
+            console.log("Last update: " + moveUpdate.updateId);
             if (moveUpdate.updateId !== this.lastUpdateId) {
+                this.lastUpdateId = moveUpdate.updateId;
                 let changes: ChangeDTO[] = moveUpdate.moveDTO.listOfChanges;
                 for (let c in changes) {
                     let location = changes[c].location;

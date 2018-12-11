@@ -207,7 +207,7 @@ public class Board {
      * @return instance of class move,
      *             that can be used later to give as parameter to makeMove method to actually make move on board
      */
-    Move validatePlayersMove(Position loc, Position dest, Color color) {
+    public Move validatePlayersMove(Position loc, Position dest, Color color) {
         Piece piece = board[loc.row][loc.col];
         if(piece == null || piece.color != color) { return null; }
         return piece.getMoveTo(dest);
@@ -285,10 +285,4 @@ public class Board {
         return builder.toString();
     }
 
-    /**
-     * @return board, a 8(rows)x8(columns) array of pieces, empty squares are null
-     */
-    public Piece[][] getBoard() {
-        return board;
-    }
 }

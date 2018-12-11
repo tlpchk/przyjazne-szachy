@@ -53,6 +53,7 @@ abstract class StraightMovingPieces extends Piece {
         int maxDistOnRow = Math.abs(destination.row - position.row);
 
         while(distOnRow < maxDistOnRow || distOnColumn < maxDistOnColumn) {
+            System.out.println("ROW: "+row+" COLUMN: "+column);
             if(board.getChessSquareState(new Position(row, column)).state == OCCUPIED) return true;
             column += diffOnColumn;
             row += diffOnRow;

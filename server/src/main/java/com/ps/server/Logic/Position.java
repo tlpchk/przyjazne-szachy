@@ -7,11 +7,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
+
 @NoArgsConstructor
 public class Position {
     /** row and column describing position of piece on board (both in bounds 0-7) */
-    public final int row ,col;
+    public int row ,col;
 
     /**
      * Class constructor for position of a piece on board
