@@ -47,11 +47,14 @@ export class BoardComponent implements OnInit {
                     if (moveResponse.wasMoveValid) {
                         console.log("This move was valid");
                         let changes: ChangeDTO[] = moveResponse.listOfChanges;
+                        console.log(moveResponse);
                         for (let c in changes) {
                             let location = changes[c].location;
                             let pieceColor = changes[c].color;
                             let type = changes[c].type;
-                            let cellId = this.coordinateService.backendToFrontend(location.row, location.column);
+                            console.log("row: " + location.row + " col: " + location.col);
+                            let cellId = this.coordinateService.backendToFrontend(location.row, location.col);
+                            console.log("id: " + cellId);
                             let cellIndex = this.board.map(function (item) {
                                 return item.id;
                             })
@@ -61,7 +64,9 @@ export class BoardComponent implements OnInit {
                             if (piece.type === null || piece.type === undefined) {
                                 piece = null;
                             }
-                            // console.log(piece);
+                            console.log("piece: " + piece);
+                            console.log("board: " + this.board);
+                            console.log("index: " + cellIndex);
                             this.board[cellIndex].piece = piece;
                             this.board[cellIndex].possibleMoves = possibleMoves;
                         }
@@ -80,6 +85,7 @@ export class BoardComponent implements OnInit {
     getGameId(): void {
         this.boardService.gameId$.subscribe(gameId => {
             this.gameId = gameId;
+            console.log(gameId);
             this.getBoard();
         });
     }
@@ -101,7 +107,7 @@ export class BoardComponent implements OnInit {
                     let location = changes[c].location;
                     let pieceColor = changes[c].color;
                     let type = changes[c].type;
-                    let cellId = this.coordinateService.backendToFrontend(location.row, location.column);
+                    let cellId = this.coordinateService.backendToFrontend(location.row, location.col);
                     let cellIndex = this.board.map(function (item) {
                         return item.id;
                     })

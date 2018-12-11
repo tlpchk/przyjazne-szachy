@@ -11,6 +11,8 @@ import {HomeComponent} from "./home/home.component";
 import {SidebarComponent} from "./sidebar/sidebar.component";
 import {UserComponent} from "./user.component";
 import {UserRoutingModule} from "./user-routing.module";
+import {AuthGuard} from "./auth.guard";
+import {TimerComponent} from "./timer/timer.component";
 // import {HttpClientInMemoryWebApiModule} from 'angular-in-memory-web-api/http-client-in-memory-web-api.module';
 
 @NgModule({
@@ -25,7 +27,8 @@ import {UserRoutingModule} from "./user-routing.module";
         MessagesComponent,
         HomeComponent,
         SidebarComponent,
-    ]
+        TimerComponent,
+    ],
 })
 
 export class UserModule { }

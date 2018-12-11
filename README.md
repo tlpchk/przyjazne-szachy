@@ -10,4 +10,4 @@ Aby uruchomić serwer, przejdź do folderu server i uruchom:
 
 Aby uruchomić klienta, przejdź do folderu client i uruchom:
 
-    ng serve -open
+   	npm start

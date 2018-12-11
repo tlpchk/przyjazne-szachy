@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {StartService} from "../../_services/start.service";
+import {UserService} from "../../_services/user.service";
 import {BoardService} from "../../_services/board.service";
 
 const firstPlayerColor = "WHITE";
@@ -13,10 +13,11 @@ const secondPlayerColor = "BLACK";
 export class HomeComponent implements OnInit {
 
     gameList: number[];
+
     //gameId: number;
 
 
-    constructor(private startService: StartService,
+    constructor(private userService: UserService,
                 private boardService: BoardService) {
     }
 
@@ -26,25 +27,36 @@ export class HomeComponent implements OnInit {
     }
 
     private getGameList() {
-        this.startService.getGameList().subscribe(list => {
+        this.userService.getGameList().subscribe(list => {
             this.gameList = list;
         });
     }
 
     //TODO RS: creating player creation should be another option
-    createNewGame() {
-        this.startService.createNewPlayer(firstPlayerColor).subscribe(playerId => {
-            this.startService.createNewGame(playerId).subscribe(gameId => {
+    createNewCompetitionGame() {
+        this.userService.createNewHumanPlayer(firstPlayerColor).subscribe(playerId => {
+            this.userService.createNewGame(playerId,null).subscribe(gameId => {
                 this.boardService.playerId = playerId;
                 this.boardService.gameId.next(gameId);
             });
         });
     }
 
+    createNewBotGame() {
+        this.userService.createNewHumanPlayer(firstPlayerColor).subscribe(playerId => {
+            this.userService.createNewBotPlayer(secondPlayerColor).subscribe(botId => {
+                this.userService.createNewGame(playerId,botId).subscribe(gameId => {
+                    this.boardService.playerId = playerId;
+                    this.boardService.gameId.next(gameId);
+                });
+            });
+        });
+    }
+
     //TODO RS: creating player creation should be another option
     joinGame(gameId: number) {
-        this.startService.createNewPlayer(secondPlayerColor).subscribe(playerId => {
-            this.startService.joinGame(gameId, playerId).subscribe(wasSuccessful => {
+        this.userService.createNewHumanPlayer(secondPlayerColor).subscribe(playerId => {
+            this.userService.joinGame(gameId, playerId).subscribe(wasSuccessful => {
                 if (wasSuccessful) {
                     this.boardService.playerId = playerId;
                     this.boardService.gameId.next(gameId);
