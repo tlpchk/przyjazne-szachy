@@ -3,10 +3,6 @@ package com.ps.server.AI;
 import com.ps.server.Logic.Board;
 import com.ps.server.Logic.Color;
 import com.ps.server.Logic.Move;
-import com.ps.server.Logic.Pieces.Piece;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MinMax implements MoveStrategy {
     private final BoardEvaluator boardEvaluator;
@@ -26,8 +22,10 @@ public class MinMax implements MoveStrategy {
         return boardsEvaluated;
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public Move execute(Board board, int depth, Color color) {
+        boardsEvaluated = 0;
         final long startTime = System.currentTimeMillis();
 
         Move bestMove = null;
@@ -71,8 +69,6 @@ public class MinMax implements MoveStrategy {
     }
 
     public int min(final Board board, final int depth, Color color) {
-        //System.out.println("1");
-        //System.out.print(board.toString());
         board.updateGame(color);
 
         if(depth == 0 /*TODO checkmate*/) {
@@ -91,7 +87,7 @@ public class MinMax implements MoveStrategy {
         for(final Move move : board.getLegalMoves(color)) {
             Board chessBoard = board.copy();
             chessBoard.makeMove(move);
-            final int currentValue = max(board, depth - 1, otherColor);
+            final int currentValue = max(chessBoard, depth - 1, otherColor);
 
             if(currentValue <= minValue)
                 minValue = currentValue;
@@ -101,13 +97,10 @@ public class MinMax implements MoveStrategy {
     }
 
     public int max(final Board board, final int depth, Color color) {
-        //System.out.println("2");
-        //System.out.print(board.toString());
         board.updateGame(color);
 
         if(depth == 0 /*TODO checkmate*/) {
             boardsEvaluated++;
-            System.out.println(boardsEvaluated);
             return this.boardEvaluator.evaluate(board);
         }
 
@@ -122,7 +115,7 @@ public class MinMax implements MoveStrategy {
         for(final Move move : board.getLegalMoves(color)) {
             Board chessBoard = board.copy();
             chessBoard.makeMove(move);
-            final int currentValue = min(board, depth - 1, otherColor);
+            final int currentValue = min(chessBoard, depth - 1, otherColor);
 
             if(currentValue >= maxValue)
                 maxValue = currentValue;
