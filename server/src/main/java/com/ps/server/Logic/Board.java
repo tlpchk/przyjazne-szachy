@@ -111,7 +111,7 @@ public class Board {
             case PROMOTION:
                 removePiece(dest);
                 removePiece(loc);
-                addPiece(new Queen(move.pieceColor, dest), dest);
+                addPiece(Piece.createPiece(move.getPromoteTo(), dest, move.pieceColor), dest);
                 break;
             case EN_PASSANT:
                 removePiece(new Position(loc.row, dest.col));

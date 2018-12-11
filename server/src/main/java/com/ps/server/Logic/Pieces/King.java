@@ -5,6 +5,7 @@ import com.ps.server.Logic.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ps.server.Logic.Color.BLACK;
 import static com.ps.server.Logic.Color.WHITE;
 import static com.ps.server.Logic.Move.MoveType.*;
 import static com.ps.server.Logic.Pieces.Piece.PieceType.KING;
@@ -13,6 +14,8 @@ public class King extends StraightMovingPieces {
     private boolean castleRights;
     private static Position[] whiteRooks = SetFactory.WhiteSetFactory.rookPositions;
     private static Position[] blackRooks = SetFactory.BlackSetFactory.rookPositions;
+    private static Position whiteKingPosition = SetFactory.WhiteSetFactory.kingsPosition;
+    private static Position blackKingPosition = SetFactory.BlackSetFactory.kingsPosition;
 
     /**
      * Class constructor.
@@ -28,7 +31,9 @@ public class King extends StraightMovingPieces {
      * {@inheritDoc}
      */
     private List<Move> generateCastleMoves() {
-        if(!castleRights) return null;
+        if(!castleRights
+                || (color == WHITE && !position.equalsToPos(whiteKingPosition))
+                || (color == BLACK && !position.equalsToPos(blackKingPosition))) return null;
         List<Move> legalMoves = new ArrayList<>();
         Position[] rooks = (color == WHITE) ? whiteRooks : blackRooks;
         for(int i = 0; i < 2; i++) {
