@@ -11,7 +11,6 @@ import {HomeComponent} from "./home/home.component";
 import {SidebarComponent} from "./sidebar/sidebar.component";
 import {UserComponent} from "./user.component";
 import {UserRoutingModule} from "./user-routing.module";
-import {AuthGuard} from "./auth.guard";
 // import {HttpClientInMemoryWebApiModule} from 'angular-in-memory-web-api/http-client-in-memory-web-api.module';
 
 @NgModule({
@@ -26,8 +25,7 @@ import {AuthGuard} from "./auth.guard";
         MessagesComponent,
         HomeComponent,
         SidebarComponent,
-    ],
-    providers: [AuthGuard]
+    ]
 })
 
 export class UserModule { }
