@@ -7,28 +7,23 @@ import java.util.Arrays;
 
 import static com.ps.server.Logic.Color.BLACK;
 import static com.ps.server.Logic.Color.WHITE;
-import static com.ps.server.Logic.Pieces.Piece.PieceType.KNIGHT;
-import static org.junit.Assert.assertEquals;
 
 public class KingTest {
-    King king = new King(WHITE, SetFactory.WhiteSetFactory.kingsPosition);
-
     @Test
     public void test() {
-        Position blackKingPos = SetFactory.WhiteSetFactory.kingsPosition;
+        Position blackKingPos = SetFactory.BlackSetFactory.kingsPosition;
+        King king = new King(BLACK, blackKingPos);
         Set black = new Set(BLACK, Arrays.asList(
-                new King(BLACK, blackKingPos)
+                king
         ));
         Set white = new Set(WHITE, Arrays.asList(
                 new King(WHITE, SetFactory.WhiteSetFactory.kingsPosition),
                 new Pawn(WHITE, new Position(1, 5))
         ));
         Board board = new Board(white, black);
-        board.updateGame(WHITE);
-        Move move = board.validatePlayersMove(blackKingPos, new Position(blackKingPos.row,blackKingPos.col+1), WHITE);
-        move.setPromoteTo(KNIGHT);
+        board.updateGame(BLACK);
+        Move move = board.validatePlayersMove(blackKingPos, new Position(blackKingPos.row,blackKingPos.col+1), BLACK);
         board.makeMove(move);
-        assertEquals(KNIGHT, board.getChessSquareState(new Position(0,5)).getPiece().type);
+        assert(!king.hasCasteRights());
     }
-
 }

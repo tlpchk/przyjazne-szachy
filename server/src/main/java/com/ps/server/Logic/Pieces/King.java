@@ -28,13 +28,16 @@ public class King extends StraightMovingPieces {
         castleRights = true;
     }
 
+    King(Color color, Position position, boolean castleRights) {
+        super(color, KING, position);
+        this.castleRights = castleRights;
+    }
+
     /**
      * {@inheritDoc}
      */
     private List<Move> generateCastleMoves() {
-        if(!castleRights
-                || (color == WHITE && !position.equalsToPos(whiteKingPosition))
-                || (color == BLACK && !position.equalsToPos(blackKingPosition))) return null;
+        if(!castleRights) return null;
         List<Move> legalMoves = new ArrayList<>();
         Position[] rooks = (color == WHITE) ? whiteRooks : blackRooks;
         for(int i = 0; i < 2; i++) {
@@ -81,7 +84,7 @@ public class King extends StraightMovingPieces {
      */
     @Override
     public Piece copy() {
-        return new King(color, position);
+        return new King(color, position, castleRights);
     }
 
     /**
@@ -91,6 +94,10 @@ public class King extends StraightMovingPieces {
     public void move(Position destination) {
         castleRights = false;
         super.move(destination);
+    }
+
+    boolean hasCasteRights() {
+        return castleRights;
     }
 
     /**
