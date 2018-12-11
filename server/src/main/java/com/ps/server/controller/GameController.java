@@ -1,7 +1,7 @@
 package com.ps.server.controller;
 
 import com.ps.server.exception.*;
-import com.ps.server.logic.Position;
+import com.ps.server.Logic.Position;
 import com.ps.server.dto.*;
 import com.ps.server.entity.PlayerEntity;
 import com.ps.server.service.GameService;
@@ -23,10 +23,10 @@ public class GameController {
     private PlayerService playerService;
 
     /**
-     * Creates new game.
+     * Creates new Game.
      *
-     * @param createGameDTO CreateGameDTO contains ids of players willing to play in game.
-     * @return Id of newly created game.
+     * @param createGameDTO CreateGameDTO contains ids of players willing to play in Game.
+     * @return Id of newly created Game.
      */
     @RequestMapping(method = RequestMethod.POST)
     public Long createGame(@RequestBody CreateGameDTO createGameDTO) throws InvalidRequiredArgumentException, SamePlayerException {
@@ -46,12 +46,12 @@ public class GameController {
     }
 
     /**
-     * Joins player to game.
+     * Joins Player to Game.
      *
-     * @param gameId   Id of the game to which player wants to join
-     * @param playerId Id of the player who wants to join game
+     * @param gameId   Id of the Game to which Player wants to join
+     * @param playerId Id of the Player who wants to join Game
      * @return true if joined successfully, false otherwise
-     * @throws GameNotExistException            when game with given game id does not exist
+     * @throws GameNotExistException            when Game with given Game id does not exist
      */
     @RequestMapping(value = "/{gameId}/join", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public boolean joinGame(@PathVariable Long gameId, @RequestBody Long playerId) throws GameNotExistException {
@@ -66,14 +66,14 @@ public class GameController {
     }
 
     /**
-     * Makes move in given game.
+     * Makes Move in given Game.
      *
-     * @param gameId        Id of the game in which move should be made.
-     * @param createMoveDTO CreateMoveDTO describes move which should be made.
-     * @return MoveResponseDTO with field wasMoveValid set to true if move was valid, set to false otherwise
-     * @throws InvalidRequiredArgumentException when player does not have playerType set
-     * @throws NotPlayerTurnException           when player wants to make move when it is not its turn
-     * @throws GameNotExistException            when game with given game id does not exist
+     * @param gameId        Id of the Game in which Move should be made.
+     * @param createMoveDTO CreateMoveDTO describes Move which should be made.
+     * @return MoveResponseDTO with field wasMoveValid set to true if Move was valid, set to false otherwise
+     * @throws InvalidRequiredArgumentException when Player does not have playerType set
+     * @throws NotPlayerTurnException           when Player wants to make Move when it is not its turn
+     * @throws GameNotExistException            when Game with given Game id does not exist
      */
     @RequestMapping(value = "/{gameId}/move", method = RequestMethod.POST)
     public MoveResponseDTO makeMove(@PathVariable Long gameId, @RequestBody CreateMoveDTO createMoveDTO) throws GameNotExistException, InvalidRequiredArgumentException, NotPlayerTurnException {
@@ -82,11 +82,11 @@ public class GameController {
     }
 
     /**
-     * Gets board from game.
+     * Gets board from Game.
      *
-     * @param gameId Id of the game.
+     * @param gameId Id of the Game.
      * @return List of PieceDTO describing Board.
-     * @throws GameNotExistException when game with given game id does not exist
+     * @throws GameNotExistException when Game with given Game id does not exist
      */
     @RequestMapping(value = "/{gameId}/board", method = RequestMethod.GET)
     public List<PieceDTO> getBoard(@PathVariable Long gameId) throws GameNotExistException {
@@ -100,7 +100,7 @@ public class GameController {
 
 
     @RequestMapping(value = "/{gameId}/update", method = RequestMethod.GET)
-    public MoveUpdateDTO getLastUpdate(@PathVariable Long gameId) {
+    public MoveUpdateDTO getLastUpdate(@PathVariable Long gameId) throws GameNotExistException {
         return gameService.getLastUpdate(gameId);
     }
 

@@ -1,7 +1,7 @@
 package com.ps.server.entity;
 
 import com.ps.server.enums.PlayerType;
-import com.ps.server.logic.Color;
+import com.ps.server.Logic.Color;
 import lombok.*;
 
 import javax.persistence.*;

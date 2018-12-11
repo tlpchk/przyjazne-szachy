@@ -3,26 +3,15 @@ import {RouterModule, Routes} from '@angular/router';
 import {BoardComponent} from "./board/board.component";
 import {HomeComponent} from "./home/home.component";
 import {UserComponent} from "./user.component";
-import {AuthGuard} from "./auth.guard";
 
 
 const routes: Routes = [
     {
-        path: '', component: UserComponent,
+        path: 'user', component: UserComponent,
         children: [
-            {
-                path: '',
-                redirectTo: '/home',
-                pathMatch: 'full'},
-            {
-                path: 'home',
-                component: HomeComponent,
-                canActivate: [AuthGuard]},
-            {
-                path: 'board',
-                component: BoardComponent,
-                canActivate: [AuthGuard]
-            },
+            {path: '', redirectTo: 'home', pathMatch: 'full'},
+            {path: 'home', component: HomeComponent},
+            {path: 'board', component: BoardComponent},
         ]
     },
 

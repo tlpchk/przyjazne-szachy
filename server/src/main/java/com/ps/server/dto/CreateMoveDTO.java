@@ -1,6 +1,6 @@
 package com.ps.server.dto;
 
-import com.ps.server.logic.Position;
+import com.ps.server.Logic.Position;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

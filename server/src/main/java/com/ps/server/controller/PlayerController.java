@@ -1,6 +1,6 @@
 package com.ps.server.controller;
 
-import com.ps.server.logic.Color;
+import com.ps.server.Logic.Color;
 import com.ps.server.entity.PlayerEntity;
 import com.ps.server.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +16,18 @@ public class PlayerController {
     @Autowired
     PlayerService playerService;
 
-    //TODO RS:Add color checking and thronig exceptions
-    @RequestMapping(method = RequestMethod.POST)
-    public Long createPlayer(@RequestBody String colorString) {
+    //TODO RS:Add color checking and throwing exceptions
+    @RequestMapping(value = "/humans",method = RequestMethod.POST)
+    public Long createHumanPlayer(@RequestBody String colorString) {
         Color color = (colorString.toUpperCase().equals("WHITE")) ? Color.WHITE : Color.BLACK;
-        PlayerEntity playerEntity = playerService.createNewPlayer(color);
+        PlayerEntity playerEntity = playerService.createNewHumanPlayer(color);
         return playerEntity.getId();
     }
 
-    //TODO RS: createBot
+    @RequestMapping(value = "/bots",method = RequestMethod.POST)
+    public Long createBot(@RequestBody String colorString) {
+        Color color = (colorString.toUpperCase().equals("WHITE")) ? Color.WHITE : Color.BLACK;
+        PlayerEntity playerEntity = playerService.createNewBot(color);
+        return playerEntity.getId();
+    }
 }

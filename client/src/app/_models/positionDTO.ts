@@ -1,4 +1,4 @@
 export class PositionDTO {
-    constructor( public row: number, public column: number) {
+    constructor( public row: number, public col: number) {
     }
 }

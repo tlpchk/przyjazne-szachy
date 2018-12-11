@@ -1,8 +1,8 @@
 package com.ps.server.dto;
 
-import com.ps.server.logic.Color;
-import com.ps.server.logic.pieces.Piece;
-import com.ps.server.logic.Position;
+import com.ps.server.Logic.Color;
+import com.ps.server.Logic.Pieces.Piece;
+import com.ps.server.Logic.Position;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
