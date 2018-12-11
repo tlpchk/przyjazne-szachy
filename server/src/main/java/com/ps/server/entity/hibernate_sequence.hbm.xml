@@ -1,0 +1,12 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name = "com.ps.server.entity.Hibernate_sequence" table = "hibernate_sequence">
+
+        <property name = "next_val" column = "next_val" type = "java.math.BigInteger"/>
+
+    </class>
+</hibernate-mapping>
