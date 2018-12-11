@@ -30,7 +30,7 @@ BEGIN
 END//
 DELIMITER ;
 
--- Zrzut struktury tabela chess_game.Game
+-- Zrzut struktury tabela chess_game.game
 CREATE TABLE IF NOT EXISTS `game` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `start_time` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `game` (
   `playerID_resumption` int(11) NOT NULL,
   `player_1` int(11) NOT NULL,
   `player_2` int(11) NOT NULL,
-  `result` enum('1_Win','2_Win','Draw') COLLATE utf16_polish_ci NOT NULL DEFAULT 'Draw',
+  `result` enum('Win_1','Win_2','Draw') COLLATE utf16_polish_ci NOT NULL DEFAULT 'Draw',
   `move_limit` time NOT NULL DEFAULT '00:05:00',
   `game_limit` time NOT NULL DEFAULT '02:00:00',
   PRIMARY KEY (`ID`),
@@ -46,22 +46,22 @@ CREATE TABLE IF NOT EXISTS `game` (
   CONSTRAINT `FK_player` FOREIGN KEY (`playerID_resumption`) REFERENCES `user` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_polish_ci;
 
--- Zrzucanie danych dla tabeli chess_game.Game: ~0 rows (około)
-/*!40000 ALTER TABLE `Game` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Game` ENABLE KEYS */;
+-- Zrzucanie danych dla tabeli chess_game.game: ~0 rows (około)
+/*!40000 ALTER TABLE `game` DISABLE KEYS */;
+/*!40000 ALTER TABLE `game` ENABLE KEYS */;
 
--- Zrzut struktury tabela chess_game.Hibernate_sequence
+-- Zrzut struktury tabela chess_game.hibernate_sequence
 CREATE TABLE IF NOT EXISTS `hibernate_sequence` (
   `next_val` bigint(20) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf16 COLLATE=utf16_polish_ci;
 
--- Zrzucanie danych dla tabeli chess_game.Hibernate_sequence: 3 rows
-/*!40000 ALTER TABLE `Hibernate_sequence` DISABLE KEYS */;
+-- Zrzucanie danych dla tabeli chess_game.hibernate_sequence: 3 rows
+/*!40000 ALTER TABLE `hibernate_sequence` DISABLE KEYS */;
 REPLACE INTO `hibernate_sequence` (`next_val`) VALUES
 	(1),
 	(1),
 	(1);
-/*!40000 ALTER TABLE `Hibernate_sequence` ENABLE KEYS */;
+/*!40000 ALTER TABLE `hibernate_sequence` ENABLE KEYS */;
 
 -- Zrzut struktury procedura chess_game.login
 DELIMITER //
@@ -77,7 +77,7 @@ BEGIN
 END//
 DELIMITER ;
 
--- Zrzut struktury tabela chess_game.Matches
+-- Zrzut struktury tabela chess_game.matches
 CREATE TABLE IF NOT EXISTS `matches` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `gameID` int(11) NOT NULL DEFAULT 0,
@@ -88,14 +88,14 @@ CREATE TABLE IF NOT EXISTS `matches` (
   CONSTRAINT `player_key` FOREIGN KEY (`playerID`) REFERENCES `user` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_polish_ci;
 
--- Zrzucanie danych dla tabeli chess_game.Matches: ~0 rows (około)
-/*!40000 ALTER TABLE `Matches` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Matches` ENABLE KEYS */;
+-- Zrzucanie danych dla tabeli chess_game.matches: ~0 rows (około)
+/*!40000 ALTER TABLE `matches` DISABLE KEYS */;
+/*!40000 ALTER TABLE `matches` ENABLE KEYS */;
 
--- Zrzut struktury tabela chess_game.Move
+-- Zrzut struktury tabela chess_game.move
 CREATE TABLE IF NOT EXISTS `move` (
-  `id` int(11) NOT NULL,
-  `created` datetime NOT NULL,
+  `id` bigint(20) NOT NULL,
+  `created` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `destination_column` int(11) NOT NULL,
   `destination_row` int(11) NOT NULL,
   `origin_column` int(11) NOT NULL,
@@ -107,58 +107,58 @@ CREATE TABLE IF NOT EXISTS `move` (
   KEY `FKfyg07nm0qyopn03emleo4jhxi` (`player_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf16 COLLATE=utf16_polish_ci;
 
--- Zrzucanie danych dla tabeli chess_game.Move: 0 rows
-/*!40000 ALTER TABLE `Move` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Move` ENABLE KEYS */;
+-- Zrzucanie danych dla tabeli chess_game.move: 0 rows
+/*!40000 ALTER TABLE `move` DISABLE KEYS */;
+/*!40000 ALTER TABLE `move` ENABLE KEYS */;
 
--- Zrzut struktury tabela chess_game.Piece
+-- Zrzut struktury tabela chess_game.piece
 CREATE TABLE IF NOT EXISTS `piece` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `name` enum('pawn','rook','bishop','knight','queen','king','free') COLLATE utf16_polish_ci NOT NULL,
-  `color` enum('white','black') COLLATE utf16_polish_ci NOT NULL,
+  `name` enum('Pawn','Rook','Bishop','Knight','Queen','King','Free') COLLATE utf16_polish_ci NOT NULL,
+  `color` enum('White','Black') COLLATE utf16_polish_ci NOT NULL,
   `position_X` int(11) NOT NULL DEFAULT 0,
   `position_Y` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf16 COLLATE=utf16_polish_ci;
 
--- Zrzucanie danych dla tabeli chess_game.Piece: ~32 rows (około)
-/*!40000 ALTER TABLE `Piece` DISABLE KEYS */;
+-- Zrzucanie danych dla tabeli chess_game.piece: ~32 rows (około)
+/*!40000 ALTER TABLE `piece` DISABLE KEYS */;
 REPLACE INTO `piece` (`ID`, `name`, `color`, `position_X`, `position_Y`) VALUES
-	(1, 'rook', 'black', 1, 1),
-	(2, 'knight', 'black', 2, 1),
-	(3, 'bishop', 'black', 3, 1),
-	(4, 'queen', 'black', 4, 1),
-	(5, 'king', 'black', 5, 1),
-	(6, 'bishop', 'black', 6, 1),
-	(7, 'knight', 'black', 7, 1),
-	(8, 'rook', 'black', 8, 1),
-	(9, 'pawn', 'black', 1, 2),
-	(10, 'pawn', 'black', 2, 2),
-	(11, 'pawn', 'black', 3, 2),
-	(12, 'pawn', 'black', 4, 2),
-	(13, 'pawn', 'black', 5, 2),
-	(14, 'pawn', 'black', 6, 2),
-	(15, 'pawn', 'black', 7, 2),
-	(16, 'pawn', 'black', 8, 2),
-	(17, 'pawn', 'white', 1, 7),
-	(18, 'pawn', 'white', 2, 7),
-	(19, 'pawn', 'white', 3, 7),
-	(20, 'pawn', 'white', 4, 7),
-	(21, 'pawn', 'white', 5, 7),
-	(22, 'pawn', 'white', 6, 7),
-	(23, 'pawn', 'white', 7, 7),
-	(24, 'pawn', 'white', 8, 7),
-	(25, 'rook', 'white', 1, 8),
-	(26, 'knight', 'white', 2, 8),
-	(27, 'bishop', 'white', 3, 8),
-	(28, 'king', 'white', 4, 8),
-	(29, 'queen', 'white', 5, 8),
-	(30, 'bishop', 'white', 6, 8),
-	(31, 'knight', 'white', 7, 8),
-	(32, 'rook', 'white', 8, 8);
-/*!40000 ALTER TABLE `Piece` ENABLE KEYS */;
+	(1, 'Rook', 'Black', 1, 1),
+	(2, 'Knight', 'Black', 2, 1),
+	(3, 'Bishop', 'Black', 3, 1),
+	(4, 'Queen', 'Black', 4, 1),
+	(5, 'King', 'Black', 5, 1),
+	(6, 'Bishop', 'Black', 6, 1),
+	(7, 'Knight', 'Black', 7, 1),
+	(8, 'Rook', 'Black', 8, 1),
+	(9, 'Pawn', 'Black', 1, 2),
+	(10, 'Pawn', 'Black', 2, 2),
+	(11, 'Pawn', 'Black', 3, 2),
+	(12, 'Pawn', 'Black', 4, 2),
+	(13, 'Pawn', 'Black', 5, 2),
+	(14, 'Pawn', 'Black', 6, 2),
+	(15, 'Pawn', 'Black', 7, 2),
+	(16, 'Pawn', 'Black', 8, 2),
+	(17, 'Pawn', 'White', 1, 7),
+	(18, 'Pawn', 'White', 2, 7),
+	(19, 'Pawn', 'White', 3, 7),
+	(20, 'Pawn', 'White', 4, 7),
+	(21, 'Pawn', 'White', 5, 7),
+	(22, 'Pawn', 'White', 6, 7),
+	(23, 'Pawn', 'White', 7, 7),
+	(24, 'Pawn', 'White', 8, 7),
+	(25, 'Rook', 'White', 1, 8),
+	(26, 'Knight', 'White', 2, 8),
+	(27, 'Bishop', 'White', 3, 8),
+	(28, 'King', 'White', 4, 8),
+	(29, 'Queen', 'White', 5, 8),
+	(30, 'Bishop', 'White', 6, 8),
+	(31, 'Knight', 'White', 7, 8),
+	(32, 'Rook', 'White', 8, 8);
+/*!40000 ALTER TABLE `piece` ENABLE KEYS */;
 
--- Zrzut struktury tabela chess_game.Player
+-- Zrzut struktury tabela chess_game.player
 CREATE TABLE IF NOT EXISTS `player` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `color` enum('White','Black') COLLATE utf16_polish_ci NOT NULL,
@@ -166,11 +166,11 @@ CREATE TABLE IF NOT EXISTS `player` (
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_polish_ci;
 
--- Zrzucanie danych dla tabeli chess_game.Player: ~0 rows (około)
-/*!40000 ALTER TABLE `Player` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Player` ENABLE KEYS */;
+-- Zrzucanie danych dla tabeli chess_game.player: ~0 rows (około)
+/*!40000 ALTER TABLE `player` DISABLE KEYS */;
+/*!40000 ALTER TABLE `player` ENABLE KEYS */;
 
--- Zrzut struktury tabela chess_game.Player_user
+-- Zrzut struktury tabela chess_game.player_user
 CREATE TABLE IF NOT EXISTS `player_user` (
   `ID_user` int(11) NOT NULL,
   `ID_player` int(11) NOT NULL,
@@ -180,9 +180,9 @@ CREATE TABLE IF NOT EXISTS `player_user` (
   CONSTRAINT `FK_user_2` FOREIGN KEY (`ID_user`) REFERENCES `user` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_polish_ci;
 
--- Zrzucanie danych dla tabeli chess_game.Player_user: ~0 rows (około)
-/*!40000 ALTER TABLE `Player_user` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Player_user` ENABLE KEYS */;
+-- Zrzucanie danych dla tabeli chess_game.player_user: ~0 rows (około)
+/*!40000 ALTER TABLE `player_user` DISABLE KEYS */;
+/*!40000 ALTER TABLE `player_user` ENABLE KEYS */;
 
 -- Zrzut struktury procedura chess_game.register_controll
 DELIMITER //
@@ -233,7 +233,7 @@ CREATE TABLE IF NOT EXISTS `resumption_place_black_x` (
 /*!40000 ALTER TABLE `resumption_place_black_x` DISABLE KEYS */;
 /*!40000 ALTER TABLE `resumption_place_black_x` ENABLE KEYS */;
 
--- Zrzut struktury tabela chess_game.Resumption_place_black_y
+-- Zrzut struktury tabela chess_game.resumption_place_black_y
 CREATE TABLE IF NOT EXISTS `resumption_place_black_y` (
   `Game_ID` int(11) NOT NULL,
   `rook_1_1` int(11) NOT NULL,
@@ -256,65 +256,65 @@ CREATE TABLE IF NOT EXISTS `resumption_place_black_y` (
   CONSTRAINT `FK_game_play_Y` FOREIGN KEY (`Game_ID`) REFERENCES `game` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_polish_ci;
 
--- Zrzucanie danych dla tabeli chess_game.Resumption_place_black_y: ~0 rows (około)
-/*!40000 ALTER TABLE `Resumption_place_black_y` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Resumption_place_black_y` ENABLE KEYS */;
+-- Zrzucanie danych dla tabeli chess_game.resumption_place_black_y: ~0 rows (około)
+/*!40000 ALTER TABLE `resumption_place_black_y` DISABLE KEYS */;
+/*!40000 ALTER TABLE `resumption_place_black_y` ENABLE KEYS */;
 
--- Zrzut struktury tabela chess_game.Resumption_place_white_x
+-- Zrzut struktury tabela chess_game.resumption_place_white_x
 CREATE TABLE IF NOT EXISTS `resumption_place_white_x` (
   `Game_ID` int(11) NOT NULL,
-  `rook_1_7` int(11) NOT NULL,
-  `knight_2_7` int(11) NOT NULL,
-  `bishop_3_7` int(11) NOT NULL,
-  `king_4_7` int(11) NOT NULL,
-  `queen_5_7` int(11) NOT NULL,
-  `bishop_6_7` int(11) NOT NULL,
-  `knight_7_7` int(11) NOT NULL,
-  `rook_8_7` int(11) NOT NULL,
-  `pawn_1_8` int(11) NOT NULL,
-  `pawn_2_8` int(11) NOT NULL,
-  `pawn_3_8` int(11) NOT NULL,
-  `pawn_4_8` int(11) NOT NULL,
-  `pawn_5_8` int(11) NOT NULL,
-  `pawn_6_8` int(11) NOT NULL,
-  `pawn_7_8` int(11) NOT NULL,
-  `pawn_8_8` int(11) NOT NULL,
+  `rook_1_8` int(11) NOT NULL,
+  `knight_2_8` int(11) NOT NULL,
+  `bishop_3_8` int(11) NOT NULL,
+  `king_4_8` int(11) NOT NULL,
+  `queen_5_8` int(11) NOT NULL,
+  `bishop_6_8` int(11) NOT NULL,
+  `knight_7_8` int(11) NOT NULL,
+  `rook_8_8` int(11) NOT NULL,
+  `pawn_1_7` int(11) NOT NULL,
+  `pawn_2_7` int(11) NOT NULL,
+  `pawn_3_7` int(11) NOT NULL,
+  `pawn_4_7` int(11) NOT NULL,
+  `pawn_5_7` int(11) NOT NULL,
+  `pawn_6_7` int(11) NOT NULL,
+  `pawn_7_7` int(11) NOT NULL,
+  `pawn_8_7` int(11) NOT NULL,
   UNIQUE KEY `Game_ID` (`Game_ID`),
   CONSTRAINT `FK_game_play2` FOREIGN KEY (`Game_ID`) REFERENCES `game` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_polish_ci;
 
--- Zrzucanie danych dla tabeli chess_game.Resumption_place_white_x: ~0 rows (około)
-/*!40000 ALTER TABLE `Resumption_place_white_x` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Resumption_place_white_x` ENABLE KEYS */;
+-- Zrzucanie danych dla tabeli chess_game.resumption_place_white_x: ~0 rows (około)
+/*!40000 ALTER TABLE `resumption_place_white_x` DISABLE KEYS */;
+/*!40000 ALTER TABLE `resumption_place_white_x` ENABLE KEYS */;
 
--- Zrzut struktury tabela chess_game.Resumption_place_white_y
+-- Zrzut struktury tabela chess_game.resumption_place_white_y
 CREATE TABLE IF NOT EXISTS `resumption_place_white_y` (
   `Game_ID` int(11) NOT NULL,
-  `rook_1_7` int(11) NOT NULL,
-  `knight_2_7` int(11) NOT NULL,
-  `bishop_3_7` int(11) NOT NULL,
-  `king_4_7` int(11) NOT NULL,
-  `queen_5_7` int(11) NOT NULL,
-  `bishop_6_7` int(11) NOT NULL,
-  `knight_7_7` int(11) NOT NULL,
-  `rook_8_7` int(11) NOT NULL,
-  `pawn_1_8` int(11) NOT NULL,
-  `pawn_2_8` int(11) NOT NULL,
-  `pawn_3_8` int(11) NOT NULL,
-  `pawn_4_8` int(11) NOT NULL,
-  `pawn_5_8` int(11) NOT NULL,
-  `pawn_6_8` int(11) NOT NULL,
-  `pawn_7_8` int(11) NOT NULL,
-  `pawn_8_8` int(11) NOT NULL,
+  `rook_1_8` int(11) NOT NULL,
+  `knight_2_8` int(11) NOT NULL,
+  `bishop_3_8` int(11) NOT NULL,
+  `king_4_8` int(11) NOT NULL,
+  `queen_5_8` int(11) NOT NULL,
+  `bishop_6_8` int(11) NOT NULL,
+  `knight_7_8` int(11) NOT NULL,
+  `rook_8_8` int(11) NOT NULL,
+  `pawn_1_7` int(11) NOT NULL,
+  `pawn_2_7` int(11) NOT NULL,
+  `pawn_3_7` int(11) NOT NULL,
+  `pawn_4_7` int(11) NOT NULL,
+  `pawn_5_7` int(11) NOT NULL,
+  `pawn_6_7` int(11) NOT NULL,
+  `pawn_7_7` int(11) NOT NULL,
+  `pawn_8_7` int(11) NOT NULL,
   UNIQUE KEY `Game_ID_Y` (`Game_ID`),
   CONSTRAINT `FK_game_play2_Y` FOREIGN KEY (`Game_ID`) REFERENCES `game` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_polish_ci;
 
--- Zrzucanie danych dla tabeli chess_game.Resumption_place_white_y: ~0 rows (około)
-/*!40000 ALTER TABLE `Resumption_place_white_y` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Resumption_place_white_y` ENABLE KEYS */;
+-- Zrzucanie danych dla tabeli chess_game.resumption_place_white_y: ~0 rows (około)
+/*!40000 ALTER TABLE `resumption_place_white_y` DISABLE KEYS */;
+/*!40000 ALTER TABLE `resumption_place_white_y` ENABLE KEYS */;
 
--- Zrzut struktury tabela chess_game.User
+-- Zrzut struktury tabela chess_game.user
 CREATE TABLE IF NOT EXISTS `user` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `nick` varchar(64) COLLATE utf16_polish_ci NOT NULL DEFAULT '0',
@@ -323,483 +323,11 @@ CREATE TABLE IF NOT EXISTS `user` (
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf16 COLLATE=utf16_polish_ci;
 
--- Zrzucanie danych dla tabeli chess_game.User: ~1 rows (około)
-/*!40000 ALTER TABLE `User` DISABLE KEYS */;
+-- Zrzucanie danych dla tabeli chess_game.user: ~1 rows (około)
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
 REPLACE INTO `user` (`ID`, `nick`, `e-mail`, `password`) VALUES
 	(1, 'abc', 'def', '\'); DROP TABLE user; (');
-/*!40000 ALTER TABLE `User` ENABLE KEYS */;
-
--- Zrzut struktury wyzwalacz chess_game.move_after_insert
-SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
-DELIMITER //
-CREATE TRIGGER `move_after_insert` AFTER INSERT ON `Move` FOR EACH ROW BEGIN
-	if (Move.pieceID = 1) then
-		UPDATE resumption_place_black_x SET resumption_place_black.rook_1_1 
-		= Move.positionEnd_X
-		WHERE resumption_place_black.Game_ID = Move.gameID;
-		UPDATE Resumption_place_black_y SET resumption_place_black.rook_1_1
-		= Move.positionEnd_Y
-		WHERE resumption_place_black.Game_ID = Move.gameID;
-	elseif (Move.pieceID = 2) then
-		UPDATE resumption_place_black_x SET resumption_place_black.rook_2_1 
-		= Move.positionEnd_X
-		WHERE resumption_place_black.Game_ID = Move.gameID;
-		UPDATE Resumption_place_black_y SET resumption_place_black.rook_2_1
-		= Move.positionEnd_Y
-		WHERE resumption_place_black.Game_ID = Move.gameID;
-	elseif (Move.pieceID = 3) then
-		UPDATE resumption_place_black_x SET resumption_place_black.rook_3_1 
-		= Move.positionEnd_X
-		WHERE resumption_place_black.Game_ID = Move.gameID;
-		UPDATE Resumption_place_black_y SET resumption_place_black.rook_3_1
-		= Move.positionEnd_Y
-		WHERE resumption_place_black.Game_ID = Move.gameID;
-	elseif (Move.pieceID = 4) then
-		UPDATE resumption_place_black_x SET resumption_place_black.rook_4_1 
-		= Move.positionEnd_X
-		WHERE resumption_place_black.Game_ID = Move.gameID;
-		UPDATE Resumption_place_black_y SET resumption_place_black.rook_4_1
-		= Move.positionEnd_Y
-		WHERE resumption_place_black.Game_ID = Move.gameID;
-	elseif (Move.pieceID = 5) then
-		UPDATE resumption_place_black_x SET resumption_place_black.rook_5_1 
-		= Move.positionEnd_X
-		WHERE resumption_place_black.Game_ID = Move.gameID;
-		UPDATE Resumption_place_black_y SET resumption_place_black.rook_5_1
-		= Move.positionEnd_Y
-		WHERE resumption_place_black.Game_ID = Move.gameID;
-	elseif (Move.pieceID = 6) then
-		UPDATE resumption_place_black_x SET resumption_place_black.rook_6_1 
-		= Move.positionEnd_X
-		WHERE resumption_place_black.Game_ID = Move.gameID;
-		UPDATE Resumption_place_black_y SET resumption_place_black.rook_6_1
-		= Move.positionEnd_Y
-		WHERE resumption_place_black.Game_ID = Move.gameID;
-	elseif (Move.pieceID = 7) then
-		UPDATE resumption_place_black_x SET resumption_place_black.rook_7_1 
-		= Move.positionEnd_X
-		WHERE resumption_place_black.Game_ID = Move.gameID;
-		UPDATE Resumption_place_black_y SET resumption_place_black.rook_7_1
-		= Move.positionEnd_Y
-		WHERE resumption_place_black.Game_ID = Move.gameID;
-	elseif (Move.pieceID = 8) then
-		UPDATE resumption_place_black_x SET resumption_place_black.rook_8_1 
-		= Move.positionEnd_X
-		WHERE resumption_place_black.Game_ID = Move.gameID;
-		UPDATE Resumption_place_black_y SET resumption_place_black.rook_8_1
-		= Move.positionEnd_Y
-		WHERE resumption_place_black.Game_ID = Move.gameID;
-	elseif (Move.pieceID = 9) then
-		UPDATE resumption_place_black_x SET resumption_place_black.rook_1_2 
-		= Move.positionEnd_X
-		WHERE resumption_place_black.Game_ID = Move.gameID;
-		UPDATE Resumption_place_black_y SET resumption_place_black.rook_1_2
-		= Move.positionEnd_Y
-		WHERE resumption_place_black.Game_ID = Move.gameID;
-	elseif (Move.pieceID = 10) then
-		UPDATE resumption_place_black_x SET resumption_place_black.rook_2_2 
-		= Move.positionEnd_X
-		WHERE resumption_place_black.Game_ID = Move.gameID;
-		UPDATE Resumption_place_black_y SET resumption_place_black.rook_2_2
-		= Move.positionEnd_Y
-		WHERE resumption_place_black.Game_ID = Move.gameID;
-	elseif (Move.pieceID = 11) then
-		UPDATE resumption_place_black_x SET resumption_place_black.rook_3_2 
-		= Move.positionEnd_X
-		WHERE resumption_place_black.Game_ID = Move.gameID;
-		UPDATE Resumption_place_black_y SET resumption_place_black.rook_3_2
-		= Move.positionEnd_Y
-		WHERE resumption_place_black.Game_ID = Move.gameID;
-	elseif (Move.pieceID = 12) then
-		UPDATE resumption_place_black_x SET resumption_place_black.rook_4_2 
-		= Move.positionEnd_X
-		WHERE resumption_place_black.Game_ID = Move.gameID;
-		UPDATE Resumption_place_black_y SET resumption_place_black.rook_4_2
-		= Move.positionEnd_Y
-		WHERE resumption_place_black.Game_ID = Move.gameID;
-	elseif (Move.pieceID = 13) then
-		UPDATE resumption_place_black_x SET resumption_place_black.rook_5_2 
-		= Move.positionEnd_X
-		WHERE resumption_place_black.Game_ID = Move.gameID;
-		UPDATE Resumption_place_black_y SET resumption_place_black.rook_5_2
-		= Move.positionEnd_Y
-		WHERE resumption_place_black.Game_ID = Move.gameID;
-	elseif (Move.pieceID = 14) then
-		UPDATE resumption_place_black_x SET resumption_place_black.rook_6_2 
-		= Move.positionEnd_X
-		WHERE resumption_place_black.Game_ID = Move.gameID;
-		UPDATE Resumption_place_black_y SET resumption_place_black.rook_6_2
-		= Move.positionEnd_Y
-		WHERE resumption_place_black.Game_ID = Move.gameID;
-	elseif (Move.pieceID = 15) then
-		UPDATE resumption_place_black_x SET resumption_place_black.rook_7_2 
-		= Move.positionEnd_X
-		WHERE resumption_place_black.Game_ID = Move.gameID;
-		UPDATE Resumption_place_black_y SET resumption_place_black.rook_7_2
-		= Move.positionEnd_Y
-		WHERE resumption_place_black.Game_ID = Move.gameID;
-	elseif (Move.pieceID = 16) then
-		UPDATE resumption_place_black_x SET resumption_place_black.rook_8_2 
-		= Move.positionEnd_X
-		WHERE resumption_place_black.Game_ID = Move.gameID;
-		UPDATE Resumption_place_black_y SET resumption_place_black.rook_8_2
-		= Move.positionEnd_Y
-		WHERE resumption_place_black.Game_ID = Move.gameID;
-	elseif (Move.pieceID = 17) then
-		UPDATE resumption_place_white SET resumption_place_white.rook_1_7 
-		= Move.positionEnd_X
-		WHERE resumption_place_white.Game_ID = Move.gameID;
-		UPDATE resumption_place_white SET resumption_place_white.rook_1_7 
-		= Move.positionEnd_Y
-		WHERE resumption_place_white.Game_ID = Move.gameID;
-	elseif (Move.pieceID = 18) then
-		UPDATE resumption_place_white SET resumption_place_white.rook_2_7 
-		= Move.positionEnd_X
-		WHERE resumption_place_white.Game_ID = Move.gameID;
-		UPDATE resumption_place_white SET resumption_place_white.rook_2_7 
-		= Move.positionEnd_Y
-		WHERE resumption_place_white.Game_ID = Move.gameID;
-	elseif (Move.pieceID = 19) then
-		UPDATE resumption_place_white SET resumption_place_white.rook_3_7 
-		= Move.positionEnd_X
-		WHERE resumption_place_white.Game_ID = Move.gameID;
-		UPDATE resumption_place_white SET resumption_place_white.rook_3_7 
-		= Move.positionEnd_Y
-		WHERE resumption_place_white.Game_ID = Move.gameID;
-	elseif (Move.pieceID = 20) then
-		UPDATE resumption_place_white SET resumption_place_white.rook_4_7 
-		= Move.positionEnd_X
-		WHERE resumption_place_white.Game_ID = Move.gameID;
-		UPDATE resumption_place_white SET resumption_place_white.rook_4_7 
-		= Move.positionEnd_Y
-		WHERE resumption_place_white.Game_ID = Move.gameID;
-	elseif (Move.pieceID = 21) then
-		UPDATE resumption_place_white SET resumption_place_white.rook_5_7 
-		= Move.positionEnd_X
-		WHERE resumption_place_white.Game_ID = Move.gameID;
-		UPDATE resumption_place_white SET resumption_place_white.rook_5_7 
-		= Move.positionEnd_Y
-		WHERE resumption_place_white.Game_ID = Move.gameID;
-	elseif (Move.pieceID = 22) then
-		UPDATE resumption_place_white SET resumption_place_white.rook_6_7 
-		= Move.positionEnd_X
-		WHERE resumption_place_white.Game_ID = Move.gameID;
-		UPDATE resumption_place_white SET resumption_place_white.rook_6_7 
-		= Move.positionEnd_Y
-		WHERE resumption_place_white.Game_ID = Move.gameID;
-	elseif (Move.pieceID = 23) then
-		UPDATE resumption_place_white SET resumption_place_white.rook_7_7 
-		= Move.positionEnd_X
-		WHERE resumption_place_white.Game_ID = Move.gameID;
-		UPDATE resumption_place_white SET resumption_place_white.rook_7_7 
-		= Move.positionEnd_Y
-		WHERE resumption_place_white.Game_ID = Move.gameID;
-	elseif (Move.pieceID = 24) then
-		UPDATE resumption_place_white SET resumption_place_white.rook_8_7 
-		= Move.positionEnd_X
-		WHERE resumption_place_white.Game_ID = Move.gameID;
-		UPDATE resumption_place_white SET resumption_place_white.rook_8_7 
-		= Move.positionEnd_Y
-		WHERE resumption_place_white.Game_ID = Move.gameID;
-	elseif (Move.pieceID = 25) then
-		UPDATE resumption_place_white SET resumption_place_white.rook_1_8 
-		= Move.positionEnd_X
-		WHERE resumption_place_white.Game_ID = Move.gameID;
-		UPDATE resumption_place_white SET resumption_place_white.rook_1_8 
-		= Move.positionEnd_Y
-		WHERE resumption_place_white.Game_ID = Move.gameID;
-	elseif (Move.pieceID = 26) then
-		UPDATE resumption_place_white SET resumption_place_white.rook_2_8 
-		= Move.positionEnd_X
-		WHERE resumption_place_white.Game_ID = Move.gameID;
-		UPDATE resumption_place_white SET resumption_place_white.rook_2_8 
-		= Move.positionEnd_Y
-		WHERE resumption_place_white.Game_ID = Move.gameID;
-	elseif (Move.pieceID = 27) then
-		UPDATE resumption_place_white SET resumption_place_white.rook_3_8 
-		= Move.positionEnd_X
-		WHERE resumption_place_white.Game_ID = Move.gameID;
-		UPDATE resumption_place_white SET resumption_place_white.rook_3_8 
-		= Move.positionEnd_Y
-		WHERE resumption_place_white.Game_ID = Move.gameID;
-	elseif (Move.pieceID = 28) then
-		UPDATE resumption_place_white SET resumption_place_white.rook_4_8 
-		= Move.positionEnd_X
-		WHERE resumption_place_white.Game_ID = Move.gameID;
-		UPDATE resumption_place_white SET resumption_place_white.rook_4_8 
-		= Move.positionEnd_Y
-		WHERE resumption_place_white.Game_ID = Move.gameID;
-	elseif (Move.pieceID = 29) then
-		UPDATE resumption_place_white SET resumption_place_white.rook_5_8 
-		= Move.positionEnd_X
-		WHERE resumption_place_white.Game_ID = Move.gameID;
-		UPDATE resumption_place_white SET resumption_place_white.rook_5_8 
-		= Move.positionEnd_Y
-		WHERE resumption_place_white.Game_ID = Move.gameID;
-	elseif (Move.pieceID = 30) then
-		UPDATE resumption_place_white SET resumption_place_white.rook_6_8 
-		= Move.positionEnd_X
-		WHERE resumption_place_white.Game_ID = Move.gameID;
-		UPDATE resumption_place_white SET resumption_place_white.rook_6_8 
-		= Move.positionEnd_Y
-		WHERE resumption_place_white.Game_ID = Move.gameID;
-	elseif (Move.pieceID = 31) then
-		UPDATE resumption_place_white SET resumption_place_white.rook_7_8 
-		= Move.positionEnd_X
-		WHERE resumption_place_white.Game_ID = Move.gameID;
-		UPDATE resumption_place_white SET resumption_place_white.rook_7_8 
-		= Move.positionEnd_Y
-		WHERE resumption_place_white.Game_ID = Move.gameID;
-	elseif (Move.pieceID = 32) then
-		UPDATE resumption_place_white SET resumption_place_white.rook_8_8 
-		= Move.positionEnd_X
-		WHERE resumption_place_white.Game_ID = Move.gameID;
-		UPDATE resumption_place_white SET resumption_place_white.rook_8_8 
-		= Move.positionEnd_Y
-		WHERE resumption_place_white.Game_ID = Move.gameID;
-
-	end if;
-	
-END//
-DELIMITER ;
-SET SQL_MODE=@OLDTMP_SQL_MODE;
-
--- Zrzut struktury wyzwalacz chess_game.move_after_update
-SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
-DELIMITER //
-CREATE TRIGGER `move_after_update` AFTER UPDATE ON `move` FOR EACH ROW BEGIN
-
-
-	if (move.pieceID = 1) then
-		UPDATE resumption_place_black_x SET resumption_place_black.rook_1_1 
-		= move.positionEnd_X
-		WHERE resumption_place_black.Game_ID = move.gameID;
-		UPDATE resumption_place_black_y SET resumption_place_black.rook_1_1 
-		= move.positionEnd_Y
-		WHERE resumption_place_black.Game_ID = move.gameID;  
-	elseif (move.pieceID = 2) then
-		UPDATE resumption_place_black_x SET resumption_place_black.rook_2_1 
-		= move.positionEnd_X
-		WHERE resumption_place_black.Game_ID = move.gameID;
-		UPDATE resumption_place_black_y SET resumption_place_black.rook_2_1 
-		= move.positionEnd_Y
-		WHERE resumption_place_black.Game_ID = move.gameID;  
-	elseif (move.pieceID = 3) then
-		UPDATE resumption_place_black_x SET resumption_place_black.rook_3_1 
-		= move.positionEnd_X
-		WHERE resumption_place_black.Game_ID = move.gameID;
-		UPDATE resumption_place_black_y SET resumption_place_black.rook_3_1 
-		= move.positionEnd_Y
-		WHERE resumption_place_black.Game_ID = move.gameID; 
-	elseif (move.pieceID = 4) then
-		UPDATE resumption_place_black_x SET resumption_place_black.rook_4_1 
-		= move.positionEnd_X
-		WHERE resumption_place_black.Game_ID = move.gameID;
-		UPDATE resumption_place_black_y SET resumption_place_black.rook_4_1 
-		= move.positionEnd_Y
-		WHERE resumption_place_black.Game_ID = move.gameID; 
-	elseif (move.pieceID = 5) then
-		UPDATE resumption_place_black_x SET resumption_place_black.rook_5_1 
-		= move.positionEnd_X
-		WHERE resumption_place_black.Game_ID = move.gameID;
-		UPDATE resumption_place_black_y SET resumption_place_black.rook_5_1 
-		= move.positionEnd_Y
-		WHERE resumption_place_black.Game_ID = move.gameID; 
-	elseif (move.pieceID = 6) then
-		UPDATE resumption_place_black_x SET resumption_place_black.rook_6_1 
-		= move.positionEnd_X
-		WHERE resumption_place_black.Game_ID = move.gameID;
-		UPDATE resumption_place_black_y SET resumption_place_black.rook_6_1 
-		= move.positionEnd_Y
-		WHERE resumption_place_black.Game_ID = move.gameID; 
-	elseif (move.pieceID = 7) then
-		UPDATE resumption_place_black_x SET resumption_place_black.rook_7_1 
-		= move.positionEnd_X
-		WHERE resumption_place_black.Game_ID = move.gameID;
-		UPDATE resumption_place_black_y SET resumption_place_black.rook_7_1 
-		= move.positionEnd_Y
-		WHERE resumption_place_black.Game_ID = move.gameID; 
-	elseif (move.pieceID = 8) then
-		UPDATE resumption_place_black_x SET resumption_place_black.rook_8_1 
-		= move.positionEnd_X
-		WHERE resumption_place_black.Game_ID = move.gameID;
-		UPDATE resumption_place_black_y SET resumption_place_black.rook_8_1 
-		= move.positionEnd_Y
-		WHERE resumption_place_black.Game_ID = move.gameID; 
-	elseif (move.pieceID = 9) then
-		UPDATE resumption_place_black_x SET resumption_place_black.rook_1_2 
-		= move.positionEnd_X
-		WHERE resumption_place_black.Game_ID = move.gameID;
-		UPDATE resumption_place_black_y SET resumption_place_black.rook_1_2 
-		= move.positionEnd_Y
-		WHERE resumption_place_black.Game_ID = move.gameID; 
-	elseif (move.pieceID = 10) then
-		UPDATE resumption_place_black_x SET resumption_place_black.rook_2_2 
-		= move.positionEnd_X
-		WHERE resumption_place_black.Game_ID = move.gameID;
-		UPDATE resumption_place_black_y SET resumption_place_black.rook_2_2 
-		= move.positionEnd_Y
-		WHERE resumption_place_black.Game_ID = move.gameID; 
-	elseif (move.pieceID = 11) then
-		UPDATE resumption_place_black_x SET resumption_place_black.rook_3_2 
-		= move.positionEnd_X
-		WHERE resumption_place_black.Game_ID = move.gameID;
-		UPDATE resumption_place_black_y SET resumption_place_black.rook_3_2 
-		= move.positionEnd_Y
-		WHERE resumption_place_black.Game_ID = move.gameID; 
-	elseif (move.pieceID = 12) then
-		UPDATE resumption_place_black_x SET resumption_place_black.rook_4_2 
-		= move.positionEnd_X
-		WHERE resumption_place_black.Game_ID = move.gameID;
-		UPDATE resumption_place_black_y SET resumption_place_black.rook_4_2 
-		= move.positionEnd_Y
-		WHERE resumption_place_black.Game_ID = move.gameID; 
-	elseif (move.pieceID = 13) then
-		UPDATE resumption_place_black_x SET resumption_place_black.rook_5_2 
-		= move.positionEnd_X
-		WHERE resumption_place_black.Game_ID = move.gameID;
-		UPDATE resumption_place_black_y SET resumption_place_black.rook_5_2 
-		= move.positionEnd_Y
-		WHERE resumption_place_black.Game_ID = move.gameID; 
-	elseif (move.pieceID = 14) then
-		UPDATE resumption_place_black_x SET resumption_place_black.rook_6_2 
-		= move.positionEnd_X
-		WHERE resumption_place_black.Game_ID = move.gameID;
-		UPDATE resumption_place_black_y SET resumption_place_black.rook_6_2 
-		= move.positionEnd_Y
-		WHERE resumption_place_black.Game_ID = move.gameID; 
-	elseif (move.pieceID = 15) then
-		UPDATE resumption_place_black_x SET resumption_place_black.rook_7_2 
-		= move.positionEnd_X
-		WHERE resumption_place_black.Game_ID = move.gameID;
-		UPDATE resumption_place_black_y SET resumption_place_black.rook_7_2 
-		= move.positionEnd_Y
-		WHERE resumption_place_black.Game_ID = move.gameID; 
-	elseif (move.pieceID = 16) then
-		UPDATE resumption_place_black_x SET resumption_place_black.rook_8_2 
-		= move.positionEnd_X
-		WHERE resumption_place_black.Game_ID = move.gameID;
-		UPDATE resumption_place_black_y SET resumption_place_black.rook_8_2 
-		= move.positionEnd_Y
-		WHERE resumption_place_black.Game_ID = move.gameID; 
-	elseif (move.pieceID = 17) then
-		UPDATE resumption_place_white SET resumption_place_white.rook_1_7 
-		= move.positionEnd_X
-		WHERE resumption_place_white.Game_ID = move.gameID;
-		UPDATE resumption_place_white SET resumption_place_white.rook_1_7 
-		= move.positionEnd_Y
-		WHERE resumption_place_white.Game_ID = move.gameID;
-	elseif (move.pieceID = 18) then
-		UPDATE resumption_place_white SET resumption_place_white.rook_2_7 
-		= move.positionEnd_X
-		WHERE resumption_place_white.Game_ID = move.gameID;
-		UPDATE resumption_place_white SET resumption_place_white.rook_2_7 
-		= move.positionEnd_Y
-		WHERE resumption_place_white.Game_ID = move.gameID;
-	elseif (move.pieceID = 19) then
-		UPDATE resumption_place_white SET resumption_place_white.rook_3_7 
-		= move.positionEnd_X
-		WHERE resumption_place_white.Game_ID = move.gameID;
-		UPDATE resumption_place_white SET resumption_place_white.rook_3_7 
-		= move.positionEnd_Y
-		WHERE resumption_place_white.Game_ID = move.gameID;
-	elseif (move.pieceID = 20) then
-		UPDATE resumption_place_white SET resumption_place_white.rook_4_7 
-		= move.positionEnd_X
-		WHERE resumption_place_white.Game_ID = move.gameID;
-		UPDATE resumption_place_white SET resumption_place_white.rook_4_7 
-		= move.positionEnd_Y
-		WHERE resumption_place_white.Game_ID = move.gameID;
-	elseif (move.pieceID = 21) then
-		UPDATE resumption_place_white SET resumption_place_white.rook_5_7 
-		= move.positionEnd_X
-		WHERE resumption_place_white.Game_ID = move.gameID;
-		UPDATE resumption_place_white SET resumption_place_white.rook_5_7 
-		= move.positionEnd_Y
-		WHERE resumption_place_white.Game_ID = move.gameID;
-	elseif (move.pieceID = 22) then
-		UPDATE resumption_place_white SET resumption_place_white.rook_6_7 
-		= move.positionEnd_X
-		WHERE resumption_place_white.Game_ID = move.gameID;
-		UPDATE resumption_place_white SET resumption_place_white.rook_6_7 
-		= move.positionEnd_Y
-		WHERE resumption_place_white.Game_ID = move.gameID;
-	elseif (move.pieceID = 23) then
-		UPDATE resumption_place_white SET resumption_place_white.rook_7_7 
-		= move.positionEnd_X
-		WHERE resumption_place_white.Game_ID = move.gameID;
-		UPDATE resumption_place_white SET resumption_place_white.rook_7_7 
-		= move.positionEnd_Y
-		WHERE resumption_place_white.Game_ID = move.gameID;
-	elseif (move.pieceID = 24) then
-		UPDATE resumption_place_white SET resumption_place_white.rook_8_7 
-		= move.positionEnd_X
-		WHERE resumption_place_white.Game_ID = move.gameID;
-		UPDATE resumption_place_white SET resumption_place_white.rook_8_7 
-		= move.positionEnd_Y
-		WHERE resumption_place_white.Game_ID = move.gameID;
-	elseif (move.pieceID = 25) then
-		UPDATE resumption_place_white SET resumption_place_white.rook_1_8 
-		= move.positionEnd_X
-		WHERE resumption_place_white.Game_ID = move.gameID;
-		UPDATE resumption_place_white SET resumption_place_white.rook_1_8 
-		= move.positionEnd_Y
-		WHERE resumption_place_white.Game_ID = move.gameID;
-	elseif (move.pieceID = 26) then
-		UPDATE resumption_place_white SET resumption_place_white.rook_2_8 
-		= move.positionEnd_X
-		WHERE resumption_place_white.Game_ID = move.gameID;
-		UPDATE resumption_place_white SET resumption_place_white.rook_2_8 
-		= move.positionEnd_Y
-		WHERE resumption_place_white.Game_ID = move.gameID;
-	elseif (move.pieceID = 27) then
-		UPDATE resumption_place_white SET resumption_place_white.rook_3_8 
-		= move.positionEnd_X
-		WHERE resumption_place_white.Game_ID = move.gameID;
-		UPDATE resumption_place_white SET resumption_place_white.rook_3_8 
-		= move.positionEnd_Y
-		WHERE resumption_place_white.Game_ID = move.gameID;
-	elseif (move.pieceID = 28) then
-		UPDATE resumption_place_white SET resumption_place_white.rook_4_8 
-		= move.positionEnd_X
-		WHERE resumption_place_white.Game_ID = move.gameID;
-		UPDATE resumption_place_white SET resumption_place_white.rook_4_8 
-		= move.positionEnd_Y
-		WHERE resumption_place_white.Game_ID = move.gameID;
-	elseif (move.pieceID = 29) then
-		UPDATE resumption_place_white SET resumption_place_white.rook_5_8 
-		= move.positionEnd_X
-		WHERE resumption_place_white.Game_ID = move.gameID;
-		UPDATE resumption_place_white SET resumption_place_white.rook_5_8 
-		= move.positionEnd_Y
-		WHERE resumption_place_white.Game_ID = move.gameID;
-	elseif (move.pieceID = 30) then
-		UPDATE resumption_place_white SET resumption_place_white.rook_6_8 
-		= move.positionEnd_X
-		WHERE resumption_place_white.Game_ID = move.gameID;
-		UPDATE resumption_place_white SET resumption_place_white.rook_6_8 
-		= move.positionEnd_Y
-		WHERE resumption_place_white.Game_ID = move.gameID;
-	elseif (move.pieceID = 31) then
-		UPDATE resumption_place_white SET resumption_place_white.rook_7_8 
-		= move.positionEnd_X
-		WHERE resumption_place_white.Game_ID = move.gameID;
-		UPDATE resumption_place_white SET resumption_place_white.rook_7_8 
-		= move.positionEnd_Y
-		WHERE resumption_place_white.Game_ID = move.gameID;
-	elseif (move.pieceID = 32) then
-		UPDATE resumption_place_white SET resumption_place_white.rook_8_8 
-		= move.positionEnd_X
-		WHERE resumption_place_white.Game_ID = move.gameID;
-		UPDATE resumption_place_white SET resumption_place_white.rook_8_8 
-		= move.positionEnd_Y
-		WHERE resumption_place_white.Game_ID = move.gameID;
-
-	end if;
-		
-END//
-DELIMITER ;
-SET SQL_MODE=@OLDTMP_SQL_MODE;
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
