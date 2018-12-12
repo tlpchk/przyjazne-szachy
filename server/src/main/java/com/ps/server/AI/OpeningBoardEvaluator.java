@@ -6,31 +6,34 @@ import com.ps.server.Logic.Color;
 import com.ps.server.Logic.Pieces.Piece;
 import com.ps.server.Logic.Position;
 
+import java.util.Iterator;
+import java.util.HashMap;
+import java.util.Map;
+
 public class OpeningBoardEvaluator extends StandardBoardEvaluator {
-    static boolean boardFirstMoves[][];
+    Map<Position, Boolean> minorPiecesFirstMoveMap;
 
     public OpeningBoardEvaluator() {
-        boardFirstMoves = new boolean[Board.ROW_NUM][];
-
-        for(int i = 0; i < Board.ROW_NUM; i++) {
-            boardFirstMoves[i] = new boolean[Board.COL_NUM];
-        }
-
-        for(int i = 0; i < Board.ROW_NUM; i++) {
-            for(int j = 0; j < Board.COL_NUM; j++) {
-                boardFirstMoves[i][j] = true;
-            }
-        }
+        minorPiecesFirstMoveMap = new HashMap<>();
+        minorPiecesFirstMoveMap.put(new Position(7, 1), true);
+        minorPiecesFirstMoveMap.put(new Position(7, 2), true);
+        minorPiecesFirstMoveMap.put(new Position(7, 5), true);
+        minorPiecesFirstMoveMap.put(new Position(7, 6), true);
+        minorPiecesFirstMoveMap.put(new Position(0, 1), true);
+        minorPiecesFirstMoveMap.put(new Position(0, 2), true);
+        minorPiecesFirstMoveMap.put(new Position(0, 5), true);
+        minorPiecesFirstMoveMap.put(new Position(0, 6), true);
     }
 
     @Override
     protected int scorePlayer(final Board board, final Color color) {
         return scorePieces(board, color)
-                + firstMove(board, color)
+                + developPiece(board, color)
+                + totalPiecesDeveloped(board, color)
                 + pawnsInCenter(board, color)
                 + castledKing(board, color)
                 + rooksConnected(board, color);
-        //TODO add score for developing pieces, castling, moving central pawns, connecting rooks, subtract score for too early queen moves
+        //TODO add score for developing pieces, total pieces developed, castling, moving central pawns, connecting rooks, subtract score for too early queen moves
     }
 
     //TODO implement
@@ -48,26 +51,34 @@ public class OpeningBoardEvaluator extends StandardBoardEvaluator {
         return 0;
     }
 
+    @SuppressWarnings("Duplicates")
     //TODO test, think about returned result
-    private int firstMove(final Board board, final Color color) {
-        if(color == Color.WHITE) {
-            for(int j = 0; j < Board.COL_NUM; j++) {
-                if(board.getChessSquareState(new Position(7, j)).state == ChessSquareState.State.EMPTY
-                        && boardFirstMoves[7][j] == true) {
-                    boardFirstMoves[7][j] = false;
-                    return 40;
-                }
+    private int developPiece(final Board board, final Color color) {
+        Iterator<Map.Entry<Position, Boolean>> iterator = minorPiecesFirstMoveMap.entrySet().iterator();
+
+        while(iterator.hasNext()) {
+            Map.Entry<Position, Boolean> entry = iterator.next();
+
+            if(color == Color.WHITE && entry.getKey().row != 7) {
+                continue;
+            }
+
+            if(color == Color.BLACK && entry.getKey().row != 0) {
+                continue;
+            }
+
+            if (board.getChessSquareState(entry.getKey()).state == ChessSquareState.State.EMPTY
+                    && entry.getValue() == true) {
+                minorPiecesFirstMoveMap.put(entry.getKey(), false);
+
+                return 30;
             }
         }
-        else {
-            for(int j = 0; j < Board.COL_NUM; j++) {
-                if(board.getChessSquareState(new Position(0, j)).state == ChessSquareState.State.EMPTY
-                        && boardFirstMoves[0][j] == true) {
-                    boardFirstMoves[0][j] = false;
-                    return -40;
-                }
-            }
-        }
+
+        return 0;
+    }
+
+    private int totalPiecesDeveloped(final Board board, final Color color) {
         return 0;
     }
 

@@ -21,5 +21,12 @@ public class OpeningBoardEvaluatorTest {
 
         OpeningBoardEvaluator op = new OpeningBoardEvaluator();
         System.out.println(op.evaluate(board));
+
+        board.updateGame(BLACK);
+        Move move2 = board.validatePlayersMove(new Position(0, 1), new Position(2, 2), BLACK);
+        board.makeMove(move2);
+
+        System.out.println(board.toString());
+        System.out.println(op.evaluate(board));
     }
 }
