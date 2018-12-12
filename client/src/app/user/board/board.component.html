@@ -5,9 +5,9 @@
          [class.possible]="selectedCell !== null
                         && selectedCell.possibleMoves.includes(cell.id)"
          (click)="onSelect(cell)">
-        <img *ngIf = "cell.piece !== null && cell.piece !== undefined"
-             then #piece;
-             else #emptyCell
+        <img *ngIf = "cell.piece !== null && cell.piece !== undefined
+             then piece;
+             else emptyCell"
 
         />
 
@@ -17,7 +17,7 @@
 
         <ng-template #emptyCell>
             <img *ngIf="cell.piece === null" src="/assets/png/none.png"/>
-        </ng-template>>
+        </ng-template>
     </div>
 </div>
 

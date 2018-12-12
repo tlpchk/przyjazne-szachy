@@ -24,7 +24,7 @@ export class BoardService {
     playerId: number;
     gameId = new ReplaySubject<number>();
     gameId$ = this.gameId.asObservable();
-    // board: Cell[];
+
     private gamesUrl = 'http://localhost:8080/games';
     private moveSubUrl = '/move';
     private boardSubUrl = '/board';
@@ -52,7 +52,7 @@ export class BoardService {
             let possibleMoves: number[] = [];
             for (let j in pieces[i].possibleMoves) {
                 let row = pieces[i].possibleMoves[j].row;
-                let column = pieces[i].possibleMoves[j].column;
+                let column = pieces[i].possibleMoves[j].col;
                 let possibleMoveId = this.coordinatesService.backendToFrontend(row, column);
                 possibleMoves.push(possibleMoveId);
             }
@@ -137,7 +137,7 @@ export class BoardService {
         let possibleMovesToReturn: number[] = [];
         for (let i in possibleMoves) {
             let possibleMove = possibleMoves[i];
-            let possibleMoveId = this.coordinatesService.backendToFrontend(possibleMove.row, possibleMove.column);
+            let possibleMoveId = this.coordinatesService.backendToFrontend(possibleMove.row, possibleMove.col);
             possibleMovesToReturn.push(possibleMoveId);
         }
         return possibleMovesToReturn;

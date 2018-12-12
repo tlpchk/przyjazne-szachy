@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Observable} from "rxjs";
+import {TimerService} from "../../_services/timer.service";
 
 @Component({
     selector: 'app-timer',
@@ -8,45 +9,39 @@ import {Observable} from "rxjs";
 })
 export class TimerComponent implements OnInit {
 
-
-    constructor() {
+    constructor(private timer: TimerService) {
     }
 
     timerValue: string;
 
     ngOnInit() {
-        this.timer();
-    }
-
-    timer() {
-        let countDownDate = new Date("Dec 12, 2018 15:37:25").getTime();
-        const that = this;
-
-        // Update the count down every 1 second
+        const timerComponent = this;
         setInterval(function () {
 
-            // Get todays date and time
-            let now = new Date().getTime();
+            let now = new Date();
+            let timeOfEnd;
+            timerComponent.timer.getTimeOfEnd(now).subscribe(date =>{
+                timeOfEnd = date;
+            });
 
-            // Find the distance between now and the count down date
-            let distance = countDownDate - now;
+            let distance = timeOfEnd.getTime() - now.getTime();
+
 
             let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            // this.timerValue = minutes + "m " + seconds + "s ";
-            // console.log(this.timerValue);
+            timerComponent.updateTimer(minutes ,seconds)
 
-            that.updateTimer(minutes + "m " + seconds + "s ")
-
-            // If the count down is over, write some text
-            /*if (distance < 0) {
-              clearInterval(x);
-              document.getElementById("").innerHTML = "EXPIRED";
-            }*/
+            if (distance < 0) {
+              clearInterval(this);
+              timerComponent.timerValue = "Over"
+            }
         }, 1000);
 
     }
 
-    updateTimer = (time: string) => this.timerValue = time;
+
+    updateTimer(minutes,seconds){
+        this.timerValue = minutes + ":" + seconds;
+    }
 }
