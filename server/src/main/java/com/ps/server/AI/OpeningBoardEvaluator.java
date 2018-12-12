@@ -33,7 +33,7 @@ public class OpeningBoardEvaluator extends StandardBoardEvaluator {
                 + pawnsInCenter(board, color)
                 + castledKing(board, color)
                 + rooksConnected(board, color);
-        //TODO add score for developing pieces, total pieces developed, castling, moving central pawns, connecting rooks, subtract score for too early queen moves
+        //TODO add score for castling, moving central pawns, connecting rooks, subtract score for too early queen moves
     }
 
     //TODO implement
@@ -50,9 +50,8 @@ public class OpeningBoardEvaluator extends StandardBoardEvaluator {
     private int pawnsInCenter(final Board board, final Color color) {
         return 0;
     }
-
-    @SuppressWarnings("Duplicates")
-    //TODO test, think about returned result
+    
+    //TODO think about returned value, is it too large or maybe too small, bot should be encouraged to develop rapidly
     private int developPiece(final Board board, final Color color) {
         Iterator<Map.Entry<Position, Boolean>> iterator = minorPiecesFirstMoveMap.entrySet().iterator();
 
@@ -78,8 +77,27 @@ public class OpeningBoardEvaluator extends StandardBoardEvaluator {
         return 0;
     }
 
+    //TODO think about returned value, like above
     private int totalPiecesDeveloped(final Board board, final Color color) {
-        return 0;
+        Iterator<Map.Entry<Position, Boolean>> iterator = minorPiecesFirstMoveMap.entrySet().iterator();
+        int piecesDeveloped = 0;
+
+        while(iterator.hasNext()) {
+            Map.Entry<Position, Boolean> entry = iterator.next();
+
+            if(color == Color.WHITE
+                    && entry.getValue() == false
+                    && entry.getKey().row == 7) {
+                piecesDeveloped++;
+            }
+
+            if(color == Color.BLACK
+                    && entry.getValue() == false
+                    && entry.getKey().row == 0) {
+                piecesDeveloped++;
+            }
+        }
+        return 25 * piecesDeveloped;
     }
 
     @SuppressWarnings("Duplicates")
