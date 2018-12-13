@@ -9,19 +9,18 @@ import {Router} from "@angular/router";
 })
 export class LoginComponent implements OnInit {
 
+   username = "";
+   password = "";
+
   constructor(private authService: AuthService,
               private router: Router) { }
 
   ngOnInit() {
   }
 
-  loginUser(event){
-    event.preventDefault();
-    const target = event.target;
-    const username = target.querySelector('#username').value;
-    const password = target.querySelector('#password').value;
-
-    this.authService.getUserDetails(username,password).subscribe(data=> {
+  loginUser(){
+      this.authService.getUserDetails(this.username,this.password).subscribe(data=> {
+        console.log(this.username,this.password);
           if (data.success) {
               this.authService.setLoggedIn(true);
               this.router.navigate(['/user/home']);
@@ -30,7 +29,6 @@ export class LoginComponent implements OnInit {
           }
         }
     );
-    console.log(event);
   }
 
 }

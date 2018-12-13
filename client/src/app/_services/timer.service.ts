@@ -15,6 +15,7 @@ export class TimerService {
   private timerUrl = 'http://localhost:8080/timer';
 
   private mockDate = new Date("Dec 12, 2018 22:12:25");
+
   constructor(private http: HttpClient) { }
 
   getTimeOfEnd(now: Date): Observable<Date>{

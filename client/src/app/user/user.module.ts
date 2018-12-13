@@ -15,6 +15,7 @@ import {TimerComponent} from "./timer/timer.component";
         CommonModule,
         UserRoutingModule,
 
+
     ],
     declarations: [
         UserComponent,
