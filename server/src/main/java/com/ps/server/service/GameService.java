@@ -229,6 +229,11 @@ public class GameService {
         return updateList.get(updateList.size() - 1);
     }
 
+    public MoveUpdateDTO getUpdate(Long gameId, Integer updateId) {
+        List<MoveUpdateDTO> updateList = updates.get(gameId);
+        return updateList.get(updateId);
+    }
+
 //    public MoveUpdateDTO getUpdateById(Long gameId, Long updateId) {
 //        updates.get(gameId)
 //    }

@@ -99,9 +99,14 @@ public class GameController {
     }
 
 
-    @RequestMapping(value = "/{gameId}/update", method = RequestMethod.GET)
-    public MoveUpdateDTO getLastUpdate(@PathVariable Long gameId) throws GameNotExistException {
+    @RequestMapping(value = "/{gameId}/update/last", method = RequestMethod.GET)
+    public MoveUpdateDTO getLastUpdate(@PathVariable Long gameId){
         return gameService.getLastUpdate(gameId);
+    }
+
+    @RequestMapping(value = "/{gameId}/update/{updateId}", method = RequestMethod.GET)
+    public MoveUpdateDTO getUpdate(@PathVariable Long gameId,@PathVariable Integer updateId){
+        return gameService.getUpdate(gameId,updateId);
     }
 
     @RequestMapping(value = "/{gameId}/bot", method = RequestMethod.GET)
