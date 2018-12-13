@@ -1,5 +1,6 @@
 package com.ps.server.entity;
 
+import com.ps.server.Logic.Color;
 import com.ps.server.Logic.Pieces.Piece;
 import com.ps.server.enums.PlayerType;
 
@@ -13,8 +14,8 @@ public class Player {
     @GeneratedValue
     @Column(name = "ID", nullable = false)
     private int ID;
-    @Column(name = "name", nullable = false)
-    private Piece.PieceType name;
+    @Column(name = "color", nullable = false)
+    private Color color;
     @Column(name = "player_type", nullable = false, unique = true)
     private PlayerType player_type;
 
@@ -26,12 +27,12 @@ public class Player {
         this.ID = ID;
     }
 
-    public Piece.PieceType getName() {
-        return name;
+    public Color getColor() {
+        return color;
     }
 
-    public void setName(Piece.PieceType name) {
-        this.name = name;
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     public PlayerType getPlayer_type() {

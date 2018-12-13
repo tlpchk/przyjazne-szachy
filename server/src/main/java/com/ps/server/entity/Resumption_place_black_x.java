@@ -6,6 +6,7 @@ import javax.persistence.*;
 @Table(name = "resumption_place_black_x")
 public class Resumption_place_black_x {
 
+    @Id
     @Column(name = "Game_ID", nullable = false, unique = true)
     private int Game_ID;
     @Column(name = "rook_1_1", nullable = false)

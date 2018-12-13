@@ -8,6 +8,7 @@ public class Player_user {
 
     @Column(name = "ID_user", nullable = false)
     private int ID_user;
+    @Id
     @Column(name = "ID_player", nullable = false)
     private int ID_player;
 

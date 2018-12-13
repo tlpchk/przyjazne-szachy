@@ -21,6 +21,7 @@ public class PieceDTO {
     private Color color;
     private List<Position> possibleMoves;
 
+
     public int getColumn() {
         return column;
     }

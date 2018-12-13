@@ -38,4 +38,51 @@ public class GameEntity {
     @Column(name = "starting_time")
     private Date startingTime;
 
+    public Long getId() {
+        return id;
+    }
+
+    public boolean isGameFinished() {
+        return isGameFinished;
+    }
+
+    public PlayerEntity getFirstPlayer() {
+        return firstPlayer;
+    }
+
+    public Date getStartingTime() {
+        return startingTime;
+    }
+
+    public PlayerEntity getSecondPlayer() {
+        return secondPlayer;
+    }
+
+    public GameType getGameType() {
+        return gameType;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setFirstPlayer(PlayerEntity firstPlayer) {
+        this.firstPlayer = firstPlayer;
+    }
+
+    public void setSecondPlayer(PlayerEntity secondPlayer) {
+        this.secondPlayer = secondPlayer;
+    }
+
+    public void setGameFinished(boolean gameFinished) {
+        isGameFinished = gameFinished;
+    }
+
+    public void setGameType(GameType gameType) {
+        this.gameType = gameType;
+    }
+
+    public void setStartingTime(Date startingTime) {
+        this.startingTime = startingTime;
+    }
 }

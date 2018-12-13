@@ -8,6 +8,7 @@ import javax.persistence.*;
 @Table(name = "Resumption_place_white_y")
 public class Resumption_place_white_y {
 
+    @Id
     @Column(name = "Game_ID", nullable = false, unique = true)
     private int Game_ID;
     @Column(name = "rook_1_8", nullable = false)
