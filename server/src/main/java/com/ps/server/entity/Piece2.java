@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(name = "Piece")
-public class Piece {
+public class Piece2 {
 
     @Id
     @GeneratedValue

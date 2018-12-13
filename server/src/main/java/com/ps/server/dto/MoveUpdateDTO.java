@@ -17,4 +17,20 @@ public class MoveUpdateDTO {
 
     @NotNull
     private MoveResponseDTO moveDTO;
+
+    public Long getUpdateId() {
+        return updateId;
+    }
+
+    public MoveResponseDTO getMoveDTO() {
+        return moveDTO;
+    }
+
+    public void setUpdateId(Long updateId) {
+        this.updateId = updateId;
+    }
+
+    public void setMoveDTO(MoveResponseDTO moveDTO) {
+        this.moveDTO = moveDTO;
+    }
 }
