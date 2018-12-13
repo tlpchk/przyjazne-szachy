@@ -17,6 +17,11 @@ public class AlphaBeta implements MoveStrategy {
         boardsEvaluated = 0;
     }
 
+    public AlphaBeta(BoardEvaluator boardEvaluator) {
+        this.boardEvaluator = boardEvaluator;
+        boardsEvaluated = 0;
+    }
+
     public int getBoardsEvaluated() {
         return boardsEvaluated;
     }
