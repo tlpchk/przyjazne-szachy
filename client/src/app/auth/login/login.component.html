@@ -1,17 +1,14 @@
-
-
-<div class="content">
+<div class="text-center fade-bottom">
     <h1>Przyjazne szachy</h1>
-<form (submit)="loginUser($event)">
-    <div class="input-group">
-    <input type = "text" placeholder="Username" id="username" name="username">
-    </div>
-    <div class="input-group">
-    <input type="password" placeholder="Password" id="password" name="password">
-    </div>
-    <div class="input-group">
-    <input type="submit" value="Login">
-    </div>
-    <a routerLink="/user/regist">Rejesracja</a>
-</form>
+
+    <form (submit)="loginUser()">
+        <input class="form-control" type="text" [(ngModel)]="username" name="username" placeholder="Username">
+
+        <input class="form-control" type="password" [(ngModel)]="password"  name="password" placeholder="Password">
+
+        <input class="btn btn-primary form-control" type="submit" value="Login">
+
+        <a routerLink="/auth/regist">Zarejestruj się</a>
+    </form>
+
 </div>

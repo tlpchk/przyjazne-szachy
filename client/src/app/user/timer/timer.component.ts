@@ -1,11 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {Observable} from "rxjs";
 import {TimerService} from "../../_services/timer.service";
 
 @Component({
     selector: 'app-timer',
     templateUrl: './timer.component.html',
-    styleUrls: ['./timer.component.css']
+    styleUrls: ['']
 })
 export class TimerComponent implements OnInit {
 
@@ -19,7 +18,7 @@ export class TimerComponent implements OnInit {
         setInterval(function () {
 
             let now = new Date();
-            let timeOfEnd;
+            let timeOfEnd = now;
             timerComponent.timer.getTimeOfEnd(now).subscribe(date =>{
                 timeOfEnd = date;
             });

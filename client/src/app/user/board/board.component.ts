@@ -71,7 +71,7 @@ export class BoardComponent implements OnInit {
                             this.board[cellIndex].piece = piece;
                             this.board[cellIndex].possibleMoves = possibleMoves;
                         }
-                        this.boardService.makeBotMove(this.gameId).subscribe(a => {
+                        this.boardService.makeBotMove(this.gameId).subscribe(a=>{
                             console.log("BOT MOVES: " + a);
                         });
                     } else {
@@ -121,7 +121,6 @@ export class BoardComponent implements OnInit {
     }
 
     private updateBoard(moveUpdate: MoveUpdateDTO) {
-        console.log("--->: " + this.lastUpdateId);
         let changes: ChangeDTO[] = moveUpdate.moveDTO.listOfChanges;
         for (let c in changes) {
             let location = changes[c].location;
