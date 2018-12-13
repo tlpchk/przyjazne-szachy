@@ -12,7 +12,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
+//@AllArgsConstructor
 @NoArgsConstructor
 public class PieceDTO {
     private int row;
@@ -20,6 +20,14 @@ public class PieceDTO {
     private Piece.PieceType type;
     private Color color;
     private List<Position> possibleMoves;
+
+    public PieceDTO(int row, int column, Piece.PieceType type, Color color, List<Position> possibleMoves) {
+        this.row = row;
+        this.column = column;
+        this.type = type;
+        this.color = color;
+        this.possibleMoves = possibleMoves;
+    }
 
 
     public int getColumn() {

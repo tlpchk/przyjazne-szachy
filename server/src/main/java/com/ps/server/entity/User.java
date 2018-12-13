@@ -13,9 +13,9 @@ public class User {
     private int Game_ID;
     @Column(name = "nick", nullable = false, length = 64)
     private String nick;
-    @Column(name = "e-mail", nullable = false, length = 64)
+    @Column(name = "e_mail", nullable = false, length = 128)
     private String email ;
-    @Column(name = "password", nullable = false, length = 64)
+    @Column(name = "password", nullable = false, length = 128)
     private String user_password ;
 
     public int getGame_ID() {
