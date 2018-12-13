@@ -13,6 +13,7 @@ export class RegistComponent implements OnInit {
   password1: string;
   password2: string;
 
+
   constructor(private auth: AuthService,
               private router: Router) { }
 
