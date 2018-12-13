@@ -11,7 +11,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class OpeningBoardEvaluator extends StandardBoardEvaluator {
-    Map<Position, Boolean> minorPiecesFirstMoveMap;
+    private Map<Position, Boolean> minorPiecesFirstMoveMap;
+    private Map<Color, Boolean> castledKing;
 
     public OpeningBoardEvaluator() {
         minorPiecesFirstMoveMap = new HashMap<>();
@@ -23,6 +24,10 @@ public class OpeningBoardEvaluator extends StandardBoardEvaluator {
         minorPiecesFirstMoveMap.put(new Position(0, 2), true);
         minorPiecesFirstMoveMap.put(new Position(0, 5), true);
         minorPiecesFirstMoveMap.put(new Position(0, 6), true);
+
+        castledKing = new HashMap<>();
+        castledKing.put(Color.WHITE, false);
+        castledKing.put(Color.BLACK, false);
     }
 
     @Override
@@ -41,17 +46,80 @@ public class OpeningBoardEvaluator extends StandardBoardEvaluator {
         return 0;
     }
 
-    //TODO implement
     private int castledKing(Board board, Color color) {
+        if(castledKing.get(color).booleanValue() == true) {
+            return 90;
+        }
+
+        Position shortCastle;
+        Position longCastle;
+
+        if(color == Color.WHITE) {
+            shortCastle = new Position(7, 6);
+            longCastle = new Position(7, 2);
+        }
+        else {
+            shortCastle = new Position(0, 6);
+            longCastle = new Position(0, 2);
+        }
+
+        if(board.getChessSquareState(shortCastle).state == ChessSquareState.State.OCCUPIED
+                && board.getChessSquareState(shortCastle).getPiece().type == Piece.PieceType.KING
+                && board.getChessSquareState(new Position(shortCastle.row, shortCastle.col - 1)).getPiece().type == Piece.PieceType.ROOK) {
+            castledKing.put(color, true);
+            return 90;
+        }
+
+        if(board.getChessSquareState(longCastle).state == ChessSquareState.State.OCCUPIED
+                && board.getChessSquareState(longCastle).getPiece().type == Piece.PieceType.KING
+                && board.getChessSquareState(new Position(longCastle.row, longCastle.col + 1)).getPiece().type == Piece.PieceType.ROOK) {
+            castledKing.put(color, true);
+            return 90;
+        }
+
         return 0;
     }
 
-    //TODO implement
+    @SuppressWarnings("Duplicates")
     private int pawnsInCenter(final Board board, final Color color) {
-        return 0;
+        int semiCenter = 0;
+        int center = 0;
+
+        int centralRow;
+        int semiCentralRow;
+
+        if(color == Color.WHITE) {
+            centralRow = 4;
+            semiCentralRow = 5;
+        }
+        else {
+            centralRow = 3;
+            semiCentralRow = 2;
+        }
+
+        for(int i = 2; i <= 4; i++) {
+            Position centralPosition = new Position(centralRow, i);
+            ChessSquareState centralSquareState = board.getChessSquareState(centralPosition);
+
+            if(centralSquareState.state == ChessSquareState.State.OCCUPIED
+                    && centralSquareState.getPiece().type == Piece.PieceType.PAWN
+                    && centralSquareState.getPiece().color == color) {
+                center++;
+            }
+
+            Position semiCentralPosition = new Position(semiCentralRow, i);
+            ChessSquareState semiCentralSquareState = board.getChessSquareState(semiCentralPosition);
+
+            if(semiCentralSquareState.state == ChessSquareState.State.OCCUPIED
+                    && semiCentralSquareState.getPiece().type == Piece.PieceType.PAWN
+                    && semiCentralSquareState.getPiece().color == color) {
+                semiCenter++;
+            }
+        }
+
+        return center * 30 + semiCenter * 20;
     }
-    
-    //TODO think about returned value, is it too large or maybe too small, bot should be encouraged to develop rapidly
+
     private int developPiece(final Board board, final Color color) {
         Iterator<Map.Entry<Position, Boolean>> iterator = minorPiecesFirstMoveMap.entrySet().iterator();
 
@@ -77,7 +145,6 @@ public class OpeningBoardEvaluator extends StandardBoardEvaluator {
         return 0;
     }
 
-    //TODO think about returned value, like above
     private int totalPiecesDeveloped(final Board board, final Color color) {
         Iterator<Map.Entry<Position, Boolean>> iterator = minorPiecesFirstMoveMap.entrySet().iterator();
         int piecesDeveloped = 0;
