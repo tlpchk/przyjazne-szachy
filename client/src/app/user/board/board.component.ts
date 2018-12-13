@@ -98,42 +98,42 @@ export class BoardComponent implements OnInit {
             .subscribe(pieces => {
                 this.board = this.boardService.getBoard(pieces);
                 //This probably shouldn't be done by setTimeout
-                setTimeout(this.getLastUpdate(), 1000);
+                setTimeout(this.update(), 1000);
             });
     }
 
-    getLastUpdate(): void {
-        this.boardService.getLastUpdate(this.gameId).subscribe(moveUpdate => {
-            console.log("Move update: " + moveUpdate.updateId);
-            console.log("My update: " + this.lastUpdateId);
-            if (moveUpdate.updateId > this.lastUpdateId) {
-                this.lastUpdateId = moveUpdate.updateId;
-                let changes: ChangeDTO[] = moveUpdate.moveDTO.listOfChanges;
-                for (let c in changes) {
-                    let location = changes[c].location;
-                    let pieceColor = changes[c].color;
-                    let type = changes[c].type;
-                    let cellId = this.coordinateService.backendToFrontend(location.row, location.col);
-                    let cellIndex = this.board.map(function (item) {
-                        return item.id;
-                    })
-                        .indexOf(cellId);
-                    let piece: Piece = new Piece(type, pieceColor);
-                    let possibleMoves: number[] = [];
-                    if (piece.type === null || piece.type === undefined) {
-                        piece = null;
-                    }
-
-                    this.board[cellIndex].piece = piece;
-                    this.board[cellIndex].possibleMoves = possibleMoves;
-                }
-
+    update(): void {
+        this.boardService.getLastUpdate(this.gameId).subscribe(lastMoveUpdate => {
+            while (lastMoveUpdate.updateId > this.lastUpdateId) {
+                let nextUpdateId = this.lastUpdateId+1;
+                this.boardService.getUpdate(this.gameId,nextUpdateId).subscribe(moveUpdate=>{
+                   this.updateBoard(moveUpdate);
+                });
             }
-            setTimeout(this.getLastUpdate(), 1000);
+            setTimeout(this.update(), 1000);
         });
     }
 
     private updateBoard(moveUpdate: MoveUpdateDTO) {
+        this.lastUpdateId++;
+        let changes: ChangeDTO[] = moveUpdate.moveDTO.listOfChanges;
+        for (let c in changes) {
+            let location = changes[c].location;
+            let pieceColor = changes[c].color;
+            let type = changes[c].type;
+            let cellId = this.coordinateService.backendToFrontend(location.row, location.col);
+            let cellIndex = this.board.map(function (item) {
+                return item.id;
+            })
+                .indexOf(cellId);
+            let piece: Piece = new Piece(type, pieceColor);
+            let possibleMoves: number[] = [];
+            if (piece.type === null || piece.type === undefined) {
+                piece = null;
+            }
 
+            this.board[cellIndex].piece = piece;
+            this.board[cellIndex].possibleMoves = possibleMoves;
+        }
     }
 }
