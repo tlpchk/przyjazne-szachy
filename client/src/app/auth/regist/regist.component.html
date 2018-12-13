@@ -1,3 +1,13 @@
-<p>
-  regist works!
-</p>
+<div class="text-center fade-bottom">
+  <h1>Rejestracja</h1>
+
+  <form (submit)="registerUser()">
+    <input class="form-control" type="text" [(ngModel)]="username" name="username" placeholder="Username">
+    <input class="form-control" type="email" [(ngModel)]="email" name="email" placeholder="Email">
+    <input class="form-control" type="password" [(ngModel)]="password1"  name="password1" placeholder="Password">
+    <input class="form-control" type="password" [(ngModel)]="password2"  name="password2" placeholder="Confirm Password">
+
+    <input class="btn btn-primary form-control" type="submit" value="Register">
+    <a routerLink="/auth/login">Zaloguj się</a>
+  </form>
+</div>
