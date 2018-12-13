@@ -1,6 +1,6 @@
 <div *ngIf="board" id="board">
     <div *ngFor="let cell of board"
-         class="cell {{cell.cell_color}}"
+         class="cell {{cell.cell_color}}Cell"
          [class.selected]="cell === selectedCell"
          [class.possible]="selectedCell !== null
                         && selectedCell.possibleMoves.includes(cell.id)"
