@@ -1,4 +1,4 @@
-<div *ngIf="board" id="board">
+<div *ngIf="board.length > 0" id="board">
     <div *ngFor="let cell of board"
          class="cell {{cell.cell_color}}Cell"
          [class.selected]="cell === selectedCell"
@@ -19,6 +19,6 @@
             <img *ngIf="cell.piece === null" src="/assets/png/none.png"/>
         </ng-template>
     </div>
-</div>
 
-<app-timer></app-timer>
+    <app-timer></app-timer>
+</div>
