@@ -110,12 +110,15 @@ export class BoardComponent implements OnInit {
                    this.updateBoard(moveUpdate);
                 });
             }
-            setTimeout(this.update(), 1000);
+            if(lastMoveUpdate.updateId <= this.lastUpdateId){
+                setTimeout(this.update(), 1000);
+            }
         });
     }
 
     private updateBoard(moveUpdate: MoveUpdateDTO) {
         this.lastUpdateId++;
+        console.log("--->: "+this.lastUpdateId);
         let changes: ChangeDTO[] = moveUpdate.moveDTO.listOfChanges;
         for (let c in changes) {
             let location = changes[c].location;
