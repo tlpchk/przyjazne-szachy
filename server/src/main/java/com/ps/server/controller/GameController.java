@@ -106,6 +106,7 @@ public class GameController {
 
     @RequestMapping(value = "/{gameId}/update/{updateId}", method = RequestMethod.GET)
     public MoveUpdateDTO getUpdate(@PathVariable Long gameId,@PathVariable Integer updateId){
+        System.out.println("get update: "+updateId);
         return gameService.getUpdate(gameId,updateId);
     }
 
