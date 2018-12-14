@@ -46,6 +46,7 @@ public class OpeningBoardEvaluator extends StandardBoardEvaluator {
         return 0;
     }
 
+    @SuppressWarnings("Duplicates")
     private int castledKing(Board board, Color color) {
         if(castledKing.get(color).booleanValue() == true) {
             return 90;
@@ -65,6 +66,7 @@ public class OpeningBoardEvaluator extends StandardBoardEvaluator {
 
         if(board.getChessSquareState(shortCastle).state == ChessSquareState.State.OCCUPIED
                 && board.getChessSquareState(shortCastle).getPiece().type == Piece.PieceType.KING
+                && board.getChessSquareState(new Position(shortCastle.row, shortCastle.col - 1)).state == ChessSquareState.State.OCCUPIED
                 && board.getChessSquareState(new Position(shortCastle.row, shortCastle.col - 1)).getPiece().type == Piece.PieceType.ROOK) {
             castledKing.put(color, true);
             return 90;
@@ -72,6 +74,7 @@ public class OpeningBoardEvaluator extends StandardBoardEvaluator {
 
         if(board.getChessSquareState(longCastle).state == ChessSquareState.State.OCCUPIED
                 && board.getChessSquareState(longCastle).getPiece().type == Piece.PieceType.KING
+                && board.getChessSquareState(new Position(longCastle.row, longCastle.col - 1)).state == ChessSquareState.State.OCCUPIED
                 && board.getChessSquareState(new Position(longCastle.row, longCastle.col + 1)).getPiece().type == Piece.PieceType.ROOK) {
             castledKing.put(color, true);
             return 90;
