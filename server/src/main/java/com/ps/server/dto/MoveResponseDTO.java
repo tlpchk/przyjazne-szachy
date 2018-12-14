@@ -1,10 +1,7 @@
 package com.ps.server.dto;
 
 import com.ps.server.Logic.Change;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -13,6 +10,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 public class MoveResponseDTO {
 
     @NotNull

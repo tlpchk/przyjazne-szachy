@@ -14,6 +14,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -51,15 +52,15 @@ public class Game {
                 //TODO RS: Before changing Game's turn should check for CHECKMATE or PAT
                 flipTurn();
                 List<Change> listOfChanges = board.getListOfChanges(move);
-                ;
-                if (secondPlayer instanceof BotPlayer) {
-                    board.updateGame(secondPlayer.getColor());
-                    BotController controller = getBotController();
-                    Move botMove = controller.execute(board, secondPlayer.getColor());
-                    board.makeMove(botMove);
-                    flipTurn();
-                    listOfChanges.addAll(board.getListOfChanges(botMove));
-                }
+//                if (secondPlayer instanceof BotPlayer) {
+//                    board.updateGame(secondPlayer.getColor());
+//                    BotController controller = getBotController();
+//                    Move botMove = controller.execute(board, secondPlayer.getColor());
+//                    board.makeMove(botMove);
+//                    flipTurn();
+//                    listOfChanges.addAll(board.getListOfChanges(botMove));
+//                }
+//                listOfChanges.addAll(makeMoveBot());
                 return listOfChanges;
             } else {
                 //TODO RS: Give reason why
@@ -70,7 +71,7 @@ public class Game {
         }
     }
 
-    public List<Change> makeMoveBot() {
+    public List<Change> makeMoveBot() throws NotPlayerTurnException {
         if (isPlayerTurn(secondPlayer) && secondPlayer instanceof BotPlayer) {
             System.out.println("SPT: " + isPlayerTurn(secondPlayer));
             System.out.println("Bot: " + (secondPlayer instanceof BotPlayer));
@@ -81,7 +82,7 @@ public class Game {
             flipTurn();
             return board.getListOfChanges(botMove);
         }
-        return Collections.emptyList();
+        throw new NotPlayerTurnException();
     }
 
     private BotController getBotController() {
@@ -152,9 +153,9 @@ public class Game {
         Piece.PieceType type = null;
         Color color = null;
         if (piece != null) {
-            piece.legalMoves();
-            List<Move> legalMoves = piece.getLegalMoves();
-            possibleMoves = getPossibleMoves(legalMoves);
+            piece.update();
+//            List<Move> legalMoves = piece.getListOfMoves();
+//            possibleMoves = getPossibleMoves(legalMoves);
             type = piece.getType();
             color = piece.color;
         }
@@ -186,10 +187,12 @@ public class Game {
         Piece[][] pieces = board.getBoard();
         Piece piece = pieces[position.row][position.col];
         if (piece != null) {
-            piece.legalMoves();
-            List<Move> legalMoves = piece.getLegalMoves();
+//            piece.legalMoves();
+            piece.update();
+            List<Move> legalMoves = piece.getListOfMoves();
             return getPossibleMoves(legalMoves);
         }
         return Collections.emptyList();
     }
+
 }

@@ -4,6 +4,7 @@ import {BoardService} from '../../_services/board.service';
 import {ChangeDTO} from "../../_models/changeDTO";
 import {CoordinatesAdapterService} from "../../_services/coordinates-adapter.service";
 import {Piece} from "../../_models/piece";
+import {MoveUpdateDTO} from "../../_models/moveUpdateDTO";
 
 @Component({
     selector: 'app-board',
@@ -70,7 +71,9 @@ export class BoardComponent implements OnInit {
                             this.board[cellIndex].piece = piece;
                             this.board[cellIndex].possibleMoves = possibleMoves;
                         }
-
+                        this.boardService.makeBotMove(this.gameId).subscribe(a=>{
+                            console.log("BOT MOVES: " + a);
+                        });
                     } else {
                         console.log("Invalid move");
                     }
@@ -95,35 +98,47 @@ export class BoardComponent implements OnInit {
             .subscribe(pieces => {
                 this.board = this.boardService.getBoard(pieces);
                 //This probably shouldn't be done by setTimeout
-                setTimeout(this.getLastUpdate(), 1000);
+                setTimeout(this.update(), 1000);
             });
     }
 
-    getLastUpdate(): void {
-        this.boardService.getLastUpdate(this.gameId).subscribe(moveUpdate => {
-            if (moveUpdate.updateId !== this.lastUpdateId) {
-                let changes: ChangeDTO[] = moveUpdate.moveDTO.listOfChanges;
-                for (let c in changes) {
-                    let location = changes[c].location;
-                    let pieceColor = changes[c].color;
-                    let type = changes[c].type;
-                    let cellId = this.coordinateService.backendToFrontend(location.row, location.col);
-                    let cellIndex = this.board.map(function (item) {
-                        return item.id;
-                    })
-                        .indexOf(cellId);
-                    let piece: Piece = new Piece(type, pieceColor);
-                    let possibleMoves: number[] = [];
-                    if (piece.type === null || piece.type === undefined) {
-                        piece = null;
-                    }
-
-                    this.board[cellIndex].piece = piece;
-                    this.board[cellIndex].possibleMoves = possibleMoves;
+    update(): void {
+        this.boardService.getLastUpdate(this.gameId).subscribe(lastMoveUpdate => {
+            if (lastMoveUpdate.updateId > this.lastUpdateId) {
+                while (lastMoveUpdate.updateId > this.lastUpdateId) {
+                    this.lastUpdateId = this.lastUpdateId + 1;
+                    this.boardService.getUpdate(this.gameId, this.lastUpdateId).subscribe(moveUpdate => {
+                        this.updateBoard(moveUpdate);
+                        setTimeout(this.update(), 1000);
+                    });
                 }
             }
-            setTimeout(this.getLastUpdate(), 1000);
-        });
+            else {
+                setTimeout(this.update(), 1000);
+            }
 
+        });
+    }
+
+    private updateBoard(moveUpdate: MoveUpdateDTO) {
+        let changes: ChangeDTO[] = moveUpdate.moveDTO.listOfChanges;
+        for (let c in changes) {
+            let location = changes[c].location;
+            let pieceColor = changes[c].color;
+            let type = changes[c].type;
+            let cellId = this.coordinateService.backendToFrontend(location.row, location.col);
+            let cellIndex = this.board.map(function (item) {
+                return item.id;
+            })
+                .indexOf(cellId);
+            let piece: Piece = new Piece(type, pieceColor);
+            let possibleMoves: number[] = [];
+            if (piece.type === null || piece.type === undefined) {
+                piece = null;
+            }
+
+            this.board[cellIndex].piece = piece;
+            this.board[cellIndex].possibleMoves = possibleMoves;
+        }
     }
 }

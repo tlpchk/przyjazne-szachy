@@ -11,10 +11,19 @@ import static com.ps.server.Logic.Color.WHITE;
 import static com.ps.server.Logic.Pieces.Piece.PieceType.QUEEN;
 
 public class Queen extends StraightMovingPieces {
+
+    /**
+     * Class constructor.
+     * @param position on board, where the piece stands (should be in bounds row: 0-7, column: 0-7)
+     * @param color specifies the color of chess piece (WHITE or BLACK)
+     */
     public Queen(Color color, Position position) {
         super(color, QUEEN, position);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Move> semiLegalMoves() {
         List<Move> legalMoves = new ArrayList<>();
@@ -26,6 +35,9 @@ public class Queen extends StraightMovingPieces {
         return legalMoves;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean checkIfCanCaptureKingOn(Position kingsPosition) {
         int distX = Math.abs(position.col - kingsPosition.col);
@@ -34,11 +46,17 @@ public class Queen extends StraightMovingPieces {
                 && !checkIfSomethingBetween(kingsPosition);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Piece copy() {
         return new Queen(color, position);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return color == WHITE ? "♛" : "♕";

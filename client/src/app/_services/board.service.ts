@@ -24,12 +24,14 @@ export class BoardService {
     playerId: number;
     gameId = new ReplaySubject<number>();
     gameId$ = this.gameId.asObservable();
-    // board: Cell[];
+
     private gamesUrl = 'http://localhost:8080/games';
     private moveSubUrl = '/move';
     private boardSubUrl = '/board';
     private updateSubUrl = '/update';
+    private lastUpdateSubUrl = '/update/last';
     private possibleMovesSubUrl = '/possibleMoves';
+    private botSubUrl = '/bot';
 
     constructor(private http: HttpClient,
                 private messageService: MessageService,
@@ -78,6 +80,11 @@ export class BoardService {
         return this.http.post<MoveResponseDTO>(url, createMoveDTO, httpOptions);
     }
 
+    makeBotMove(gameId: number): Observable<MoveResponseDTO> {
+        let url = this.gamesUrl + "/" + gameId + this.botSubUrl;
+        return this.http.get<MoveResponseDTO>(url);
+    }
+
     /**
      * Handle Http operation that failed.
      * Let the app continue.
@@ -112,14 +119,19 @@ export class BoardService {
         );
     }*/
     getLastUpdate(gameId: number): Observable<MoveUpdateDTO> {
-        let url = this.gamesUrl + "/" + gameId + this.updateSubUrl;
+        let url = this.gamesUrl + "/" + gameId + this.lastUpdateSubUrl;
+        return this.http.get<MoveUpdateDTO>(url);
+    }
+
+    getUpdate(gameId: number, updateId: number): Observable<MoveUpdateDTO> {
+        let url = this.gamesUrl + "/" + gameId + this.updateSubUrl + "/" + updateId;
         return this.http.get<MoveUpdateDTO>(url);
     }
 
     getPossibleMove(selectedCell: Cell, gameId: number) {
         let url = this.gamesUrl + "/" + gameId + this.possibleMovesSubUrl;
         let position = this.coordinatesService.frontendToBackend(selectedCell.id);
-        return this.http.post<PositionDTO[]>(url,position,httpOptions);
+        return this.http.post<PositionDTO[]>(url, position, httpOptions);
     }
 
     getPossibleMoveArray(possibleMoves: PositionDTO[]) {

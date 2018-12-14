@@ -16,6 +16,11 @@ public class Pawn extends Piece {
     private boolean isFirstMove;
     private Position enPassant;
 
+    /**
+     * Class constructor.
+     * @param position on board, where the piece stands (should be in bounds row: 0-7, column: 0-7)
+     * @param color specifies the color of chess piece (WHITE or BLACK)
+     */
     public Pawn(Color color, Position position) {
         super(color, PAWN, position);
         isFirstMove = true;
@@ -59,6 +64,9 @@ public class Pawn extends Piece {
         return legalCaptures;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Move> semiLegalMoves() {
         List<Move> legalMoves = new ArrayList<>();
@@ -67,37 +75,55 @@ public class Pawn extends Piece {
         return legalMoves;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean checkIfCanCaptureKingOn(Position kingsPosition) {
         if(color == WHITE) {
-            return position.row - kingsPosition.row == -1 && Math.abs(position.col - kingsPosition.col) == 1;
-        } else {
             return position.row - kingsPosition.row == 1 && Math.abs(position.col - kingsPosition.col) == 1;
+        } else {
+            return position.row - kingsPosition.row == -1 && Math.abs(position.col - kingsPosition.col) == 1;
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Piece copy() {
         return new Pawn(color, position);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void move(Position destination) {
         isFirstMove = false;
         super.move(destination);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void legalMoves() {
-        super.legalMoves();
+    public void update() {
+        super.update();
         enPassant = null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void giveEnPassantRights(Position position) {
         enPassant = position;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return color == WHITE ? "♟" : "♙";

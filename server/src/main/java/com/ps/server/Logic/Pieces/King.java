@@ -5,6 +5,7 @@ import com.ps.server.Logic.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ps.server.Logic.Color.BLACK;
 import static com.ps.server.Logic.Color.WHITE;
 import static com.ps.server.Logic.Move.MoveType.*;
 import static com.ps.server.Logic.Pieces.Piece.PieceType.KING;
@@ -13,14 +14,26 @@ public class King extends StraightMovingPieces {
     private boolean castleRights;
     private static Position[] whiteRooks = SetFactory.WhiteSetFactory.rookPositions;
     private static Position[] blackRooks = SetFactory.BlackSetFactory.rookPositions;
+    private static Position whiteKingPosition = SetFactory.WhiteSetFactory.kingsPosition;
+    private static Position blackKingPosition = SetFactory.BlackSetFactory.kingsPosition;
 
+    /**
+     * Class constructor.
+     * @param position on board, where the piece stands (should be in bounds row: 0-7, column: 0-7)
+     * @param color specifies the color of chess piece (WHITE or BLACK)
+     */
     public King(Color color, Position position) {
         super(color, KING, position);
         castleRights = true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     private List<Move> generateCastleMoves() {
-        if(!castleRights) return null;
+        if(!castleRights
+                || (color == WHITE && !position.equalsToPos(whiteKingPosition))
+                || (color == BLACK && !position.equalsToPos(blackKingPosition))) return null;
         List<Move> legalMoves = new ArrayList<>();
         Position[] rooks = (color == WHITE) ? whiteRooks : blackRooks;
         for(int i = 0; i < 2; i++) {
@@ -33,6 +46,9 @@ public class King extends StraightMovingPieces {
         return legalMoves;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Move> semiLegalMoves() {
         List<Move> legalMoves = new ArrayList<>();
@@ -50,22 +66,34 @@ public class King extends StraightMovingPieces {
         return legalMoves;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean checkIfCanCaptureKingOn(Position kingsPosition) {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Piece copy() {
         return new King(color, position);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void move(Position destination) {
         castleRights = false;
         super.move(destination);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return color == WHITE ? "♚" : "♔";

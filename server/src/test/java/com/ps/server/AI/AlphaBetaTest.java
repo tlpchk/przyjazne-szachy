@@ -38,7 +38,7 @@ public class AlphaBetaTest {
         MoveStrategy moveStrategy = new AlphaBeta();
         ExtendedBoardEvaluator extendedBoardEvaluator = new ExtendedBoardEvaluator();
 
-        assertEquals(106, extendedBoardEvaluator.evaluate(board));
+        assertEquals(101, extendedBoardEvaluator.evaluate(board));
         System.out.println(extendedBoardEvaluator.evaluate(board));
 
         Move move = moveStrategy.execute(board, 4, Color.WHITE);
@@ -53,7 +53,36 @@ public class AlphaBetaTest {
 
         System.out.print(board.toString());
 
-        assertEquals(605, extendedBoardEvaluator.evaluate(board));
+        assertEquals(610, extendedBoardEvaluator.evaluate(board));
         System.out.println(extendedBoardEvaluator.evaluate(board));
+    }
+
+    @Test
+    public void symmetricalTest() {
+        Set blackSet = new Set(BLACK, Arrays.asList(
+                new King(BLACK, new Position(0, 4)),
+                new Rook(BLACK, new Position(1, 4)),
+                new Pawn(BLACK, new Position(4, 5))
+        ));
+
+        Set whiteSet =  new Set(WHITE, Arrays.asList(
+                new King(WHITE, new Position(7, 4)),
+                new Rook(WHITE, new Position(5, 4))
+        ));
+
+        Board board = new Board(whiteSet, blackSet);
+        board.updateGame(Color.BLACK);
+        System.out.print(board.toString());
+
+        MoveStrategy moveStrategy = new AlphaBeta();
+        ExtendedBoardEvaluator extendedBoardEvaluator = new ExtendedBoardEvaluator();
+
+        System.out.println(board.getLegalMoves(BLACK).size());
+
+        Move move = moveStrategy.execute(board, 4, Color.BLACK);
+        System.out.println(((AlphaBeta) moveStrategy).getBoardsEvaluated());
+        board.makeMove(move);
+
+        System.out.print(board.toString());
     }
 }

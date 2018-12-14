@@ -99,9 +99,20 @@ public class GameController {
     }
 
 
-    @RequestMapping(value = "/{gameId}/update", method = RequestMethod.GET)
-    public MoveUpdateDTO getLastUpdate(@PathVariable Long gameId) throws GameNotExistException {
+    @RequestMapping(value = "/{gameId}/update/last", method = RequestMethod.GET)
+    public MoveUpdateDTO getLastUpdate(@PathVariable Long gameId){
         return gameService.getLastUpdate(gameId);
+    }
+
+    @RequestMapping(value = "/{gameId}/update/{updateId}", method = RequestMethod.GET)
+    public MoveUpdateDTO getUpdate(@PathVariable Long gameId,@PathVariable Integer updateId){
+        System.out.println("get update: "+updateId);
+        return gameService.getUpdate(gameId,updateId);
+    }
+
+    @RequestMapping(value = "/{gameId}/bot", method = RequestMethod.GET)
+    public MoveResponseDTO moveBot(@PathVariable Long gameId) throws GameNotExistException, NotPlayerTurnException {
+        return gameService.makeMoveBot(gameId);
     }
 
     //TODO RS: zapytanie na "/{gameId}" zwraca info o grze, m.in czyja tura
