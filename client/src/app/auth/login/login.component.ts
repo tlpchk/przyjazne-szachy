@@ -3,10 +3,9 @@ import {AuthService} from "../../_services/auth.service";
 import {Router} from "@angular/router";
 
 @Component({
-    encapsulation: ViewEncapsulation.None,
     selector: 'app-login',
     templateUrl: './login.component.html',
-    styleUrls: ['../auth.component.scss']
+    styleUrls: ['../auth.component.scss','./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
 
@@ -25,7 +24,7 @@ export class LoginComponent implements OnInit {
                 console.log(this.username,this.password);
                 if (data.success) {
                     this.auth.setLoggedIn(true);
-                    this.router.navigate(['/user/home']);
+                    this.router.navigateByUrl('/user/home');
                 }else{
                     window.alert(data.message)
                 }
