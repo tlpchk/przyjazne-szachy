@@ -18,9 +18,9 @@ export class TimerService {
 
   constructor(private http: HttpClient) { }
 
-  getTimeOfEnd(now: Date): Observable<Date>{
-    //return this.http.post<Date>(this.timerUrl,now,httpOptions);
-    return of(this.mockDate);
+  getTimeOfEnd(): Observable<number>{
+    return this.http.get<number>(this.timerUrl);
+    //return of(this.mockDate);
   }
 
 
