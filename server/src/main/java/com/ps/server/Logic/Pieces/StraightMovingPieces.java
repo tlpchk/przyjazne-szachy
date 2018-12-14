@@ -40,7 +40,9 @@ abstract class StraightMovingPieces extends Piece {
     }
 
     private int direction(int oldV, int newV) {
-        return Integer.compare(newV, oldV);
+        if(newV < oldV) return -1;
+        if(newV > oldV) return 1;
+        return 0;
     }
 
     boolean checkIfSomethingBetween(Position destination) {
