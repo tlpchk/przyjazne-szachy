@@ -1,5 +1,5 @@
-client/node_modules
+/client/node_modules/
+/client/node/
 .idea/
-client/.idea/
-.idea
-
+target/
+dist/
