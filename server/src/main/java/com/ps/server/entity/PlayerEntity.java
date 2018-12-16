@@ -26,28 +26,4 @@ public class PlayerEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "player_type", nullable = false)
     private PlayerType playerType;
-
-    public Long getId() {
-        return id;
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
-    public PlayerType getPlayerType() {
-        return playerType;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setPlayerType(PlayerType playerType) {
-        this.playerType = playerType;
-    }
 }

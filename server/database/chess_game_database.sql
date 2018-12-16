@@ -1,18 +1,3 @@
--- --------------------------------------------------------
--- Host:                         127.0.0.1
--- Wersja serwera:               10.2.9-MariaDB - mariadb.org binary distribution
--- Serwer OS:                    Win64
--- HeidiSQL Wersja:              9.4.0.5125
--- --------------------------------------------------------
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET NAMES utf8 */;
-/*!50503 SET NAMES utf8mb4 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-
-
--- Zrzut struktury bazy danych chess_game
 CREATE DATABASE IF NOT EXISTS `chess_game` /*!40100 DEFAULT CHARACTER SET utf16 COLLATE utf16_polish_ci */;
 USE `chess_game`;
 
@@ -22,8 +7,6 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `add_player`(
 	IN `nick1` VARCHAR(64),
 	IN `e-mail1` VARCHAR(128),
 	IN `password1` VARCHAR(128)
-
-
 )
 BEGIN
 	INSERT INTO user(user.nick,user.`e-mail`,user.`password`) VALUES (`nick1`, `e-mail1`, `password1`);

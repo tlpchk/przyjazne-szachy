@@ -3,7 +3,7 @@ package com.ps.server.Logic;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum Color {
-    WHITE("white"), BLACK("black");
+    WHITE("WHITE"), BLACK("BLACK");
 
     private String colorString;
 
