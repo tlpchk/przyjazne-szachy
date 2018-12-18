@@ -17,9 +17,9 @@ public class UserEntity {
     private int ID;
 
     @Column(name = "nick", nullable = false, length = 64)
-    private String nick;
+    private String username;
 
-    @Column(name = "e_mail", nullable = false, length = 128)
+    @Column(name = "e_mail", length = 128)
     private String email ;
 
     @Column(name = "password", nullable = false, length = 128)

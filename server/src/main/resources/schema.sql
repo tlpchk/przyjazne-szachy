@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `move` (
 CREATE TABLE IF NOT EXISTS `user` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `nick` varchar(64) COLLATE utf16_polish_ci NOT NULL DEFAULT '0',
-  `e_mail` varchar(128) COLLATE utf16_polish_ci NOT NULL DEFAULT '0',
+  `e_mail` varchar(128) COLLATE utf16_polish_ci DEFAULT '0',
   `password` varchar(128) COLLATE utf16_polish_ci NOT NULL DEFAULT '0',
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf16 COLLATE=utf16_polish_ci;
@@ -56,3 +56,4 @@ CREATE TABLE IF NOT EXISTS `player_user` (
   CONSTRAINT `FK_player_2` FOREIGN KEY (`ID_player`) REFERENCES `player` (`ID`),
   CONSTRAINT `FK_user_2` FOREIGN KEY (`ID_user`) REFERENCES `user` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_polish_ci;
+

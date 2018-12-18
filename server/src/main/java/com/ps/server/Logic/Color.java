@@ -13,6 +13,6 @@ public enum Color {
 
     @JsonValue
     public String getColorString() {
-        return colorString;
+        return colorString.toLowerCase();
     }
 }
