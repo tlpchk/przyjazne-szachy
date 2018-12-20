@@ -1,10 +1,12 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Cell} from '../../_models/cell';
 import {BoardService} from '../../_services/board.service';
-import {ChangeDTO} from "../../_models/changeDTO";
-import {CoordinatesAdapterService} from "../../_services/coordinates-adapter.service";
-import {Piece} from "../../_models/piece";
-import {MoveUpdateDTO} from "../../_models/moveUpdateDTO";
+import {ChangeDTO} from '../../_models/changeDTO';
+import {CoordinatesAdapterService} from '../../_services/coordinates-adapter.service';
+import {Piece} from '../../_models/piece';
+import {MoveUpdateDTO} from '../../_models/moveUpdateDTO';
+import {PopupComponent} from '../popup/popup.component';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-board',
@@ -12,21 +14,29 @@ import {MoveUpdateDTO} from "../../_models/moveUpdateDTO";
     styleUrls: ['./board.component.scss']
 })
 export class BoardComponent implements OnInit {
+    @ViewChild(PopupComponent)
+    private popup: PopupComponent;
+
     selectedCell: Cell;
     move: Cell[];
     board: Cell[] = [];
     gameId: number;
-    lastUpdateId: number = 0;
+    lastUpdateId = 0;
 
     constructor(private boardService: BoardService,
-                private coordinateService: CoordinatesAdapterService) {
+                private coordinateService: CoordinatesAdapterService,) {
     }
 
     ngOnInit() {
         this.getGameId();
         this.move = [];
         this.selectedCell = null;
+        /*if (this.board.length === 0) {
+            this.popup.routerLink = '/user/home';
+            this.popup.show('Stwórz nową grę');
+        }*/
     }
+
 
     onSelect(cell: Cell) {
         this.selectedCell = cell;
@@ -46,36 +56,36 @@ export class BoardComponent implements OnInit {
             if (this.move[0] !== this.move[1]) {
                 this.boardService.makeMove(this.move, this.gameId).subscribe(moveResponse => {
                     if (moveResponse.wasMoveValid) {
-                        console.log("This move was valid");
-                        let changes: ChangeDTO[] = moveResponse.listOfChanges;
+                        console.log('This move was valid');
+                        const changes: ChangeDTO[] = moveResponse.listOfChanges;
                         console.log(moveResponse);
-                        for (let c in changes) {
-                            let location = changes[c].location;
-                            let pieceColor = changes[c].color;
-                            let type = changes[c].type;
-                            console.log("row: " + location.row + " col: " + location.col);
-                            let cellId = this.coordinateService.backendToFrontend(location.row, location.col);
-                            console.log("id: " + cellId);
-                            let cellIndex = this.board.map(function (item) {
+                        for (const c in changes) {
+                            const location = changes[c].location;
+                            const pieceColor = changes[c].color;
+                            const type = changes[c].type;
+                            console.log('row: ' + location.row + ' col: ' + location.col);
+                            const cellId = this.coordinateService.backendToFrontend(location.row, location.col);
+                            console.log('id: ' + cellId);
+                            const cellIndex = this.board.map(function (item) {
                                 return item.id;
                             })
                                 .indexOf(cellId);
                             let piece: Piece = new Piece(type, pieceColor);
-                            let possibleMoves: number[] = [];
+                            const possibleMoves: number[] = [];
                             if (piece.type === null || piece.type === undefined) {
                                 piece = null;
                             }
-                            console.log("piece: " + piece);
-                            console.log("board: " + this.board);
-                            console.log("index: " + cellIndex);
+                            console.log('piece: ' + piece);
+                            console.log('board: ' + this.board);
+                            console.log('index: ' + cellIndex);
                             this.board[cellIndex].piece = piece;
                             this.board[cellIndex].possibleMoves = possibleMoves;
                         }
-                        this.boardService.makeBotMove(this.gameId).subscribe(a=>{
-                            console.log("BOT MOVES: " + a);
+                        this.boardService.makeBotMove(this.gameId).subscribe(a => {
+                            console.log('BOT MOVES: ' + a);
                         });
                     } else {
-                        console.log("Invalid move");
+                        console.log('Invalid move');
                     }
                 });
 
@@ -97,7 +107,7 @@ export class BoardComponent implements OnInit {
         this.boardService.getPieces(this.gameId)
             .subscribe(pieces => {
                 this.board = this.boardService.getBoard(pieces);
-                //This probably shouldn't be done by setTimeout
+                // This probably shouldn't be done by setTimeout
                 setTimeout(this.update(), 1000);
             });
     }
@@ -112,8 +122,7 @@ export class BoardComponent implements OnInit {
                         setTimeout(this.update(), 1000);
                     });
                 }
-            }
-            else {
+            } else {
                 setTimeout(this.update(), 1000);
             }
 
@@ -121,18 +130,18 @@ export class BoardComponent implements OnInit {
     }
 
     private updateBoard(moveUpdate: MoveUpdateDTO) {
-        let changes: ChangeDTO[] = moveUpdate.moveDTO.listOfChanges;
-        for (let c in changes) {
-            let location = changes[c].location;
-            let pieceColor = changes[c].color;
-            let type = changes[c].type;
-            let cellId = this.coordinateService.backendToFrontend(location.row, location.col);
-            let cellIndex = this.board.map(function (item) {
+        const changes: ChangeDTO[] = moveUpdate.moveDTO.listOfChanges;
+        for (const c in changes) {
+            const location = changes[c].location;
+            const pieceColor = changes[c].color;
+            const type = changes[c].type;
+            const cellId = this.coordinateService.backendToFrontend(location.row, location.col);
+            const cellIndex = this.board.map(function (item) {
                 return item.id;
             })
                 .indexOf(cellId);
             let piece: Piece = new Piece(type, pieceColor);
-            let possibleMoves: number[] = [];
+            const possibleMoves: number[] = [];
             if (piece.type === null || piece.type === undefined) {
                 piece = null;
             }
