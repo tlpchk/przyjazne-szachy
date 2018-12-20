@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS `game` (
   `first_player`    int(11),
   `second_player`   int(11),
   `game_type`       enum ('COMPETITION_GAME', 'BOT_GAME') COLLATE utf16_polish_ci,
-  `result`          enum ('FIRST_PLAYER_WIN', 'SECOND_PLAYER_WIN', 'DRAW') COLLATE utf16_polish_ci,
+  `result`          enum ('FIRST_PLAYER_WON', 'SECOND_PLAYER_WON', 'DRAW') COLLATE utf16_polish_ci,
   `move_time_limit` time               DEFAULT '00:05:00',
   `game_time_limit` time               DEFAULT '02:00:00',
   PRIMARY KEY (`ID`),

@@ -1,20 +1,21 @@
 package com.ps.server.Logic.game;
 
 import com.ps.server.AI.BotController;
-import com.ps.server.dto.PieceDTO;
-import com.ps.server.exception.CannotJoinPlayerException;
-import com.ps.server.exception.NotPlayerTurnException;
-import com.ps.server.exception.NotValidMoveException;
 import com.ps.server.Logic.*;
 import com.ps.server.Logic.Pieces.Piece;
 import com.ps.server.Logic.player.BotPlayer;
 import com.ps.server.Logic.player.Player;
+import com.ps.server.dto.PieceDTO;
+import com.ps.server.enums.Result;
+import com.ps.server.exception.CannotJoinPlayerException;
+import com.ps.server.exception.GameHasFinishedException;
+import com.ps.server.exception.NotPlayerTurnException;
+import com.ps.server.exception.NotValidMoveException;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -31,6 +32,14 @@ public class Game {
 
     private BotController controller;
 
+    private GameState gameState;
+
+    private Result result = null;
+
+    private boolean isPromotion = false;
+
+    private Move promotionMove;
+
 
     /**
      * Makes given Move on board.
@@ -42,45 +51,81 @@ public class Game {
      * @throws NotPlayerTurnException when {@param Player} wants to make Move when it is not its turn
      * @throws NotValidMoveException  when {@param Move} is not valid
      */
-    public List<Change> makeMove(Position origin, Position destination, Player player) throws NotPlayerTurnException, NotValidMoveException {
+    public List<Change> makeMove(Position origin, Position destination, Player player) throws NotPlayerTurnException, NotValidMoveException, GameHasFinishedException {
         if (isPlayerTurn(player)) {
-            //jesli zwroci ze jest mat, tzn ze poprzedni gracz wygral
-            board.updateGame(player.getColor());
-            Move move = board.validatePlayersMove(origin, destination, player.getColor());
-            if (isMoveValid(move)) {
-                board.makeMove(move);
-                //TODO RS: Before changing Game's turn should check for CHECKMATE or PAT
-                flipTurn();
-                List<Change> listOfChanges = board.getListOfChanges(move);
-//                if (secondPlayer instanceof BotPlayer) {
-//                    board.updateGame(secondPlayer.getColor());
-//                    BotController controller = getBotController();
-//                    Move botMove = controller.execute(board, secondPlayer.getColor());
-//                    board.makeMove(botMove);
-//                    flipTurn();
-//                    listOfChanges.addAll(board.getListOfChanges(botMove));
-//                }
-//                listOfChanges.addAll(makeMoveBot());
-                return listOfChanges;
+            updateGame(player);
+            if (gameState == GameState.GAME_RUNNING) {
+                Move move = board.validatePlayersMove(origin, destination, player.getColor());
+                if (isMoveValid(move)) {
+                    if (move.type != Move.MoveType.PROMOTION) {
+                        board.makeMove(move);
+                        flipTurn();
+                        updateAfterMove(player);
+                        isPromotion = false;
+                        return board.getListOfChanges(move);
+                    } else {
+                        isPromotion = true;
+                        promotionMove = move;
+                        return Collections.emptyList();
+                    }
+                } else {
+                    //TODO RS: Give reason why
+                    throw new NotValidMoveException();
+                }
             } else {
-                //TODO RS: Give reason why
-                throw new NotValidMoveException();
+                throw new GameHasFinishedException();
             }
         } else {
             throw new NotPlayerTurnException();
         }
     }
 
-    public List<Change> makeMoveBot() throws NotPlayerTurnException {
+    public List<Change> promote(Player player, Piece.PieceType promotionType){
+        promotionMove.setPromoteTo(promotionType);
+        board.makeMove(promotionMove);
+        flipTurn();
+        updateAfterMove(player);
+        isPromotion = false;
+        return board.getListOfChanges(promotionMove);
+    }
+
+    private void updateAfterMove(Player player) {
+        if (player.equals(firstPlayer)) {
+            updateGame(secondPlayer);
+        } else {
+            updateGame(firstPlayer);
+        }
+    }
+
+    private void updateGame(Player player) {
+        gameState = board.updateGame(player.getColor());
+        if (result == null) {
+            if (gameState == GameState.STALEMATE) {
+                result = Result.DRAW;
+            } else if (gameState == GameState.CHECKMATE) {
+                if (player.equals(firstPlayer)) {
+                    result = Result.SECOND_PLAYER_WON;
+                } else {
+                    result = Result.FIRST_PLAYER_WON;
+                }
+            }
+        }
+    }
+
+    public List<Change> makeMoveBot() throws NotPlayerTurnException, GameHasFinishedException {
         if (isPlayerTurn(secondPlayer) && secondPlayer instanceof BotPlayer) {
-            System.out.println("SPT: " + isPlayerTurn(secondPlayer));
-            System.out.println("Bot: " + (secondPlayer instanceof BotPlayer));
-            board.updateGame(secondPlayer.getColor());
-            BotController controller = getBotController();
-            Move botMove = controller.execute(board, secondPlayer.getColor());
-            board.makeMove(botMove);
-            flipTurn();
-            return board.getListOfChanges(botMove);
+            updateGame(secondPlayer);
+            if (gameState == GameState.GAME_RUNNING) {
+                BotController controller = getBotController();
+                Move botMove = controller.execute(board, secondPlayer.getColor());
+                board.makeMove(botMove);
+                flipTurn();
+                updateAfterMove(secondPlayer);
+                return board.getListOfChanges(botMove);
+            } else {
+                throw new GameHasFinishedException();
+            }
+
         }
         throw new NotPlayerTurnException();
     }
@@ -154,8 +199,6 @@ public class Game {
         Color color = null;
         if (piece != null) {
             piece.update();
-//            List<Move> legalMoves = piece.getListOfMoves();
-//            possibleMoves = getPossibleMoves(legalMoves);
             type = piece.getType();
             color = piece.color;
         }
@@ -187,7 +230,6 @@ public class Game {
         Piece[][] pieces = board.getBoard();
         Piece piece = pieces[position.row][position.col];
         if (piece != null) {
-//            piece.legalMoves();
             piece.update();
             List<Move> legalMoves = piece.getListOfMoves();
             return getPossibleMoves(legalMoves);

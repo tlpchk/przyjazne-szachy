@@ -9,8 +9,10 @@ import {MoveUpdateDTO} from "../_models/moveUpdateDTO";
 import {CreateMoveDTO} from "../_models/createMoveDTO";
 import {PieceDTO} from "../_models/pieceDTO";
 import {Color} from "../_models/color";
-import {Piece} from "../_models/piece";
+import {Piece, PieceType} from "../_models/piece";
 import {PositionDTO} from "../_models/positionDTO";
+import {GameInfoDTO} from "../_models/gameInfoDTO";
+import {PromotionDTO} from "../_models/promotionDTO";
 
 const httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -31,6 +33,7 @@ export class BoardService {
     private updateSubUrl = '/update';
     private lastUpdateSubUrl = '/update/last';
     private possibleMovesSubUrl = '/possibleMoves';
+    private promotionSubUrl = '/promote';
     private botSubUrl = '/bot';
 
     constructor(private http: HttpClient,
@@ -142,5 +145,17 @@ export class BoardService {
             possibleMovesToReturn.push(possibleMoveId);
         }
         return possibleMovesToReturn;
+    }
+
+    getGameInfo(gameId: number): Observable<GameInfoDTO> {
+        let url = this.gamesUrl + "/" + gameId;
+        return this.http.post<GameInfoDTO>(url, this.playerId, httpOptions);
+    }
+
+    promote(gameId: number, pieceType: PieceType): Observable<MoveResponseDTO> {
+        let url = this.gamesUrl + "/" + gameId + this.promotionSubUrl;
+        let promotionDTO = new PromotionDTO(this.playerId, pieceType);
+        return this.http.post<MoveResponseDTO>(url, promotionDTO, httpOptions);
+
     }
 }
