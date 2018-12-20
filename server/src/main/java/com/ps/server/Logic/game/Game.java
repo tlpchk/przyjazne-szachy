@@ -14,6 +14,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -152,10 +153,9 @@ public class Game {
         Piece.PieceType type = null;
         Color color = null;
         if (piece != null) {
-//            piece.legalMoves();
             piece.update();
-            List<Move> legalMoves = piece.getListOfMoves();
-            possibleMoves = getPossibleMoves(legalMoves);
+//            List<Move> legalMoves = piece.getListOfMoves();
+//            possibleMoves = getPossibleMoves(legalMoves);
             type = piece.getType();
             color = piece.color;
         }
@@ -194,4 +194,5 @@ public class Game {
         }
         return Collections.emptyList();
     }
+
 }

@@ -23,6 +23,11 @@ public class Rook extends StraightMovingPieces {
         castleRights = true;
     }
 
+    Rook(Color color, Position position, boolean castleRights) {
+        super(color, ROOK, position);
+        this.castleRights = castleRights;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -59,7 +64,7 @@ public class Rook extends StraightMovingPieces {
      */
     @Override
     public Piece copy() {
-        return new Rook(color, position);
+        return new Rook(color, position, castleRights);
     }
 
     /**

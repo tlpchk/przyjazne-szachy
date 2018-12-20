@@ -120,7 +120,6 @@ public class Board {
             case NORMAL:
                 removePiece(dest);
                 addPiece(removePiece(loc), dest);
-
                 break;
             case LONG_CASTLE: {
                 Piece rook = removePiece(dest);

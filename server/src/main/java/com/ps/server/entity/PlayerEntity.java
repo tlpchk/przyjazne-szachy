@@ -26,5 +26,4 @@ public class PlayerEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "player_type", nullable = false)
     private PlayerType playerType;
-
 }

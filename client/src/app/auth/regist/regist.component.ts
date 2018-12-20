@@ -1,35 +1,36 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../../_services/auth.service";
 import {Router} from "@angular/router";
 
 @Component({
-  selector: 'app-regist',
-  templateUrl: './regist.component.html',
-  styleUrls: ['../auth.component.scss']
+    selector: 'app-regist',
+    templateUrl: './regist.component.html',
+    styleUrls: ['../auth.component.scss']
 })
 export class RegistComponent implements OnInit {
-  username: string;
-  email: string;
-  password1: string;
-  password2: string;
+    username: string;
+    email: string;
+    password: string;
+    passwordConfirmation: string;
 
 
-  constructor(private auth: AuthService,
-              private router: Router) { }
+    constructor(private auth: AuthService,
+                private router: Router) {
+    }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+    }
 
-  registerUser() {
-    this.auth.registerUser(this.username,this.email,this.password1,this.password2).subscribe( data =>{
-      if (data.success) {
-        this.auth.setLoggedIn(true);
-        this.router.navigate(['/user/home']);
-      }else{
-        window.alert(data.message)
-      }
-    })
-  }
+    registerUser() {
+        this.auth.registerUser(this.username, this.email, this.password, this.passwordConfirmation).subscribe(data => {
+            if (data.success) {
+                this.auth.setLoggedIn(true);
+                this.router.navigate(['/user/home']);
+            } else {
+                window.alert(data.message)
+            }
+        })
+    }
 
 
 }

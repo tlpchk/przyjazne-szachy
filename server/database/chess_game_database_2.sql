@@ -1,3 +1,18 @@
+-- --------------------------------------------------------
+-- Host:                         127.0.0.1
+-- Wersja serwera:               10.2.9-MariaDB - mariadb.org binary distribution
+-- Serwer OS:                    Win64
+-- HeidiSQL Wersja:              9.4.0.5125
+-- --------------------------------------------------------
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+
+
+-- Zrzut struktury bazy danych chess_game
 CREATE DATABASE IF NOT EXISTS `chess_game` /*!40100 DEFAULT CHARACTER SET utf16 COLLATE utf16_polish_ci */;
 USE `chess_game`;
 
@@ -7,6 +22,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `add_player`(
 	IN `nick1` VARCHAR(64),
 	IN `e-mail1` VARCHAR(128),
 	IN `password1` VARCHAR(128)
+
+
 )
 BEGIN
 	INSERT INTO user(user.nick,user.`e-mail`,user.`password`) VALUES (`nick1`, `e-mail1`, `password1`);
@@ -33,18 +50,20 @@ CREATE TABLE IF NOT EXISTS `game` (
 /*!40000 ALTER TABLE `game` DISABLE KEYS */;
 /*!40000 ALTER TABLE `game` ENABLE KEYS */;
 
--- Zrzut struktury tabela chess_game.hibernate_sequence
-CREATE TABLE IF NOT EXISTS `hibernate_sequence` (
-  `next_val` bigint(20) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf16 COLLATE=utf16_polish_ci;
+-- Zrzut struktury tabela chess_game.hibernate_sequence_ok
+CREATE TABLE IF NOT EXISTS `hibernate_sequence_ok` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `next_val` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf16 COLLATE=utf16_polish_ci;
 
--- Zrzucanie danych dla tabeli chess_game.hibernate_sequence: 3 rows
-/*!40000 ALTER TABLE `hibernate_sequence` DISABLE KEYS */;
-REPLACE INTO `hibernate_sequence` (`next_val`) VALUES
-	(1),
-	(1),
-	(1);
-/*!40000 ALTER TABLE `hibernate_sequence` ENABLE KEYS */;
+-- Zrzucanie danych dla tabeli chess_game.hibernate_sequence_ok: 3 rows
+/*!40000 ALTER TABLE `hibernate_sequence_ok` DISABLE KEYS */;
+REPLACE INTO `hibernate_sequence_ok` (`ID`, `next_val`) VALUES
+	(1, 1),
+	(2, 1),
+	(3, 1);
+/*!40000 ALTER TABLE `hibernate_sequence_ok` ENABLE KEYS */;
 
 -- Zrzut struktury procedura chess_game.login
 DELIMITER //
@@ -65,14 +84,20 @@ CREATE TABLE IF NOT EXISTS `matches` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `gameID` int(11) NOT NULL DEFAULT 0,
   `playerID` int(11) NOT NULL DEFAULT 0,
+  `opponentID` int(11) NOT NULL,
   `result` tinyint(4) NOT NULL DEFAULT 0,
   PRIMARY KEY (`ID`),
   KEY `player_key` (`playerID`),
-  CONSTRAINT `player_key` FOREIGN KEY (`playerID`) REFERENCES `user` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_polish_ci;
+  KEY `opponent_key` (`opponentID`),
+  CONSTRAINT `opponent_key` FOREIGN KEY (`opponentID`) REFERENCES `player` (`ID`),
+  CONSTRAINT `player_key` FOREIGN KEY (`playerID`) REFERENCES `player` (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf16 COLLATE=utf16_polish_ci;
 
--- Zrzucanie danych dla tabeli chess_game.matches: ~0 rows (około)
+-- Zrzucanie danych dla tabeli chess_game.matches: ~2 rows (około)
 /*!40000 ALTER TABLE `matches` DISABLE KEYS */;
+REPLACE INTO `matches` (`ID`, `gameID`, `playerID`, `opponentID`, `result`) VALUES
+	(1, 1, 1, 2, 2),
+	(2, 1, 2, 1, 0);
 /*!40000 ALTER TABLE `matches` ENABLE KEYS */;
 
 -- Zrzut struktury tabela chess_game.move
@@ -83,14 +108,16 @@ CREATE TABLE IF NOT EXISTS `move` (
   `destination_row` int(11) NOT NULL,
   `origin_column` int(11) NOT NULL,
   `origin_row` int(11) NOT NULL,
-  `game_id` bigint(20) NOT NULL,
-  `player_id` bigint(20) DEFAULT NULL,
+  `game_id` int(11) NOT NULL,
+  `player_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `FK6khbbqe4c9jmywgvi9nehpkd1` (`game_id`),
-  KEY `FKfyg07nm0qyopn03emleo4jhxi` (`player_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf16 COLLATE=utf16_polish_ci;
+  KEY `FK10000` (`game_id`),
+  KEY `FK200000` (`player_id`),
+  CONSTRAINT `FK10000` FOREIGN KEY (`game_id`) REFERENCES `game` (`ID`),
+  CONSTRAINT `FK200000` FOREIGN KEY (`player_id`) REFERENCES `player` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_polish_ci;
 
--- Zrzucanie danych dla tabeli chess_game.move: 0 rows
+-- Zrzucanie danych dla tabeli chess_game.move: ~0 rows (około)
 /*!40000 ALTER TABLE `move` DISABLE KEYS */;
 /*!40000 ALTER TABLE `move` ENABLE KEYS */;
 
@@ -147,10 +174,13 @@ CREATE TABLE IF NOT EXISTS `player` (
   `color` enum('White','Black') COLLATE utf16_polish_ci NOT NULL,
   `player_type` enum('Player','Bot') COLLATE utf16_polish_ci NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_polish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf16 COLLATE=utf16_polish_ci;
 
--- Zrzucanie danych dla tabeli chess_game.player: ~0 rows (około)
+-- Zrzucanie danych dla tabeli chess_game.player: ~2 rows (około)
 /*!40000 ALTER TABLE `player` DISABLE KEYS */;
+REPLACE INTO `player` (`ID`, `color`, `player_type`) VALUES
+	(1, 'Black', 'Player'),
+	(2, 'White', 'Player');
 /*!40000 ALTER TABLE `player` ENABLE KEYS */;
 
 -- Zrzut struktury tabela chess_game.player_user
@@ -163,9 +193,28 @@ CREATE TABLE IF NOT EXISTS `player_user` (
   CONSTRAINT `FK_user_2` FOREIGN KEY (`ID_user`) REFERENCES `user` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_polish_ci;
 
--- Zrzucanie danych dla tabeli chess_game.player_user: ~0 rows (około)
+-- Zrzucanie danych dla tabeli chess_game.player_user: ~2 rows (około)
 /*!40000 ALTER TABLE `player_user` DISABLE KEYS */;
+REPLACE INTO `player_user` (`ID_user`, `ID_player`) VALUES
+	(1, 1),
+	(2, 2);
 /*!40000 ALTER TABLE `player_user` ENABLE KEYS */;
+
+-- Zrzut struktury tabela chess_game.ranking
+CREATE TABLE IF NOT EXISTS `ranking` (
+  `ID_User` int(11) NOT NULL,
+  `Score` float NOT NULL DEFAULT 1000,
+  PRIMARY KEY (`ID_User`),
+  CONSTRAINT `FK_user` FOREIGN KEY (`ID_User`) REFERENCES `user` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_polish_ci;
+
+-- Zrzucanie danych dla tabeli chess_game.ranking: ~3 rows (około)
+/*!40000 ALTER TABLE `ranking` DISABLE KEYS */;
+REPLACE INTO `ranking` (`ID_User`, `Score`) VALUES
+	(1, 1010),
+	(2, 990.099),
+	(3, 1000);
+/*!40000 ALTER TABLE `ranking` ENABLE KEYS */;
 
 -- Zrzut struktury procedura chess_game.register_controll
 DELIMITER //
@@ -301,16 +350,47 @@ CREATE TABLE IF NOT EXISTS `resumption_place_white_y` (
 CREATE TABLE IF NOT EXISTS `user` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `nick` varchar(64) COLLATE utf16_polish_ci NOT NULL DEFAULT '0',
-  `e-mail` varchar(128) COLLATE utf16_polish_ci NOT NULL DEFAULT '0',
+  `e_mail` varchar(128) COLLATE utf16_polish_ci NOT NULL DEFAULT '0',
   `password` varchar(128) COLLATE utf16_polish_ci NOT NULL DEFAULT '0',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf16 COLLATE=utf16_polish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf16 COLLATE=utf16_polish_ci;
 
--- Zrzucanie danych dla tabeli chess_game.user: ~1 rows (około)
+-- Zrzucanie danych dla tabeli chess_game.user: ~3 rows (około)
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-REPLACE INTO `user` (`ID`, `nick`, `e-mail`, `password`) VALUES
-	(1, 'abc', 'def', '\'); DROP TABLE user; (');
+REPLACE INTO `user` (`ID`, `nick`, `e_mail`, `password`) VALUES
+	(1, 'abc', 'def', '\'); DROP TABLE user; ('),
+	(2, 'zsi', 'edu', 'zxcvbnm'),
+	(3, 'magda', 'asdfg', '1234567890');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
+
+-- Zrzut struktury wyzwalacz chess_game.ranking_trigger
+SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
+DELIMITER //
+CREATE TRIGGER `ranking_trigger` AFTER INSERT ON `matches` FOR EACH ROW BEGIN
+	declare current float;
+	declare pnkGet float;
+	declare pnkEX float;
+	declare result float;
+	set current = (SELECT ranking.Score FROM ranking
+	WHERE ranking.ID_User = (SELECT player_user.ID_user FROM player_user
+	WHERE player_user.ID_player = new.playerID));
+	set pnkGet = (SELECT matches.result FROM matches 
+	WHERE matches.ID = new.ID);
+	set pnkEX = ((SELECT ranking.Score FROM ranking
+	WHERE ranking.ID_user = (SELECT player_user.ID_user FROM player_user
+	WHERE player_user.ID_player = new.playerID)) /
+	(SELECT ranking.Score FROM ranking
+	WHERE ranking.ID_user = (SELECT player_user.ID_user FROM player_user
+	WHERE player_user.ID_player = new.opponentID)));
+	set result = current + 10 * (pnkGet - pnkEX);
+	
+	UPDATE ranking set ranking.Score = result 
+	WHERE ranking.ID_User = (SELECT player_user.ID_user FROM player_user
+	WHERE player_user.ID_player = new.playerID); 
+	
+END//
+DELIMITER ;
+SET SQL_MODE=@OLDTMP_SQL_MODE;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;

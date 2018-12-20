@@ -69,7 +69,9 @@ public class BoardTest {
         ));
         Board board = new Board(white, black);
         //System.out.print(board.toString());
-        board.makeMove(new Move(KING, BLACK, blackKingsPos, blackRootPos, LONG_CASTLE));
+        board.updateGame(BLACK);
+        Move move = board.validatePlayersMove(blackKingsPos, blackRootPos, BLACK);
+        board.makeMove(move);
         //System.out.print(board.toString());
         assert(king.getPosition().equalsToPos(new Position(0, 2)));
     }

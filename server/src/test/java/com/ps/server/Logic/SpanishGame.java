@@ -62,6 +62,16 @@ public class SpanishGame {
         board.updateGame(BLACK);
         Move pinnedKnight = board.validatePlayersMove(new Position(2, 2), new Position(4, 1), BLACK);
         assertTrue(pinnedKnight == null);
+
+        Move secondBlackKnightMoves = board.validatePlayersMove(new Position(0, 6), new Position(2, 5), BLACK);
+        board.makeMove(secondBlackKnightMoves);
+        System.out.println(board.toString());
+
+        Move castle = board.validatePlayersMove(new Position(7, 4), new Position(7, 7), WHITE);
+        board.makeMove(castle);
+        System.out.println(board.toString());
+
+        assertTrue(board.getChessSquareState(new Position(7, 6)).state == ChessSquareState.State.OCCUPIED);
     }
 
     private Board setOpening() {

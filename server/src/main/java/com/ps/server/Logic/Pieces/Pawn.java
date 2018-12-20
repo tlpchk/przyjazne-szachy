@@ -26,6 +26,12 @@ public class Pawn extends Piece {
         isFirstMove = true;
     }
 
+    Pawn(Color color, Position position, boolean isFirstMove, Position enPassant) {
+        super(color, PAWN, position);
+        this.isFirstMove = isFirstMove;
+        this.enPassant = enPassant;
+    }
+
     private List<Move> normalLegalMoves() {
         List<Move> normalLegalMoves = new ArrayList<>();
         int newRow = (color == WHITE) ? position.row - 1 : position.row + 1;
@@ -92,7 +98,7 @@ public class Pawn extends Piece {
      */
     @Override
     public Piece copy() {
-        return new Pawn(color, position);
+        return new Pawn(color, position, isFirstMove, enPassant);
     }
 
     /**

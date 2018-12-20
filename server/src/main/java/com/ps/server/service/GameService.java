@@ -1,5 +1,10 @@
 package com.ps.server.service;
 
+import com.ps.server.Logic.Change;
+import com.ps.server.Logic.Position;
+import com.ps.server.Logic.game.Game;
+import com.ps.server.Logic.game.GameCreator;
+import com.ps.server.Logic.player.Player;
 import com.ps.server.dto.MoveResponseDTO;
 import com.ps.server.dto.MoveUpdateDTO;
 import com.ps.server.dto.PieceDTO;
@@ -7,15 +12,12 @@ import com.ps.server.entity.GameEntity;
 import com.ps.server.entity.PlayerEntity;
 import com.ps.server.enums.GameType;
 import com.ps.server.exception.*;
-import com.ps.server.Logic.*;
-import com.ps.server.Logic.game.Game;
-import com.ps.server.Logic.game.GameCreator;
-import com.ps.server.Logic.player.Player;
 import com.ps.server.repository.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.sql.Timestamp;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -49,7 +51,7 @@ public class GameService {
         synchronized (gamesMap) {
             Game game = createGame(firstPlayerEntity, secondPlayerEntity);
             GameEntity gameEntity = createGameEntity(firstPlayerEntity, secondPlayerEntity);
-            Long gameId = gameEntity.getId();
+            Long gameId = gameEntity.getID();
             updateGamesAfterCreation(game, gameId);
             return gameId;
         }
@@ -67,6 +69,7 @@ public class GameService {
 
     private GameEntity createGameEntity(PlayerEntity firstPlayer, PlayerEntity secondPlayer) {
         GameEntity gameEntity = new GameEntity();
+        gameEntity.setStartTime(new Timestamp(System.currentTimeMillis()));
         gameEntity.setFirstPlayer(firstPlayer);
         if (secondPlayer != null) {
             gameEntity.setSecondPlayer(secondPlayer);

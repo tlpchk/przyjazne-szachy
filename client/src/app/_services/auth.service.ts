@@ -42,9 +42,11 @@ export class AuthService {
         return this.http.post<myData>(this.loginUrl, user ,httpOptions);
     }
 
-    registerUser(username: string, email: string, password1: string, password2: string): Observable<myData>{
+    registerUser(username: string, email: string, password: string, passwordConfirmation: string): Observable<myData>{
         let newUser = new User();
-        if(password1 != password2){
+        newUser.username = username;
+        newUser.password = password;
+        if(password != passwordConfirmation){
             return of(<myData>{
                 success: false,
                 message: "Confirm password error"
