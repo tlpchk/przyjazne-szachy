@@ -20,8 +20,8 @@ class User {
 @Injectable()
 export class AuthService {
     private host = 'http://localhost:8080';
-    private loginUrl = this.host + '/login';
-    private registerUrl = this.host + '/register';
+    private loginUrl = this.host + '/user/login';
+    private registerUrl = this.host + '/user/register';
     private loggedInStatus = false;
 
     constructor(private http: HttpClient) {

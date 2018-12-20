@@ -8,6 +8,7 @@ import com.ps.server.service.GameService;
 import com.ps.server.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,15 @@ public class GameController {
 
     @Autowired
     private PlayerService playerService;
+
+
+    @RequestMapping(value = "/dummy", method = RequestMethod.GET)
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public String getDummy(){
+        return "DUMMY";
+    }
+
+
 
     /**
      * Creates new Game.
