@@ -22,18 +22,33 @@ public class UserController {
 
     //TODO RS: instead of sending message should send authentication token, or using session
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public LoginResponseDTO loginUser(@RequestBody UserDTO userDTO) throws UserNotFoundException {
-        boolean isUserAvailable = userService.areCredentialsValid(userDTO.getUsername(), userDTO.getPassword());
-        LoginResponseDTO response = new LoginResponseDTO(isUserAvailable, "");
-        return response;
+    public LoginResponseDTO loginUser(@RequestBody UserDTO userDTO) {
+        String message = "Hello!";
+        boolean isUserAvailable = true;
+        try {
+            isUserAvailable = userService.areCredentialsValid(userDTO.getUsername(), userDTO.getPassword());
+        } catch (UserNotFoundException e) {
+            isUserAvailable = false;
+            message = "Zły login lub hasło";
+        } finally {
+            LoginResponseDTO response = new LoginResponseDTO(isUserAvailable, message);
+            return response;
+        }
     }
 
     //TODO RS: instead of sending message should send authentication token, or using session
     //and should autologin
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public LoginResponseDTO registerPlayer(@RequestBody UserDTO userDTO) throws UsernameNotAvailableException {
-        userService.createNewUser(userDTO.getUsername(),userDTO.getPassword());
-        LoginResponseDTO response = new LoginResponseDTO(true, "");
+    public LoginResponseDTO registerPlayer(@RequestBody UserDTO userDTO) {
+        String message = "Hello!";
+        boolean success = true;
+        try {
+            userService.createNewUser(userDTO.getUsername(), userDTO.getPassword());
+        } catch (UsernameNotAvailableException e) {
+            message = "Nazwa użtykownika zajęta";
+            success = false;
+        }
+        LoginResponseDTO response = new LoginResponseDTO(success, message);
         return response;
     }
 

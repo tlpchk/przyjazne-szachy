@@ -365,6 +365,8 @@ REPLACE INTO `user` (`ID`, `nick`, `e_mail`, `password`) VALUES
 
 -- Zrzut struktury wyzwalacz chess_game.ranking_trigger
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
+-- Zrzut struktury wyzwalacz chess_game.ranking_trigger
+SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
 CREATE TRIGGER `ranking_trigger` AFTER INSERT ON `matches` FOR EACH ROW BEGIN
 	declare current float;
@@ -374,7 +376,7 @@ CREATE TRIGGER `ranking_trigger` AFTER INSERT ON `matches` FOR EACH ROW BEGIN
 	set current = (SELECT ranking.Score FROM ranking
 	WHERE ranking.ID_User = (SELECT player_user.ID_user FROM player_user
 	WHERE player_user.ID_player = new.playerID));
-	set pnkGet = (SELECT matches.result FROM matches 
+	set pnkGet = (SELECT matches.result FROM matches
 	WHERE matches.ID = new.ID);
 	set pnkEX = ((SELECT ranking.Score FROM ranking
 	WHERE ranking.ID_user = (SELECT player_user.ID_user FROM player_user
@@ -382,7 +384,16 @@ CREATE TRIGGER `ranking_trigger` AFTER INSERT ON `matches` FOR EACH ROW BEGIN
 	(SELECT ranking.Score FROM ranking
 	WHERE ranking.ID_user = (SELECT player_user.ID_user FROM player_user
 	WHERE player_user.ID_player = new.opponentID)));
+	IF (pnkEX > 1.75) THEN
+		SET pnkEX = 1.75;
+	ELSEIF (pnkEX < 0.25) THEN
+		SET pnkEX = 0.25;
+	END IF;
 	set result = current + 10 * (pnkGet - pnkEX);
+
+	IF (result < 0.0) THEN
+		set result = 0.0;
+	END IF;
 	
 	UPDATE ranking set ranking.Score = result 
 	WHERE ranking.ID_User = (SELECT player_user.ID_user FROM player_user

@@ -26,19 +26,4 @@ public class MoveResponseDTO {
                 '}';
     }
 
-    public boolean isWasMoveValid() {
-        return wasMoveValid;
-    }
-
-    public void setWasMoveValid(boolean wasMoveValid) {
-        this.wasMoveValid = wasMoveValid;
-    }
-
-    public List<Change> getListOfChanges() {
-        return listOfChanges;
-    }
-
-    public void setListOfChanges(List<Change> listOfChanges) {
-        this.listOfChanges = listOfChanges;
-    }
 }
