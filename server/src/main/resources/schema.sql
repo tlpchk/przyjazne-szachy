@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS `chess_game`;
-USE `chess_game`;
+#CREATE DATABASE IF NOT EXISTS `chess_game`;
+USE `heroku_9fd898a328f4b3c`;
 
 CREATE TABLE IF NOT EXISTS `game` (
   `ID`              int(11)   NOT NULL AUTO_INCREMENT,
