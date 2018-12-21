@@ -8,7 +8,6 @@ import {SidebarComponent} from "./sidebar/sidebar.component";
 import {UserComponent} from "./user.component";
 import {UserRoutingModule} from "./user-routing.module";
 import {AuthGuard} from "./auth.guard";
-import {TimerComponent} from "./timer/timer.component";
 
 @NgModule({
     imports: [
@@ -23,7 +22,6 @@ import {TimerComponent} from "./timer/timer.component";
         MessagesComponent,
         HomeComponent,
         SidebarComponent,
-        TimerComponent,
     ],
     providers: [AuthGuard]
 })
