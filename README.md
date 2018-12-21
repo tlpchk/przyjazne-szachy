@@ -1,13 +1,18 @@
 Aby zainstalować tę aplikację, uruchom następujące polecenia:
 
     git clone https://github.com/tlpchk/przyjazne-szachy.git
-    cd przyjazne-szachy/client
-    npm install
+    mvn clean install
 
-Aby uruchomić serwer, przejdź do folderu server i uruchom:
+Aby uruchomić aplikację, przejdź do folderu server i uruchom:
 
     ./mvnw spring-boot:run
+    
+Klient będzie znajdował się pod adresem:
 
-Aby uruchomić klienta, przejdź do folderu client i uruchom:
+    localhost:8080
+    
+    
+Deploy na Heroku:
 
-   	npm start
+    mvn clean heroku:deploy
+    heroku open
