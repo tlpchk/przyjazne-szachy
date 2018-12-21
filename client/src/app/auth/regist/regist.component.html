@@ -1,4 +1,4 @@
-<div class="text-center fade-bottom">
+<div class="text-center fade-bottom background">
   <h1>Rejestracja</h1>
 
   <form (submit)="registerUser()">
@@ -8,6 +8,6 @@
     <input class="form-control" type="password" [(ngModel)]="passwordConfirmation" name="password2" placeholder="Confirm Password">
 
     <input class="btn btn-primary form-control" type="submit" value="Register">
-    <a routerLink="/auth/login">Zaloguj się</a>
+    <a class="form-control"  routerLink="/auth/login">Zaloguj się</a>
   </form>
 </div>

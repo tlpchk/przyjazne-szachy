@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {UserService} from "../../_services/user.service";
 import {BoardService} from "../../_services/board.service";
 
@@ -8,13 +8,11 @@ const secondPlayerColor = "BLACK";
 @Component({
     selector: 'app-start',
     templateUrl: './home.component.html',
-    styleUrls: ['./home.component.scss']
+    styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
 
     gameList: number[];
-
-    //gameId: number;
 
 
     constructor(private userService: UserService,

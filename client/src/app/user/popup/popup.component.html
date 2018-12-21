@@ -1,0 +1,9 @@
+<div [ngSwitch]="type" *ngIf="isDisplayed">
+  <div *ngSwitchCase="'message'" class = "box">
+    <h1>{{message}}</h1>
+    <a class="close" (click)="hide()">Close</a>
+  </div>
+  <div *ngSwitchCase="'promotion'">
+    <p>promotion</p>
+  </div>
+</div>
