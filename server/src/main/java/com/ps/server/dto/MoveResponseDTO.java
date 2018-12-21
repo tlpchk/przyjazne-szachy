@@ -25,4 +25,5 @@ public class MoveResponseDTO {
                 "listOfChanges=" + listOfChanges +
                 '}';
     }
+
 }

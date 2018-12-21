@@ -50,19 +50,5 @@ public class GameCreator {
         }
     }
 
-//    private void setCompetitionGame(Game Game) {
-//        Game.setGameType(GameType.COMPETITION_GAME);
-//        Game.setGameStatus(GameStatus.WAITING_FOR_SECOND_PLAYER);
-//        Game.setSecondPlayer(null);
-//    }
-//
-//
-//    private void setBotGame(Game Game) {
-//        Game.setGameType(GameType.BOT_GAME);
-//        Game.setGameStatus(GameStatus.FIRST_PLAYER_TURN);
-//        BotController controller
-//        Game.setSecondPlayer(new BotPlayer());
-//    }
-
 
 }

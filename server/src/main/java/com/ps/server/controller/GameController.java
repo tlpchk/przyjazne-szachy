@@ -51,7 +51,7 @@ public class GameController {
      * @param gameId   Id of the Game to which Player wants to join
      * @param playerId Id of the Player who wants to join Game
      * @return true if joined successfully, false otherwise
-     * @throws GameNotExistException            when Game with given Game id does not exist
+     * @throws GameNotExistException when Game with given Game id does not exist
      */
     @RequestMapping(value = "/{gameId}/join", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public boolean joinGame(@PathVariable Long gameId, @RequestBody Long playerId) throws GameNotExistException {
@@ -76,9 +76,15 @@ public class GameController {
      * @throws GameNotExistException            when Game with given Game id does not exist
      */
     @RequestMapping(value = "/{gameId}/move", method = RequestMethod.POST)
-    public MoveResponseDTO makeMove(@PathVariable Long gameId, @RequestBody CreateMoveDTO createMoveDTO) throws GameNotExistException, InvalidRequiredArgumentException, NotPlayerTurnException {
+    public MoveResponseDTO makeMove(@PathVariable Long gameId, @RequestBody CreateMoveDTO createMoveDTO) throws GameNotExistException, InvalidRequiredArgumentException, NotPlayerTurnException, GameHasFinishedException {
         PlayerEntity playerEntity = playerService.getPlayerEntity(createMoveDTO.getPlayerId());
         return gameService.makeMove(gameId, playerEntity, createMoveDTO.getOrigin(), createMoveDTO.getDestination());
+    }
+
+    @RequestMapping(value = "/{gameId}/promote", method = RequestMethod.POST)
+    public MoveResponseDTO promote(@PathVariable Long gameId, @RequestBody PromotionDTO promotionDTO) throws GameNotExistException, InvalidRequiredArgumentException, NotPlayerTurnException, GameHasFinishedException {
+        PlayerEntity playerEntity = playerService.getPlayerEntity(promotionDTO.getPlayerId());
+        return gameService.promote(gameId, playerEntity, promotionDTO.getPieceType());
     }
 
     /**
@@ -98,18 +104,32 @@ public class GameController {
         return gameService.getPossibleMoves(gameId, position);
     }
 
-
-    @RequestMapping(value = "/{gameId}/update", method = RequestMethod.GET)
-    public MoveUpdateDTO getLastUpdate(@PathVariable Long gameId) throws GameNotExistException {
+    //TODO RS: remove it, funcionality should be implemented in getGameInfo
+    @RequestMapping(value = "/{gameId}/update/last", method = RequestMethod.GET)
+    public MoveUpdateDTO getLastUpdate(@PathVariable Long gameId) {
         return gameService.getLastUpdate(gameId);
     }
 
+    @RequestMapping(value = "/{gameId}/update/{updateId}", method = RequestMethod.GET)
+    public MoveUpdateDTO getUpdate(@PathVariable Long gameId, @PathVariable Integer updateId) {
+        System.out.println("get update: " + updateId);
+        return gameService.getUpdate(gameId, updateId);
+    }
+
     @RequestMapping(value = "/{gameId}/bot", method = RequestMethod.GET)
-    public MoveResponseDTO moveBot(@PathVariable Long gameId) throws GameNotExistException, NotPlayerTurnException {
-        return gameService.makeMoveBot(gameId);
+    public MoveResponseDTO moveBot(@PathVariable Long gameId) throws GameNotExistException, GameHasFinishedException {
+        try {
+            return gameService.makeMoveBot(gameId);
+        } catch (NotPlayerTurnException e) {
+            return new MoveResponseDTO();
+        }
     }
 
     //TODO RS: zapytanie na "/{gameId}" zwraca info o grze, m.in czyja tura
-
+    @RequestMapping(value = "/{gameId}", method = RequestMethod.POST)
+    public GameInfoDTO getGameInfo(@PathVariable Long gameId, @RequestBody Long playerId) throws GameNotExistException, InvalidRequiredArgumentException {
+        PlayerEntity playerEntity = playerService.getPlayerEntity(playerId);
+        return gameService.getGameInfo(gameId, playerEntity);
+    }
 
 }

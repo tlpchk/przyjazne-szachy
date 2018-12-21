@@ -3,8 +3,9 @@ import {Cell} from '../../_models/cell';
 import {BoardService} from '../../_services/board.service';
 import {ChangeDTO} from "../../_models/changeDTO";
 import {CoordinatesAdapterService} from "../../_services/coordinates-adapter.service";
-import {Piece} from "../../_models/piece";
+import {Piece, PieceType} from "../../_models/piece";
 import {MoveUpdateDTO} from "../../_models/moveUpdateDTO";
+import {GameState, Result} from "../../_models/gameInfoDTO";
 
 @Component({
     selector: 'app-board',
@@ -14,9 +15,13 @@ import {MoveUpdateDTO} from "../../_models/moveUpdateDTO";
 export class BoardComponent implements OnInit {
     selectedCell: Cell;
     move: Cell[];
-    board: Cell[] = [];
+    board: Cell[];
     gameId: number;
-    lastUpdateId: number = 0;
+    lastUpdateId: number;
+    isMyTurn: boolean;
+    isGameFinished: boolean = false;
+    result: Result;
+    isPromotion = false;
 
     constructor(private boardService: BoardService,
                 private coordinateService: CoordinatesAdapterService) {
@@ -25,7 +30,9 @@ export class BoardComponent implements OnInit {
     ngOnInit() {
         this.getGameId();
         this.move = [];
+        this.board = [];
         this.selectedCell = null;
+
     }
 
     onSelect(cell: Cell) {
@@ -48,14 +55,11 @@ export class BoardComponent implements OnInit {
                     if (moveResponse.wasMoveValid) {
                         console.log("This move was valid");
                         let changes: ChangeDTO[] = moveResponse.listOfChanges;
-                        console.log(moveResponse);
                         for (let c in changes) {
                             let location = changes[c].location;
                             let pieceColor = changes[c].color;
                             let type = changes[c].type;
-                            console.log("row: " + location.row + " col: " + location.col);
                             let cellId = this.coordinateService.backendToFrontend(location.row, location.col);
-                            console.log("id: " + cellId);
                             let cellIndex = this.board.map(function (item) {
                                 return item.id;
                             })
@@ -65,13 +69,10 @@ export class BoardComponent implements OnInit {
                             if (piece.type === null || piece.type === undefined) {
                                 piece = null;
                             }
-                            console.log("piece: " + piece);
-                            console.log("board: " + this.board);
-                            console.log("index: " + cellIndex);
                             this.board[cellIndex].piece = piece;
                             this.board[cellIndex].possibleMoves = possibleMoves;
                         }
-                        this.boardService.makeBotMove(this.gameId).subscribe(a=>{
+                        this.boardService.makeBotMove(this.gameId).subscribe(a => {
                             console.log("BOT MOVES: " + a);
                         });
                     } else {
@@ -88,7 +89,7 @@ export class BoardComponent implements OnInit {
     getGameId(): void {
         this.boardService.gameId$.subscribe(gameId => {
             this.gameId = gameId;
-            console.log(gameId);
+            console.log(this.gameId);
             this.getBoard();
         });
     }
@@ -97,18 +98,20 @@ export class BoardComponent implements OnInit {
         this.boardService.getPieces(this.gameId)
             .subscribe(pieces => {
                 this.board = this.boardService.getBoard(pieces);
-                //This probably shouldn't be done by setTimeout
-                setTimeout(this.getLastUpdate(), 1000);
+                this.lastUpdateId = 0;
+                this.isMyTurn = false;
+                this.isGameFinished = false;
+                this.result = null;
+                this.isPromotion = false;
+                setTimeout(this.getGameInfo(), 1000);
             });
     }
 
-    getLastUpdate(): void {
-        this.boardService.getLastUpdate(this.gameId).subscribe(moveUpdate => {
-            console.log("Move update: " + moveUpdate.updateId);
-            console.log("My update: " + this.lastUpdateId);
-            if (moveUpdate.updateId > this.lastUpdateId) {
-                this.lastUpdateId = moveUpdate.updateId;
-                let changes: ChangeDTO[] = moveUpdate.moveDTO.listOfChanges;
+    promotion(pieceType: PieceType): void {
+        this.boardService.promote(this.gameId,pieceType).subscribe(moveResponse => {
+            if (moveResponse.wasMoveValid) {
+                console.log("This move was valid");
+                let changes: ChangeDTO[] = moveResponse.listOfChanges;
                 for (let c in changes) {
                     let location = changes[c].location;
                     let pieceColor = changes[c].color;
@@ -123,17 +126,59 @@ export class BoardComponent implements OnInit {
                     if (piece.type === null || piece.type === undefined) {
                         piece = null;
                     }
-
                     this.board[cellIndex].piece = piece;
                     this.board[cellIndex].possibleMoves = possibleMoves;
                 }
-
+                this.boardService.makeBotMove(this.gameId).subscribe(a => {
+                    console.log("BOT MOVES: " + a);
+                });
+            } else {
+                console.log("Invalid move");
             }
-            setTimeout(this.getLastUpdate(), 1000);
+        });
+
+    }
+
+    getGameInfo(): void {
+        this.boardService.getGameInfo(this.gameId).subscribe(gameInfo => {
+            this.result = gameInfo.gameResult;
+            this.isMyTurn = gameInfo.myTurn;
+            this.isPromotion = gameInfo.promotion;
+            this.isGameFinished = (gameInfo.gameState != GameState.game_running);
+            if (gameInfo.lastUpdateId > this.lastUpdateId) {
+                while (gameInfo.lastUpdateId > this.lastUpdateId) {
+                    this.lastUpdateId = this.lastUpdateId + 1;
+                    this.boardService.getUpdate(this.gameId, this.lastUpdateId).subscribe(moveUpdate => {
+                        this.updateBoard(moveUpdate);
+                    });
+                }
+                setTimeout(this.getGameInfo(), 1000);
+            }
+            else {
+                setTimeout(this.getGameInfo(), 1000);
+            }
         });
     }
 
-    private updateBoard(moveUpdate: MoveUpdateDTO) {
 
+    private updateBoard(moveUpdate: MoveUpdateDTO) {
+        let changes: ChangeDTO[] = moveUpdate.moveDTO.listOfChanges;
+        for (let c in changes) {
+            let location = changes[c].location;
+            let pieceColor = changes[c].color;
+            let type = changes[c].type;
+            let cellId = this.coordinateService.backendToFrontend(location.row, location.col);
+            let cellIndex = this.board.map(function (item) {
+                return item.id;
+            })
+                .indexOf(cellId);
+            let piece: Piece = new Piece(type, pieceColor);
+            let possibleMoves: number[] = [];
+            if (piece.type === null || piece.type === undefined) {
+                piece = null;
+            }
+            this.board[cellIndex].piece = piece;
+            this.board[cellIndex].possibleMoves = possibleMoves;
+        }
     }
 }

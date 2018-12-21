@@ -8,4 +8,8 @@ import lombok.*;
 @EqualsAndHashCode
 public abstract class Player {
     protected Color color;
+
+    public Color getColor() {
+        return color;
+    }
 }

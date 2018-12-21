@@ -1,5 +1,12 @@
 package com.ps.server.service;
 
+import com.ps.server.Logic.Change;
+import com.ps.server.Logic.Pieces.Piece;
+import com.ps.server.Logic.Position;
+import com.ps.server.Logic.game.Game;
+import com.ps.server.Logic.game.GameCreator;
+import com.ps.server.Logic.player.Player;
+import com.ps.server.dto.GameInfoDTO;
 import com.ps.server.dto.MoveResponseDTO;
 import com.ps.server.dto.MoveUpdateDTO;
 import com.ps.server.dto.PieceDTO;
@@ -7,15 +14,14 @@ import com.ps.server.entity.GameEntity;
 import com.ps.server.entity.PlayerEntity;
 import com.ps.server.enums.GameType;
 import com.ps.server.exception.*;
-import com.ps.server.Logic.*;
-import com.ps.server.Logic.game.Game;
-import com.ps.server.Logic.game.GameCreator;
-import com.ps.server.Logic.player.Player;
 import com.ps.server.repository.GameRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.sql.Timestamp;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -35,6 +41,8 @@ public class GameService {
 
     private HashMap<Long, List<MoveUpdateDTO>> updates = new HashMap<>();
 
+    private static final Logger logger = LoggerFactory.getLogger(GameService.class);
+
 
     /**
      * Creates new Game instance and saves it in database.
@@ -49,8 +57,9 @@ public class GameService {
         synchronized (gamesMap) {
             Game game = createGame(firstPlayerEntity, secondPlayerEntity);
             GameEntity gameEntity = createGameEntity(firstPlayerEntity, secondPlayerEntity);
-            Long gameId = gameEntity.getId();
+            Long gameId = gameEntity.getID();
             updateGamesAfterCreation(game, gameId);
+            logger.info("Game id: " + gameId + ". Game created.");
             return gameId;
         }
     }
@@ -67,6 +76,7 @@ public class GameService {
 
     private GameEntity createGameEntity(PlayerEntity firstPlayer, PlayerEntity secondPlayer) {
         GameEntity gameEntity = new GameEntity();
+        gameEntity.setStartTime(new Timestamp(System.currentTimeMillis()));
         gameEntity.setFirstPlayer(firstPlayer);
         if (secondPlayer != null) {
             gameEntity.setSecondPlayer(secondPlayer);
@@ -92,6 +102,7 @@ public class GameService {
      */
     public List<Long> getGamesToJoin() {
         synchronized (gamesMap) {
+            logger.info("Returned list of games.");
             Map<Long, Game> mapOfGamesToJoin = gamesMap.entrySet().stream().filter(x -> x.getValue().getSecondPlayer() == null).collect(Collectors.toMap(x -> x.getKey(), x -> x.getValue()));
             if (mapOfGamesToJoin.isEmpty()) {
                 return Collections.emptyList();
@@ -116,6 +127,7 @@ public class GameService {
             Game game = getGameFromGames(gameId);
             game.joinPlayer(secondPlayer);
             joinPlayerToGameEntity(gameId, secondPlayerEntity);
+            logger.info("Game id: " + gameId + ". Player " + secondPlayerEntity.getId() + " is joining game.");
         }
     }
 
@@ -156,17 +168,21 @@ public class GameService {
      * @throws NotPlayerTurnException           when {@param playerEntity} wants to make Move when it is not its turn
      * @throws GameNotExistException            when Game with given Game id does not exist
      */
-    public MoveResponseDTO makeMove(Long gameId, PlayerEntity playerEntity, Position origin, Position destination) throws InvalidRequiredArgumentException, NotPlayerTurnException, GameNotExistException {
+    public MoveResponseDTO makeMove(Long gameId, PlayerEntity playerEntity, Position origin, Position destination) throws InvalidRequiredArgumentException, NotPlayerTurnException, GameNotExistException, GameHasFinishedException {
         synchronized (gamesMap) {
             Game game = getGameFromGames(gameId);
             Player player = playerservice.createPlayerFromEntity(playerEntity);
+            logger.info("Game id: " + gameId + ". Player " + playerEntity.getId() + " is trying to move.");
             boolean isMoveValid = true;
             List<Change> listOfChanges;
             try {
                 listOfChanges = game.makeMove(origin, destination, player);
+                logger.info("Game id: " + gameId + ". Player " + playerEntity.getId() + " moves successfully from: " + origin + " to: " + destination);
+                //is promto
             } catch (NotValidMoveException e) {
                 isMoveValid = false;
                 listOfChanges = Collections.emptyList();
+                logger.info("Game id: " + gameId + ". Player " + playerEntity.getId() + " attempted to make invalid move from" + origin + " to: " + destination);
             }
             MoveResponseDTO moveDTO = new MoveResponseDTO(isMoveValid, listOfChanges);
             updateGamesAfterMove(gameId, moveDTO);
@@ -174,21 +190,36 @@ public class GameService {
         }
     }
 
-    public MoveResponseDTO makeMoveBot(Long gameId) throws GameNotExistException, NotPlayerTurnException {
+    public MoveResponseDTO promote(Long gameId, PlayerEntity playerEntity, Piece.PieceType pieceType) throws GameNotExistException, InvalidRequiredArgumentException {
         synchronized (gamesMap) {
             Game game = getGameFromGames(gameId);
+            Player player = playerservice.createPlayerFromEntity(playerEntity);
+            logger.info("Game id: " + gameId + ". Player " + playerEntity.getId() + " is trying to promote");
+            boolean isMoveValid = true;
+            List<Change> listOfChanges = game.promote(player, pieceType);
+            MoveResponseDTO moveDTO = new MoveResponseDTO(isMoveValid, listOfChanges);
+            updateGamesAfterMove(gameId, moveDTO);
+            return moveDTO;
+        }
+    }
+
+    public MoveResponseDTO makeMoveBot(Long gameId) throws GameNotExistException, NotPlayerTurnException, GameHasFinishedException {
+        synchronized (gamesMap) {
+            Game game = getGameFromGames(gameId);
+            logger.info("Game id: " + gameId + ". Bot is trying to move.");
             boolean isMoveValid = true;
             List<Change> listOfChanges = game.makeMoveBot();
             MoveResponseDTO moveDTO = new MoveResponseDTO(isMoveValid, listOfChanges);
             updateGamesAfterMove(gameId, moveDTO);
-            return  moveDTO;
+            logger.info("Game id: " + gameId + ". Bot moves successfully.");
+            return moveDTO;
         }
     }
 
     private void updateGamesAfterMove(Long gameId, MoveResponseDTO moveDTO) {
         List<MoveUpdateDTO> updateList = updates.get(gameId);
         MoveUpdateDTO lastUpdate = updateList.get(updateList.size() - 1);
-        if ( !lastUpdate.equals(moveDTO)){
+        if (!lastUpdate.equals(moveDTO)) {
             Long newId = lastUpdate.getUpdateId() + 1;
             System.out.println("UPDATE: " + newId);
             MoveUpdateDTO moveUpdateDTO = new MoveUpdateDTO(newId, moveDTO);
@@ -205,6 +236,7 @@ public class GameService {
      */
     public List<PieceDTO> getBoard(Long gameId) throws GameNotExistException {
         synchronized (gamesMap) {
+
             Game game = getGameFromGames(gameId);
             return game.getPieceDTOList();
         }
@@ -228,6 +260,27 @@ public class GameService {
         List<MoveUpdateDTO> updateList = updates.get(gameId);
         return updateList.get(updateList.size() - 1);
     }
+
+    public MoveUpdateDTO getUpdate(Long gameId, Integer updateId) {
+        List<MoveUpdateDTO> updateList = updates.get(gameId);
+        return updateList.get(updateId);
+    }
+
+    public GameInfoDTO getGameInfo(Long gameId, PlayerEntity playerEntity) throws GameNotExistException, InvalidRequiredArgumentException {
+        synchronized (gamesMap) {
+            List<MoveUpdateDTO> updateList = updates.get(gameId);
+            Game game = getGameFromGames(gameId);
+            Player player = playerservice.createPlayerFromEntity(playerEntity);
+            GameInfoDTO gameInfo = new GameInfoDTO();
+            gameInfo.setLastUpdateId(updateList.get(updateList.size() - 1).getUpdateId());
+            gameInfo.setMyTurn(game.isPlayerTurn(player));
+            gameInfo.setPromotion(game.isPromotion());
+            gameInfo.setGameState(game.getGameState());
+            gameInfo.setGameResult(game.getResult());
+            return gameInfo;
+        }
+    }
+
 
 //    public MoveUpdateDTO getUpdateById(Long gameId, Long updateId) {
 //        updates.get(gameId)

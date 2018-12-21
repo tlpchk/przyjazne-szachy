@@ -74,6 +74,12 @@ public class Set {
         return false;
     }
 
+    void addPieceToSet(Piece piece,Board board){
+        set.add(piece);
+        piece.addBoard(board);
+    }
+
+
     public List<Piece> getSet() {
         return set;
     }
