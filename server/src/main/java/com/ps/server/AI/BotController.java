@@ -5,22 +5,31 @@ import com.ps.server.Logic.Color;
 import com.ps.server.Logic.Move;
 
 public class BotController {
-    int movesCounter = 0;
+    private MoveStrategy openingMoveStrategy;
+    private MoveStrategy middleMoveStrategy;
+
+    private int movesCounter;
+
+    public BotController() {
+        OpeningBoardEvaluator openingBoardEvaluator = new OpeningBoardEvaluator();
+        openingMoveStrategy = new AlphaBeta(openingBoardEvaluator);
+
+        ExtendedBoardEvaluator extendedBoardEvaluator = new ExtendedBoardEvaluator();
+        middleMoveStrategy = new AlphaBeta(extendedBoardEvaluator);
+
+        movesCounter = 0;
+    }
 
     //TODO think when opening phase should end to switch to other evaluation method
     public Move execute(Board board, Color color) {
+        movesCounter++;
+
         if(movesCounter >= 6) {
-            ExtendedBoardEvaluator extendedBoardEvaluator = new ExtendedBoardEvaluator();
-            MoveStrategy moveStrategy = new AlphaBeta(extendedBoardEvaluator);
-            Move move = moveStrategy.execute(board, getDepth(), color);
-            movesCounter++;
+            Move move = this.middleMoveStrategy.execute(board, getDepth(), color);
             return move;
         }
         else {
-            OpeningBoardEvaluator openingBoardEvaluator = new OpeningBoardEvaluator();
-            MoveStrategy moveStrategy = new AlphaBeta(openingBoardEvaluator);
-            Move move = moveStrategy.execute(board, getDepth(), color);
-            movesCounter++;
+            Move move = this.openingMoveStrategy.execute(board, getDepth(), color);
             return move;
         }
     }
