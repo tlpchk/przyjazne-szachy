@@ -11,6 +11,7 @@ import java.util.Arrays;
 
 import static com.ps.server.Logic.Color.BLACK;
 import static com.ps.server.Logic.Color.WHITE;
+import static org.junit.Assert.assertSame;
 
 public class DiscoveryTest {
     @Test
@@ -32,6 +33,9 @@ public class DiscoveryTest {
         board.updateGame(WHITE);
         MoveStrategy moveStrategy = new AlphaBeta();
         Move move = moveStrategy.execute(board, 4, WHITE);
+        assertSame(move.dest.col, 7);
+        assertSame(move.dest.row, 1);
+
         board.makeMove(move);
 
         System.out.println(board.toString());
