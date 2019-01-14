@@ -53,11 +53,11 @@ public class GameService {
      * @throws InvalidRequiredArgumentException when players do not have playerType set
      * @throws SamePlayerException              when firstPlayer is the same as secondPlayer (which means they have the same color)
      */
-    public Long createNewGame(PlayerEntity firstPlayerEntity, PlayerEntity secondPlayerEntity) throws InvalidRequiredArgumentException, SamePlayerException {
+    public Long createNewGame(PlayerEntity firstPlayerEntity, PlayerEntity secondPlayerEntity, boolean isRanked) throws InvalidRequiredArgumentException, SamePlayerException {
         synchronized (gamesMap) {
             Game game = createGame(firstPlayerEntity, secondPlayerEntity);
             GameEntity gameEntity = createGameEntity(firstPlayerEntity, secondPlayerEntity);
-            Long gameId = gameEntity.getID();
+            Long gameId = gameEntity.getId();
             updateGamesAfterCreation(game, gameId);
             logger.info("Game id: " + gameId + ". Game created.");
             return gameId;
@@ -100,6 +100,7 @@ public class GameService {
      *
      * @return list of games to join
      */
+    //TODO RS: break it into ran and unranked game
     public List<Long> getGamesToJoin() {
         synchronized (gamesMap) {
             logger.info("Returned list of games.");
@@ -143,13 +144,14 @@ public class GameService {
     private void joinPlayerToGameEntity(Long gameId, PlayerEntity secondPlayerEntity) {
         GameEntity gameEntity = getGameEntity(gameId);
         gameEntity.setSecondPlayer(secondPlayerEntity);
+        gameRepository.save(gameEntity);
     }
 
     /**
-     * Returns Game with given {@param gameId}
+     * Returns GameEntity with given {@param gameId}
      *
      * @param gameId Id of the Game
-     * @return Game with given {@param gameId}, null if sucha a Game does not exist
+     * @return GameEntity with given {@param gameId}, null if such a GameEntity does not exist
      */
     public GameEntity getGameEntity(Long gameId) {
         return gameRepository.findById(gameId).orElse(null);
@@ -178,7 +180,6 @@ public class GameService {
             try {
                 listOfChanges = game.makeMove(origin, destination, player);
                 logger.info("Game id: " + gameId + ". Player " + playerEntity.getId() + " moves successfully from: " + origin + " to: " + destination);
-                //is promto
             } catch (NotValidMoveException e) {
                 isMoveValid = false;
                 listOfChanges = Collections.emptyList();
@@ -277,13 +278,13 @@ public class GameService {
             gameInfo.setPromotion(game.isPromotion());
             gameInfo.setGameState(game.getGameState());
             gameInfo.setGameResult(game.getResult());
+            if (gameInfo.getGameResult() != null) {
+                GameEntity gameEntity = getGameEntity(gameId);
+                gameEntity.setFinished(true);
+                gameEntity.setResult(game.getResult());
+                gameRepository.save(gameEntity);
+            }
             return gameInfo;
         }
     }
-
-
-//    public MoveUpdateDTO getUpdateById(Long gameId, Long updateId) {
-//        updates.get(gameId)
-//    }
-
 }

@@ -68,7 +68,7 @@ public class PlayerService {
                 player = new HumanPlayer(playerEntity.getColor());
                 break;
             default:
-                throw new InvalidRequiredArgumentException();
+                throw new InvalidRequiredArgumentException("playerType not set");
         }
         return player;
     }

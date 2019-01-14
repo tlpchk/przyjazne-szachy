@@ -32,7 +32,7 @@ public class GameController {
     public Long createGame(@RequestBody CreateGameDTO createGameDTO) throws InvalidRequiredArgumentException, SamePlayerException {
         PlayerEntity firstPlayerEntity = playerService.getPlayerEntity(createGameDTO.getFirstPlayerId());
         PlayerEntity secondPlayerEntity = playerService.getPlayerEntity(createGameDTO.getSecondPlayerId());
-        return gameService.createNewGame(firstPlayerEntity, secondPlayerEntity);
+        return gameService.createNewGame(firstPlayerEntity, secondPlayerEntity, createGameDTO.isRanked());
     }
 
     /**
@@ -125,7 +125,7 @@ public class GameController {
         }
     }
 
-    //TODO RS: zapytanie na "/{gameId}" zwraca info o grze, m.in czyja tura
+    //TODO RS: tutaj dodać timer
     @RequestMapping(value = "/{gameId}", method = RequestMethod.POST)
     public GameInfoDTO getGameInfo(@PathVariable Long gameId, @RequestBody Long playerId) throws GameNotExistException, InvalidRequiredArgumentException {
         PlayerEntity playerEntity = playerService.getPlayerEntity(playerId);

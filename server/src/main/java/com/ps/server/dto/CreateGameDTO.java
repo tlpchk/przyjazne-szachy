@@ -15,19 +15,6 @@ public class CreateGameDTO {
 
     private Long secondPlayerId;
 
-    public Long getFirstPlayerId() {
-        return firstPlayerId;
-    }
+    private boolean isRanked;
 
-    public Long getSecondPlayerId() {
-        return secondPlayerId;
-    }
-
-    public void setFirstPlayerId(Long firstPlayerId) {
-        this.firstPlayerId = firstPlayerId;
-    }
-
-    public void setSecondPlayerId(Long secondPlayerId) {
-        this.secondPlayerId = secondPlayerId;
-    }
 }

@@ -2,13 +2,14 @@ CREATE DATABASE IF NOT EXISTS `chess_game`;
 USE `chess_game`;
 
 CREATE TABLE IF NOT EXISTS `game` (
-  `ID`              int(11)   NOT NULL AUTO_INCREMENT,
+  `id`              int(11)   NOT NULL AUTO_INCREMENT,
   `start_time`      timestamp NOT NULL DEFAULT current_timestamp(),
-  `break_time`      timestamp,
   `first_player`    int(11),
   `second_player`   int(11),
   `game_type`       enum ('COMPETITION_GAME', 'BOT_GAME') COLLATE utf16_polish_ci,
   `result`          enum ('FIRST_PLAYER_WON', 'SECOND_PLAYER_WON', 'DRAW') COLLATE utf16_polish_ci,
+  `is_ranked`       bool               default 'FALSE',
+  `is_finished`     bool               default 'FALSE',
   `move_time_limit` time               DEFAULT '00:05:00',
   `game_time_limit` time               DEFAULT '02:00:00',
   PRIMARY KEY (`ID`),

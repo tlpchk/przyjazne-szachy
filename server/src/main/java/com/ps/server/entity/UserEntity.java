@@ -13,7 +13,7 @@ public class UserEntity {
 
     @Id
     @GeneratedValue
-    @Column(name = "ID", nullable = false)
+    @Column(name = "id", nullable = false)
     private int ID;
 
     @Column(name = "nick", nullable = false, length = 64)
