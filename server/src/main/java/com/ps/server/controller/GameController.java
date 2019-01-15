@@ -125,7 +125,7 @@ public class GameController {
         }
     }
 
-    //TODO RS: tutaj dodać timer
+    //TODO RS: add timer here maybe
     @RequestMapping(value = "/{gameId}", method = RequestMethod.POST)
     public GameInfoDTO getGameInfo(@PathVariable Long gameId, @RequestBody Long playerId) throws GameNotExistException, InvalidRequiredArgumentException {
         PlayerEntity playerEntity = playerService.getPlayerEntity(playerId);

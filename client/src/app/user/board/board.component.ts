@@ -97,7 +97,6 @@ export class BoardComponent implements OnInit {
     getGameId(): void {
         this.boardService.gameId$.subscribe(gameId => {
             this.gameId = gameId;
-            console.log(this.gameId);
             this.getBoard();
         });
     }

@@ -12,6 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
+@Table(name = "player")
 public class PlayerEntity {
 
     @Id
@@ -26,4 +27,8 @@ public class PlayerEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "player_type", nullable = false)
     private PlayerType playerType;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
 }
