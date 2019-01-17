@@ -14,16 +14,20 @@ export class LoginComponent implements OnInit {
     error = '';
 
     constructor(private auth: AuthService,
-                private router: Router) { }
+                private router: Router) {
+    }
 
 
-    ngOnInit() {    }
+    ngOnInit() {
+    }
 
 
     loginUser() {
         this.auth.logInUser(this.username, this.password).subscribe(data => {
                 console.log(this.username, this.password);
                 if (data.success) {
+                    this.auth.username = this.username;
+                    this.auth.password = this.password;
                     this.auth.setLoggedIn(true);
                     this.router.navigateByUrl('/user/home');
                 } else {

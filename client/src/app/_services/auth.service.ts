@@ -19,6 +19,8 @@ class User {
 
 @Injectable()
 export class AuthService {
+    public username = "";
+    public password = "";
     private host = 'http://localhost:8080';
     private loginUrl = this.host + '/login';
     private registerUrl = this.host + '/register';
@@ -39,20 +41,20 @@ export class AuthService {
         let user = new User();
         user.username = username;
         user.password = password;
-        return this.http.post<myData>(this.loginUrl, user ,httpOptions);
+        return this.http.post<myData>(this.loginUrl, user, httpOptions);
     }
 
-    registerUser(username: string, email: string, password: string, passwordConfirmation: string): Observable<myData>{
+    registerUser(username: string, email: string, password: string, passwordConfirmation: string): Observable<myData> {
         let newUser = new User();
         newUser.username = username;
         newUser.password = password;
-        if(password != passwordConfirmation){
+        if (password != passwordConfirmation) {
             return of(<myData>{
                 success: false,
                 message: "Confirm password error"
             })
         }
-        else{
+        else {
             return this.http.post<myData>(this.registerUrl, newUser, httpOptions);
         }
     }

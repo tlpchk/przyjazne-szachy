@@ -18,9 +18,6 @@ import java.util.List;
 public class GameController {
 
     @Autowired
-    HttpSession httpSession;
-
-    @Autowired
     private GameService gameService;
 
     @Autowired

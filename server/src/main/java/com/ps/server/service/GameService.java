@@ -11,10 +11,13 @@ import com.ps.server.dto.MoveResponseDTO;
 import com.ps.server.dto.MoveUpdateDTO;
 import com.ps.server.dto.PieceDTO;
 import com.ps.server.entity.GameEntity;
+import com.ps.server.entity.MoveEntity;
 import com.ps.server.entity.PlayerEntity;
 import com.ps.server.enums.GameType;
+import com.ps.server.enums.Result;
 import com.ps.server.exception.*;
 import com.ps.server.repository.GameRepository;
+import com.ps.server.repository.MoveRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,9 @@ public class GameService {
 
     @Autowired
     private GameRepository gameRepository;
+
+    @Autowired
+    private MoveRepository moveRepository;
 
     @Autowired
     private PlayerService playerservice;
@@ -179,6 +185,7 @@ public class GameService {
             List<Change> listOfChanges;
             try {
                 listOfChanges = game.makeMove(origin, destination, player);
+                persistMove(getGameEntity(gameId), playerEntity, origin, destination);
                 logger.info("Game id: " + gameId + ". Player " + playerEntity.getId() + " moves successfully from: " + origin + " to: " + destination);
             } catch (NotValidMoveException e) {
                 isMoveValid = false;
@@ -189,6 +196,18 @@ public class GameService {
             updateGamesAfterMove(gameId, moveDTO);
             return moveDTO;
         }
+    }
+
+    private void persistMove(GameEntity game, PlayerEntity player, Position origin, Position destination) {
+        MoveEntity moveEntity = new MoveEntity();
+        moveEntity.setCreationDate(new Timestamp(new Date().getTime()));
+        moveEntity.setGame(game);
+        moveEntity.setPlayer(player);
+        moveEntity.setOriginRow(origin.getRow());
+        moveEntity.setOriginColumn(origin.getCol());
+        moveEntity.setDestinationRow(destination.getRow());
+        moveEntity.setDestinationColumn(destination.getCol());
+        moveRepository.save(moveEntity);
     }
 
     public MoveResponseDTO promote(Long gameId, PlayerEntity playerEntity, Piece.PieceType pieceType) throws GameNotExistException, InvalidRequiredArgumentException {
@@ -210,6 +229,7 @@ public class GameService {
             logger.info("Game id: " + gameId + ". Bot is trying to move.");
             boolean isMoveValid = true;
             List<Change> listOfChanges = game.makeMoveBot();
+            persistMove(getGameEntity(gameId), null, game.getLastBotMove().loc, game.getLastBotMove().dest);
             MoveResponseDTO moveDTO = new MoveResponseDTO(isMoveValid, listOfChanges);
             updateGamesAfterMove(gameId, moveDTO);
             logger.info("Game id: " + gameId + ". Bot moves successfully.");
@@ -287,4 +307,6 @@ public class GameService {
             return gameInfo;
         }
     }
+
+
 }

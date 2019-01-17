@@ -16,11 +16,11 @@ import java.sql.Timestamp;
 public class GameEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "startTime", nullable = false)
+    @Column(name = "start_time", nullable = false)
     private Timestamp startTime;
 
     @ManyToOne
