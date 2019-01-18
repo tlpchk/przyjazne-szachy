@@ -222,7 +222,7 @@ public class Board {
         return (color == WHITE) ? whiteSet : blackSet;
     }
 
-    private boolean checkIfKingInCapture(Color color) {
+    public boolean checkIfKingInCapture(Color color) {
         Set thisSet = (color == WHITE) ? whiteSet : blackSet;
         Set oppositeSet = (color == WHITE) ? blackSet : whiteSet;
         return oppositeSet.checkIfCanCaptureKingOn(thisSet.getKingsPosition());
