@@ -113,10 +113,10 @@ CREATE TRIGGER `TR_game_after_update`
   ON `matches`
   FOR EACH ROW
   BEGIN
-    #     set isRanked = (SELECT game.is_ranked FROM game WHERE game.id = new.game_id);
-    #     IF(isRanked = TRUE )
-    #       THEN
-    #     END IF ;
+--     #     set isRanked = (SELECT game.is_ranked FROM game WHERE game.id = new.game_id);
+--     #     IF(isRanked = TRUE )
+--     #       THEN
+--     #     END IF ;
     declare current float;
     declare pnkGet float;
     declare pnkEX float;
