@@ -66,13 +66,19 @@ public class Set {
     }
 
     boolean checkIfCanMove() {
-        for(int i = set.size()-1; i > 0; i--) {
+        for(int i = set.size()-1; i >= 0; i--) {
             if(set.get(i).canMove()) {
                 return true;
             }
         }
         return false;
     }
+
+    void addPieceToSet(Piece piece,Board board){
+        set.add(piece);
+        piece.addBoard(board);
+    }
+
 
     public List<Piece> getSet() {
         return set;

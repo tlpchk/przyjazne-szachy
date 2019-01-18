@@ -14,9 +14,9 @@ import java.sql.Timestamp;
 public class MoveEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private BigInteger ID;
+    private BigInteger id;
 
     @Column(name = "created", nullable = false)
     private Timestamp creationDate;
@@ -38,6 +38,6 @@ public class MoveEntity {
     private GameEntity game;
 
     @ManyToOne
-    @JoinColumn(name = "player_id", nullable = false)
+    @JoinColumn(name = "player_id")
     private PlayerEntity player;
 }

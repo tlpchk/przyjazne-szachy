@@ -1,5 +1,6 @@
 package com.ps.server.service;
 
+import com.ps.server.entity.UserEntity;
 import com.ps.server.enums.PlayerType;
 import com.ps.server.exception.InvalidRequiredArgumentException;
 import com.ps.server.Logic.Color;
@@ -8,6 +9,7 @@ import com.ps.server.Logic.player.BotPlayer;
 import com.ps.server.Logic.player.HumanPlayer;
 import com.ps.server.Logic.player.Player;
 import com.ps.server.repository.PlayerRepository;
+import com.ps.server.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,21 +22,19 @@ public class PlayerService {
     @Autowired
     private PlayerRepository playerRepository;
 
-    public PlayerEntity createNewHumanPlayer(Color color) {
-        return createNewPlayer(color, PlayerType.HUMAN);
-    }
+    @Autowired
+    private UserRepository userRepository;
 
-    private PlayerEntity createNewPlayer(Color color, PlayerType playerType) {
+    public PlayerEntity createNewPlayer(String username, Color color, PlayerType playerType) {
         PlayerEntity newPlayer = new PlayerEntity();
+        if (username != null) {
+            UserEntity userEntity = userRepository.findByUsername(username);
+            newPlayer.setUser(userEntity);
+        }
         newPlayer.setColor(color);
         newPlayer.setPlayerType(playerType);
         playerRepository.save(newPlayer);
         return newPlayer;
-    }
-
-
-    public PlayerEntity createNewBot(Color color) {
-        return createNewPlayer(color, PlayerType.BOT);
     }
 
     /**
@@ -68,8 +68,12 @@ public class PlayerService {
                 player = new HumanPlayer(playerEntity.getColor());
                 break;
             default:
-                throw new InvalidRequiredArgumentException();
+                throw new InvalidRequiredArgumentException("playerType not set");
         }
         return player;
+    }
+
+    public UserEntity getUserForPlayer(PlayerEntity playerEntity) {
+        return playerEntity.getUser();
     }
 }

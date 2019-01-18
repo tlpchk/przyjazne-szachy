@@ -81,7 +81,6 @@ export class BoardComponent implements OnInit {
                             this.board[cellIndex].possibleMoves = possibleMoves;
                         }
                         this.boardService.makeBotMove(this.gameId).subscribe(a => {
-                            console.log('BOT MOVES: ' + a);
                         });
                     } else {
                         console.log("Invalid move");
@@ -97,7 +96,6 @@ export class BoardComponent implements OnInit {
     getGameId(): void {
         this.boardService.gameId$.subscribe(gameId => {
             this.gameId = gameId;
-            console.log(this.gameId);
             this.getBoard();
         });
     }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RestController
@@ -32,7 +33,7 @@ public class GameController {
     public Long createGame(@RequestBody CreateGameDTO createGameDTO) throws InvalidRequiredArgumentException, SamePlayerException {
         PlayerEntity firstPlayerEntity = playerService.getPlayerEntity(createGameDTO.getFirstPlayerId());
         PlayerEntity secondPlayerEntity = playerService.getPlayerEntity(createGameDTO.getSecondPlayerId());
-        return gameService.createNewGame(firstPlayerEntity, secondPlayerEntity);
+        return gameService.createNewGame(firstPlayerEntity, secondPlayerEntity, createGameDTO.isRanked());
     }
 
     /**
@@ -112,7 +113,6 @@ public class GameController {
 
     @RequestMapping(value = "/{gameId}/update/{updateId}", method = RequestMethod.GET)
     public MoveUpdateDTO getUpdate(@PathVariable Long gameId, @PathVariable Integer updateId) {
-        System.out.println("get update: " + updateId);
         return gameService.getUpdate(gameId, updateId);
     }
 
@@ -125,7 +125,7 @@ public class GameController {
         }
     }
 
-    //TODO RS: zapytanie na "/{gameId}" zwraca info o grze, m.in czyja tura
+    //TODO RS: add timer here maybe
     @RequestMapping(value = "/{gameId}", method = RequestMethod.POST)
     public GameInfoDTO getGameInfo(@PathVariable Long gameId, @RequestBody Long playerId) throws GameNotExistException, InvalidRequiredArgumentException {
         PlayerEntity playerEntity = playerService.getPlayerEntity(playerId);

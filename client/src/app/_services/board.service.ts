@@ -92,7 +92,7 @@ export class BoardService {
      * Handle Http operation that failed.
      * Let the app continue.
      * @param operation - name of the operation that failed
-     * @param result - optional value to return as the observable result
+     * @param result - optional value to return as the observable playerPoints
      */
     private handleError<T>(operation = 'operation', result?: T) {
         return (error: any): Observable<T> => {
@@ -103,7 +103,7 @@ export class BoardService {
             // TODO: better job of transforming error for user consumption
             this.log(`${operation} failed: ${error.message}`);
 
-            // Let the app keep running by returning an empty result.
+            // Let the app keep running by returning an empty playerPoints.
             return of(result as T);
         };
     }
