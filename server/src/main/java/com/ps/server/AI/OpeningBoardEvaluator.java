@@ -1,14 +1,9 @@
 package com.ps.server.AI;
 
-import com.ps.server.Logic.Board;
-import com.ps.server.Logic.ChessSquareState;
-import com.ps.server.Logic.Color;
+import com.ps.server.Logic.*;
 import com.ps.server.Logic.Pieces.Piece;
-import com.ps.server.Logic.Position;
 
-import java.util.Iterator;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class OpeningBoardEvaluator extends StandardBoardEvaluator {
     private Map<Position, Boolean> minorPiecesFirstMoveMap;
@@ -41,8 +36,24 @@ public class OpeningBoardEvaluator extends StandardBoardEvaluator {
         //TODO add score for castling, moving central pawns, connecting rooks, subtract score for too early queen moves
     }
 
-    //TODO implement
     private int rooksConnected(Board board, Color color) {
+        List<Piece> pieces = board.getSet(color).getPieceSet();
+        List<Piece> rooks = new ArrayList();
+
+        for(Piece p : pieces)
+        {
+            if(p.type == Piece.PieceType.ROOK)
+            {
+                rooks.add(p);
+            }
+        }
+
+        if(rooks.get(0).getPosition().row == rooks.get(1).getPosition().row
+                || rooks.get(0).getPosition().col == rooks.get(1).getPosition().col)
+        {
+            return 30;
+        }
+
         return 0;
     }
 
@@ -120,7 +131,7 @@ public class OpeningBoardEvaluator extends StandardBoardEvaluator {
             }
         }
 
-        return center * 30 + semiCenter * 20;
+        return center * 50 + semiCenter * 25;
     }
 
     private int developPiece(final Board board, final Color color) {
@@ -141,7 +152,7 @@ public class OpeningBoardEvaluator extends StandardBoardEvaluator {
                     && entry.getValue() == true) {
                 minorPiecesFirstMoveMap.put(entry.getKey(), false);
 
-                return 30;
+                return 10;
             }
         }
 
