@@ -38,7 +38,7 @@ public class GameService {
     private GameRepository gameRepository;
 
     @Autowired
-    private MoveRepository moveRepository;
+    private MoveService moveService;
 
     @Autowired
     private MatchService matchService;
@@ -190,7 +190,7 @@ public class GameService {
             List<Change> listOfChanges;
             try {
                 listOfChanges = game.makeMove(origin, destination, player);
-                persistMove(getGameEntity(gameId), playerEntity, origin, destination);
+                moveService.persistMove(getGameEntity(gameId), playerEntity, origin, destination);
                 logger.info("Game id: " + gameId + ". Player " + playerEntity.getId() + " moves successfully from: " + origin + " to: " + destination);
             } catch (NotValidMoveException e) {
                 isMoveValid = false;
@@ -201,18 +201,6 @@ public class GameService {
             updateGamesAfterMove(gameId, moveDTO);
             return moveDTO;
         }
-    }
-
-    private void persistMove(GameEntity game, PlayerEntity player, Position origin, Position destination) {
-        MoveEntity moveEntity = new MoveEntity();
-        moveEntity.setCreationDate(new Timestamp(new Date().getTime()));
-        moveEntity.setGame(game);
-        moveEntity.setPlayer(player);
-        moveEntity.setOriginRow(origin.getRow());
-        moveEntity.setOriginColumn(origin.getCol());
-        moveEntity.setDestinationRow(destination.getRow());
-        moveEntity.setDestinationColumn(destination.getCol());
-        moveRepository.save(moveEntity);
     }
 
     public MoveResponseDTO promote(Long gameId, PlayerEntity playerEntity, Piece.PieceType pieceType) throws GameNotExistException, InvalidRequiredArgumentException {
@@ -234,7 +222,7 @@ public class GameService {
             logger.info("Game id: " + gameId + ". Bot is trying to move.");
             boolean isMoveValid = true;
             List<Change> listOfChanges = game.makeMoveBot();
-            persistMove(getGameEntity(gameId), null, game.getLastBotMove().loc, game.getLastBotMove().dest);
+            moveService.persistMove(getGameEntity(gameId), null, game.getLastBotMove().loc, game.getLastBotMove().dest);
             MoveResponseDTO moveDTO = new MoveResponseDTO(isMoveValid, listOfChanges);
             updateGamesAfterMove(gameId, moveDTO);
             logger.info("Game id: " + gameId + ". Bot moves successfully.");
