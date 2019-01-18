@@ -22,4 +22,6 @@ public class GameInfoDTO {
     private GameState gameState;
 
     private Result gameResult;
+
+    private String opponent;
 }

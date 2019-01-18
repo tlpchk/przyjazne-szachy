@@ -15,6 +15,7 @@ import com.ps.server.entity.MatchEntity;
 import com.ps.server.entity.MoveEntity;
 import com.ps.server.entity.PlayerEntity;
 import com.ps.server.enums.GameType;
+import com.ps.server.enums.PlayerType;
 import com.ps.server.enums.Result;
 import com.ps.server.exception.*;
 import com.ps.server.repository.GameRepository;
@@ -284,19 +285,33 @@ public class GameService {
         synchronized (gamesMap) {
             List<MoveUpdateDTO> updateList = updates.get(gameId);
             Game game = getGameFromGames(gameId);
+            GameEntity gameEntity = getGameEntity(gameId);
             Player player = playerservice.createPlayerFromEntity(playerEntity);
+
             GameInfoDTO gameInfo = new GameInfoDTO();
             gameInfo.setLastUpdateId(updateList.get(updateList.size() - 1).getUpdateId());
             gameInfo.setMyTurn(game.isPlayerTurn(player));
             gameInfo.setPromotion(game.isPromotion());
             gameInfo.setGameState(game.getGameState());
-            GameEntity gameEntity = getGameEntity(gameId);
+
+            gameInfo.setOpponent(getOpponent(gameEntity, playerEntity));
             gameInfo.setGameResult(game.getResult());
             if (gameInfo.getGameResult() != null && !gameEntity.isFinished()) {
                 saveFinishedGame(gameEntity, gameInfo.getGameResult());
             }
             return gameInfo;
         }
+    }
+
+    private String getOpponent(GameEntity gameEntity, PlayerEntity playerEntity) {
+        PlayerEntity opponent = (gameEntity.getFirstPlayer() == playerEntity) ? gameEntity.getSecondPlayer() : gameEntity.getFirstPlayer();
+        String opponentUsername = null;
+        if (opponent.getPlayerType() == PlayerType.BOT) {
+            opponentUsername = "BOT";
+        } else if (opponent != null && opponent.getUser() != null) {
+            opponentUsername = opponent.getUser().getUsername();
+        }
+        return (opponentUsername != null && opponentUsername.equals("")) ? "anonim" : opponentUsername;
     }
 
 

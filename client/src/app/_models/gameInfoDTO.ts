@@ -15,6 +15,7 @@ export class GameInfoDTO {
                 public myTurn: boolean,
                 public promotion: boolean,
                 public gameState: GameState,
-                public gameResult: Result) {
+                public gameResult: Result,
+                public opponent: string) {
     }
 }

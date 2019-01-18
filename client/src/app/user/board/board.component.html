@@ -1,28 +1,31 @@
 <div id="board-wrapper">
     <div id="game-info">
+        <p *ngIf="opponent!=null && opponent!=''">
+            Grasz z: <b>{{opponent}}</b>
+        </p>
         <p *ngIf="!isGameFinished">
-            Teraz jest tura: <b *ngIf="isMyTurn"> moja</b> <b *ngIf="!isMyTurn">przeciwnika</b>
+            Teraz jest tura: <b *ngIf="isMyTurn"> moja</b> <b *ngIf="!isMyTurn">{{opponent}}</b>
         </p>
         <p *ngIf="isGameFinished">
             Wynik gry: {{result}}
         </p>
     </div>
-    <div *ngIf="isMyTurn && isPromotion"  id="promotion-wrapper">
+    <div *ngIf="isMyTurn && isPromotion" id="promotion-wrapper">
 
     </div>
     <div *ngIf="isMyTurn && isPromotion" id="promotion">
         <p>PROMOCJA</p>
         <div class="cell promotion-cell" (click)="promotion('rook')">
-                <img src="/assets/png/white_rook.png">
+            <img src="/assets/png/white_rook.png">
         </div>
         <div class="cell promotion-cell" (click)="promotion('bishop')">
-                <img src="/assets/png/white_bishop.png">
+            <img src="/assets/png/white_bishop.png">
         </div>
         <div class="cell promotion-cell" (click)="promotion('knight')">
-                <img src="/assets/png/white_knight.png">
+            <img src="/assets/png/white_knight.png">
         </div>
         <div class="cell promotion-cell" (click)="promotion('queen')">
-                <img src="/assets/png/white_queen.png">
+            <img src="/assets/png/white_queen.png">
         </div>
     </div>
     <div *ngIf="board.length > 0" id="board">

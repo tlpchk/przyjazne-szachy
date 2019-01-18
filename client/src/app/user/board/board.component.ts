@@ -27,6 +27,7 @@ export class BoardComponent implements OnInit {
     isGameFinished: boolean = false;
     result: Result;
     isPromotion = false;
+    opponent = '';
 
     constructor(private boardService: BoardService,
                 private coordinateService: CoordinatesAdapterService,) {
@@ -109,12 +110,13 @@ export class BoardComponent implements OnInit {
                 this.isGameFinished = false;
                 this.result = null;
                 this.isPromotion = false;
+                this.opponent = '';
                 setTimeout(this.getGameInfo(), 1000);
             });
     }
 
     promotion(pieceType: PieceType): void {
-        this.boardService.promote(this.gameId,pieceType).subscribe(moveResponse => {
+        this.boardService.promote(this.gameId, pieceType).subscribe(moveResponse => {
             if (moveResponse.wasMoveValid) {
                 console.log("This move was valid");
                 let changes: ChangeDTO[] = moveResponse.listOfChanges;
@@ -135,9 +137,7 @@ export class BoardComponent implements OnInit {
                     this.board[cellIndex].piece = piece;
                     this.board[cellIndex].possibleMoves = possibleMoves;
                 }
-                this.boardService.makeBotMove(this.gameId).subscribe(a => {
-                    console.log("BOT MOVES: " + a);
-                });
+                this.boardService.makeBotMove(this.gameId).subscribe();
             } else {
                 console.log("Invalid move");
             }
@@ -150,6 +150,7 @@ export class BoardComponent implements OnInit {
             this.result = gameInfo.gameResult;
             this.isMyTurn = gameInfo.myTurn;
             this.isPromotion = gameInfo.promotion;
+            this.opponent = gameInfo.opponent;
             this.isGameFinished = (gameInfo.gameState != GameState.game_running);
             if (gameInfo.lastUpdateId > this.lastUpdateId) {
                 while (gameInfo.lastUpdateId > this.lastUpdateId) {
