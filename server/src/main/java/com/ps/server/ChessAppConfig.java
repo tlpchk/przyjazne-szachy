@@ -1,6 +1,5 @@
 package com.ps.server;
 
-import com.ps.server.service.CustomAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +18,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class ChessAppConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private CustomAuthenticationProvider authProvider;
+    private ChessAppAuthenticationProvider authProvider;
 
 
     @Autowired

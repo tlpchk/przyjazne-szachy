@@ -1,7 +1,8 @@
-package com.ps.server.service;
+package com.ps.server;
 
 import com.ps.server.entity.UserEntity;
 import com.ps.server.exception.UserNotFoundException;
+import com.ps.server.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class CustomAuthenticationProvider implements AuthenticationProvider {
+public class ChessAppAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
     private UserService userService;

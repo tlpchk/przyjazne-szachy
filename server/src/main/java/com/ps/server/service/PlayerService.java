@@ -27,8 +27,10 @@ public class PlayerService {
 
     public PlayerEntity createNewPlayer(String username, Color color, PlayerType playerType) {
         PlayerEntity newPlayer = new PlayerEntity();
-        UserEntity userEntity = userRepository.findByUsername(username);
-        newPlayer.setUser(userEntity);
+        if (username != null) {
+            UserEntity userEntity = userRepository.findByUsername(username);
+            newPlayer.setUser(userEntity);
+        }
         newPlayer.setColor(color);
         newPlayer.setPlayerType(playerType);
         playerRepository.save(newPlayer);
@@ -69,5 +71,9 @@ public class PlayerService {
                 throw new InvalidRequiredArgumentException("playerType not set");
         }
         return player;
+    }
+
+    public UserEntity getUserForPlayer(PlayerEntity playerEntity) {
+        return playerEntity.getUser();
     }
 }

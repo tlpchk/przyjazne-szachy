@@ -11,12 +11,14 @@ import com.ps.server.dto.MoveResponseDTO;
 import com.ps.server.dto.MoveUpdateDTO;
 import com.ps.server.dto.PieceDTO;
 import com.ps.server.entity.GameEntity;
+import com.ps.server.entity.MatchEntity;
 import com.ps.server.entity.MoveEntity;
 import com.ps.server.entity.PlayerEntity;
 import com.ps.server.enums.GameType;
 import com.ps.server.enums.Result;
 import com.ps.server.exception.*;
 import com.ps.server.repository.GameRepository;
+import com.ps.server.repository.MatchesRepository;
 import com.ps.server.repository.MoveRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +39,9 @@ public class GameService {
 
     @Autowired
     private MoveRepository moveRepository;
+
+    @Autowired
+    private MatchService matchService;
 
     @Autowired
     private PlayerService playerservice;
@@ -297,15 +302,21 @@ public class GameService {
             gameInfo.setMyTurn(game.isPlayerTurn(player));
             gameInfo.setPromotion(game.isPromotion());
             gameInfo.setGameState(game.getGameState());
+            GameEntity gameEntity = getGameEntity(gameId);
             gameInfo.setGameResult(game.getResult());
-            if (gameInfo.getGameResult() != null) {
-                GameEntity gameEntity = getGameEntity(gameId);
-                gameEntity.setFinished(true);
-                gameEntity.setResult(game.getResult());
-                gameRepository.save(gameEntity);
+            if (gameInfo.getGameResult() != null && !gameEntity.isFinished()) {
+                saveFinishedGame(gameEntity, gameInfo.getGameResult());
             }
             return gameInfo;
         }
+    }
+
+
+    private void saveFinishedGame(GameEntity gameEntity, Result result) {
+        gameEntity.setFinished(true);
+        gameEntity.setResult(result);
+        matchService.saveResultForGameEntity(gameEntity, result);
+        gameRepository.save(gameEntity);
     }
 
 

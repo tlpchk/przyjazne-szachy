@@ -20,7 +20,7 @@ public class PlayerController {
 
     //TODO RS: add checking for started game
     @RequestMapping(method = RequestMethod.POST)
-    public Long createHumanPlayer(@RequestBody CreatePlayerDTO createPlayerDTO) {
+    public Long createPlayer(@RequestBody CreatePlayerDTO createPlayerDTO) {
         String username;
         if (createPlayerDTO.getPlayerType() == PlayerType.HUMAN) {
             username = createPlayerDTO.getUsername();
