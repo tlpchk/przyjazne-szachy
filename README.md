@@ -7,7 +7,7 @@ Aby zainstalować tę aplikację, uruchom następujące polecenia:
 	npm install jquery popper.js --save
 Aby uruchomić serwer, przejdź do folderu server i uruchom:
 
-    ./mvnw spring-boot:run
+    bash ./server.sh
 
 Aby uruchomić klienta, przejdź do folderu client i uruchom:
 
