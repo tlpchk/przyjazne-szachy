@@ -6,8 +6,8 @@ import {CoordinatesAdapterService} from '../../_services/coordinates-adapter.ser
 import {Piece, PieceType} from '../../_models/piece';
 import {MoveUpdateDTO} from '../../_models/moveUpdateDTO';
 import {PopupComponent} from '../popup/popup.component';
-import {Router} from '@angular/router';
 import {GameState, Result} from '../../_models/gameInfoDTO';
+import {Move} from '../../_models/move';
 
 @Component({
     selector: 'app-board',
@@ -19,28 +19,29 @@ export class BoardComponent implements OnInit {
     private popup: PopupComponent;
 
     selectedCell: Cell;
-    move: Cell[];
+    move: Move;
     board: Cell[];
     gameId: number;
     lastUpdateId: number;
-    isMyTurn: boolean;
-    isGameFinished: boolean = false;
+    isGameFinished: boolean;
     result: Result;
-    isPromotion = false;
+    isPromotion: boolean;
+    isMyTurn: boolean;
+
 
     constructor(private boardService: BoardService,
-                private coordinateService: CoordinatesAdapterService,) {
+                private coordinateService: CoordinatesAdapterService) {
     }
 
     ngOnInit() {
-        this.getGameId();
-        this.move = [];
         this.board = [];
+        this.getGameId();
+        this.move = new Move();
         this.selectedCell = null;
-        /*if (this.board.length === 0) {
-            this.popup.routerLink = '/user/home';
-            this.popup.show('Stwórz nową grę');
-        }*/
+                                /*if (this.board.length === 0) {
+                                    this.popup.routerLink = '/user/home';
+                                    this.popup.show('Stwórz nową grę');
+                                }*/
     }
 
     onSelect(cell: Cell) {
@@ -49,16 +50,14 @@ export class BoardComponent implements OnInit {
     }
 
     makeMove(): void {
-        if (this.move.length === 0) {
-            if (this.selectedCell.piece !== null) {
-                this.move[0] = this.selectedCell;
-                this.boardService.getPossibleMove(this.selectedCell, this.gameId).subscribe(possibleMoves => {
-                    this.selectedCell.possibleMoves = this.boardService.getPossibleMoveArray(possibleMoves);
-                });
-            }
+        if (this.move.srcCell == null) {
+            this.move.srcCell = this.selectedCell;
+            this.boardService.getPossibleMove(this.selectedCell, this.gameId).subscribe(possibleMoves => {
+                this.selectedCell.possibleMoves = this.boardService.getPossibleMoveArray(possibleMoves);
+            });
         } else {
-            this.move[1] = this.selectedCell;
-            if (this.move[0] !== this.move[1]) {
+            this.move.destCell = this.selectedCell;
+            if (this.move.srcCell !== this.move.destCell) {
                 this.boardService.makeMove(this.move, this.gameId).subscribe(moveResponse => {
                     if (moveResponse.wasMoveValid) {
                         console.log('This move was valid');
@@ -73,7 +72,7 @@ export class BoardComponent implements OnInit {
                             })
                                 .indexOf(cellId);
                             let piece: Piece = new Piece(type, pieceColor);
-                            let possibleMoves: number[] = [];
+                            const possibleMoves: number[] = [];
                             if (piece.type === null || piece.type === undefined) {
                                 piece = null;
                             }
@@ -83,12 +82,12 @@ export class BoardComponent implements OnInit {
                         this.boardService.makeBotMove(this.gameId).subscribe(a => {
                         });
                     } else {
-                        console.log("Invalid move");
+                        console.log('Invalid move');
                     }
                 });
-
             }
-            this.move = [];
+            // Reset move
+            this.move = new Move();
             this.selectedCell = null;
         }
     }
@@ -114,21 +113,21 @@ export class BoardComponent implements OnInit {
     }
 
     promotion(pieceType: PieceType): void {
-        this.boardService.promote(this.gameId,pieceType).subscribe(moveResponse => {
+        this.boardService.promote(this.gameId, pieceType).subscribe(moveResponse => {
             if (moveResponse.wasMoveValid) {
-                console.log("This move was valid");
-                let changes: ChangeDTO[] = moveResponse.listOfChanges;
-                for (let c in changes) {
-                    let location = changes[c].location;
-                    let pieceColor = changes[c].color;
-                    let type = changes[c].type;
-                    let cellId = this.coordinateService.backendToFrontend(location.row, location.col);
-                    let cellIndex = this.board.map(function (item) {
+                console.log('This move was valid');
+                const changes: ChangeDTO[] = moveResponse.listOfChanges;
+                for (const c in changes) {
+                    const location = changes[c].location;
+                    const pieceColor = changes[c].color;
+                    const type = changes[c].type;
+                    const cellId = this.coordinateService.backendToFrontend(location.row, location.col);
+                    const cellIndex = this.board.map(function (item) {
                         return item.id;
                     })
                         .indexOf(cellId);
                     let piece: Piece = new Piece(type, pieceColor);
-                    let possibleMoves: number[] = [];
+                    const possibleMoves: number[] = [];
                     if (piece.type === null || piece.type === undefined) {
                         piece = null;
                     }
@@ -136,16 +135,17 @@ export class BoardComponent implements OnInit {
                     this.board[cellIndex].possibleMoves = possibleMoves;
                 }
                 this.boardService.makeBotMove(this.gameId).subscribe(a => {
-                    console.log("BOT MOVES: " + a);
+                    console.log('BOT MOVES: ' + a);
                 });
             } else {
-                console.log("Invalid move");
+                console.log('Invalid move');
             }
         });
 
     }
 
     getGameInfo(): void {
+        console.log("GET GAME INFO");
         this.boardService.getGameInfo(this.gameId).subscribe(gameInfo => {
             this.result = gameInfo.gameResult;
             this.isMyTurn = gameInfo.myTurn;
@@ -158,9 +158,8 @@ export class BoardComponent implements OnInit {
                         this.updateBoard(moveUpdate);
                     });
                 }
-                setTimeout(this.getGameInfo(), 1000);
-            }
-            else {
+                 setTimeout(this.getGameInfo(), 1000);
+            } else {
                 setTimeout(this.getGameInfo(), 1000);
             }
         });
@@ -168,18 +167,18 @@ export class BoardComponent implements OnInit {
 
 
     private updateBoard(moveUpdate: MoveUpdateDTO) {
-        let changes: ChangeDTO[] = moveUpdate.moveDTO.listOfChanges;
-        for (let c in changes) {
-            let location = changes[c].location;
-            let pieceColor = changes[c].color;
-            let type = changes[c].type;
-            let cellId = this.coordinateService.backendToFrontend(location.row, location.col);
-            let cellIndex = this.board.map(function (item) {
+        const changes: ChangeDTO[] = moveUpdate.moveDTO.listOfChanges;
+        for (const c in changes) {
+            const location = changes[c].location;
+            const pieceColor = changes[c].color;
+            const type = changes[c].type;
+            const cellId = this.coordinateService.backendToFrontend(location.row, location.col);
+            const cellIndex = this.board.map(function (item) {
                 return item.id;
             })
                 .indexOf(cellId);
             let piece: Piece = new Piece(type, pieceColor);
-            let possibleMoves: number[] = [];
+            const possibleMoves: number[] = [];
             if (piece.type === null || piece.type === undefined) {
                 piece = null;
             }

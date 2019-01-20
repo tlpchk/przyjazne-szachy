@@ -1,5 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Router} from '@angular/router';
+import {GameState} from '../../_models/gameInfoDTO';
+import {BoardService} from '../../_services/board.service';
 
 @Component({
   selector: 'app-popup',
@@ -8,7 +10,8 @@ import {Router} from '@angular/router';
 })
 export class PopupComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router,
+              private boardService: BoardService) { }
   popupType = Object.freeze({
     PROM: 'promotion',
     END: 'message'
@@ -42,4 +45,5 @@ export class PopupComponent implements OnInit {
       this.router.navigateByUrl(this.routerLink);
     }
   }
+
 }

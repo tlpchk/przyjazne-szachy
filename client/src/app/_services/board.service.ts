@@ -13,6 +13,7 @@ import {Piece, PieceType} from "../_models/piece";
 import {PositionDTO} from "../_models/positionDTO";
 import {GameInfoDTO} from "../_models/gameInfoDTO";
 import {PromotionDTO} from "../_models/promotionDTO";
+import {Move} from '../_models/move';
 
 const httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -74,10 +75,10 @@ export class BoardService {
     }
 
 
-    makeMove(cell: Cell[], gameId: number): Observable<MoveResponseDTO> {
+    makeMove(move : Move, gameId: number): Observable<MoveResponseDTO> {
         let url = this.gamesUrl + "/" + gameId + this.moveSubUrl;
-        let origin = this.coordinatesService.frontendToBackend(cell[0].id);
-        let destination = this.coordinatesService.frontendToBackend(cell[1].id);
+        let origin = this.coordinatesService.frontendToBackend(move.srcCell.id);
+        let destination = this.coordinatesService.frontendToBackend(move.destCell.id);
         let createMoveDTO = new CreateMoveDTO(this.playerId,
             origin, destination);
         return this.http.post<MoveResponseDTO>(url, createMoveDTO, httpOptions);
