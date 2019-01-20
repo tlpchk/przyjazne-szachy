@@ -11,6 +11,7 @@ import {AuthGuard} from "./auth.guard";
 import {TimerComponent} from "./timer/timer.component";
 import { PopupComponent } from './popup/popup.component';
 
+
 @NgModule({
     imports: [
         CommonModule,
