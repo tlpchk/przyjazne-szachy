@@ -1,6 +1,3 @@
-DROP DATABASE `chess_game`;
-CREATE DATABASE IF NOT EXISTS `chess_game`;
-USE `chess_game`;
 
 CREATE TABLE IF NOT EXISTS `game` (
   `id`              bigint(11)            AUTO_INCREMENT,
