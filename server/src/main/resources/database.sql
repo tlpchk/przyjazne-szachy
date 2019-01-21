@@ -11,8 +11,6 @@ CREATE TABLE IF NOT EXISTS `game` (
   `result`          enum ('FIRST_PLAYER_WON', 'SECOND_PLAYER_WON', 'DRAW') COLLATE utf16_polish_ci,
   `is_ranked`       bool               DEFAULT FALSE,
   `is_finished`     bool               DEFAULT FALSE,
-  `move_time_limit` time               DEFAULT '00:05:00',
-  `game_time_limit` time               DEFAULT '02:00:00',
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
@@ -66,11 +64,7 @@ CREATE TABLE IF NOT EXISTS `matches` (
   `player_id`     int(11)    NOT NULL DEFAULT 0,
   `opponent_id`   int(11)    NOT NULL,
   `player_points` tinyint(4) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`),
-  KEY `player_key` (`player_id`),
-  KEY `opponent_key` (`opponent_id`),
-  CONSTRAINT `opponent_key` FOREIGN KEY (`opponent_id`) REFERENCES `user` (`id`),
-  CONSTRAINT `player_key` FOREIGN KEY (`player_id`) REFERENCES `user` (`id`)
+  PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
   AUTO_INCREMENT = 3

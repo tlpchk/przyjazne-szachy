@@ -14,8 +14,12 @@ import com.ps.server.exception.NotValidMoveException;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Time;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -41,6 +45,14 @@ public class Game {
     private Move promotionMove;
 
     private Move lastBotMove;
+
+    private Duration firstPlayerTimeLeft = Duration.ofMinutes(30);
+
+    private LocalDateTime firstPlayerTurnStartedDate;
+
+    private Duration secondPlayerTimeLeft = Duration.ofMinutes(30);
+
+    private LocalDateTime secondPlayerTurnStartedDate;
 
 
     /**
@@ -114,7 +126,7 @@ public class Game {
         }
     }
 
-    public List<Change> makeMoveBot() throws NotPlayerTurnException, GameHasFinishedException {
+    public List<Change> makeMoveBot() throws GameHasFinishedException {
         if (isPlayerTurn(secondPlayer) && secondPlayer instanceof BotPlayer) {
             updateGame(secondPlayer);
             if (gameState == GameState.GAME_RUNNING) {
@@ -130,7 +142,7 @@ public class Game {
             }
 
         }
-        throw new NotPlayerTurnException();
+        return Collections.emptyList();
     }
 
     private BotController getBotController() {

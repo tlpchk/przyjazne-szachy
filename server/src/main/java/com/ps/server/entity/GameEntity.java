@@ -44,9 +44,4 @@ public class GameEntity {
     @Column(name="is_finished")
     private boolean isFinished;
 
-    @Column(name = "move_time_limit")
-    private Time moveTimeLimit;
-
-    @Column(name = "game_time_limit")
-    private Time gameTimeLimit;
 }

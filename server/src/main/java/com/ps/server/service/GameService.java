@@ -1,10 +1,12 @@
 package com.ps.server.service;
 
+import com.ps.server.BotRunner;
 import com.ps.server.Logic.Change;
 import com.ps.server.Logic.Pieces.Piece;
 import com.ps.server.Logic.Position;
 import com.ps.server.Logic.game.Game;
 import com.ps.server.Logic.game.GameCreator;
+import com.ps.server.Logic.player.BotPlayer;
 import com.ps.server.Logic.player.Player;
 import com.ps.server.dto.GameInfoDTO;
 import com.ps.server.dto.MoveResponseDTO;
@@ -24,10 +26,14 @@ import com.ps.server.repository.MoveRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -68,7 +74,7 @@ public class GameService {
     public Long createNewGame(PlayerEntity firstPlayerEntity, PlayerEntity secondPlayerEntity, boolean isRanked) throws InvalidRequiredArgumentException, SamePlayerException {
         synchronized (gamesMap) {
             Game game = createGame(firstPlayerEntity, secondPlayerEntity);
-            GameEntity gameEntity = createGameEntity(firstPlayerEntity, secondPlayerEntity);
+            GameEntity gameEntity = createGameEntity(game, firstPlayerEntity, secondPlayerEntity);
             Long gameId = gameEntity.getId();
             updateGamesAfterCreation(game, gameId);
             logger.info("Game id: " + gameId + ". Game created.");
@@ -86,13 +92,14 @@ public class GameService {
 
     }
 
-    private GameEntity createGameEntity(PlayerEntity firstPlayer, PlayerEntity secondPlayer) {
+    private GameEntity createGameEntity(Game game, PlayerEntity firstPlayer, PlayerEntity secondPlayer) {
         GameEntity gameEntity = new GameEntity();
         gameEntity.setStartTime(new Timestamp(System.currentTimeMillis()));
         gameEntity.setFirstPlayer(firstPlayer);
         if (secondPlayer != null) {
             gameEntity.setSecondPlayer(secondPlayer);
             gameEntity.setGameType(GameType.BOT_GAME);
+            game.setFirstPlayerTurnStartedDate(LocalDateTime.now());
         } else {
             gameEntity.setGameType(GameType.COMPETITION_GAME);
         }
@@ -140,6 +147,7 @@ public class GameService {
             Game game = getGameFromGames(gameId);
             game.joinPlayer(secondPlayer);
             joinPlayerToGameEntity(gameId, secondPlayerEntity);
+            game.setFirstPlayerTurnStartedDate(LocalDateTime.now());
             logger.info("Game id: " + gameId + ". Player " + secondPlayerEntity.getId() + " is joining game.");
         }
     }
@@ -184,6 +192,7 @@ public class GameService {
      */
     public MoveResponseDTO makeMove(Long gameId, PlayerEntity playerEntity, Position origin, Position destination) throws InvalidRequiredArgumentException, NotPlayerTurnException, GameNotExistException, GameHasFinishedException {
         synchronized (gamesMap) {
+            LocalDateTime moveDate = LocalDateTime.now();
             Game game = getGameFromGames(gameId);
             Player player = playerservice.createPlayerFromEntity(playerEntity);
             logger.info("Game id: " + gameId + ". Player " + playerEntity.getId() + " is trying to move.");
@@ -191,8 +200,16 @@ public class GameService {
             List<Change> listOfChanges;
             try {
                 listOfChanges = game.makeMove(origin, destination, player);
+                if (game.getFirstPlayer().getColor() == player.getColor()) {
+                    calculateFirstPlayerTime(game, moveDate);
+                    game.setSecondPlayerTurnStartedDate(LocalDateTime.now());
+                } else {
+                    calculateSecondPlayerTime(game, moveDate);
+                    game.setFirstPlayerTurnStartedDate(LocalDateTime.now());
+                }
                 moveService.persistMove(getGameEntity(gameId), playerEntity, origin, destination);
                 logger.info("Game id: " + gameId + ". Player " + playerEntity.getId() + " moves successfully from: " + origin + " to: " + destination);
+
             } catch (NotValidMoveException e) {
                 isMoveValid = false;
                 listOfChanges = Collections.emptyList();
@@ -202,6 +219,30 @@ public class GameService {
             updateGamesAfterMove(gameId, moveDTO);
             return moveDTO;
         }
+    }
+
+    public void runBotIfRelevant(Long gameId) throws GameNotExistException {
+        synchronized (gamesMap) {
+            Game game = getGameFromGames(gameId);
+            if (game.getSecondPlayer() instanceof BotPlayer) {
+                Thread t = new Thread(new BotRunner(this, gameId));
+                t.start();
+            }
+        }
+    }
+
+    public void calculateBotTime(Long gameId, LocalDateTime moveDate) throws GameNotExistException {
+        Game game = getGameFromGames(gameId);
+        game.setSecondPlayerTimeLeft(game.getSecondPlayerTimeLeft().minus(Duration.between(game.getSecondPlayerTurnStartedDate(), moveDate)));
+        game.setFirstPlayerTurnStartedDate(LocalDateTime.now());
+    }
+
+    private void calculateSecondPlayerTime(Game game, LocalDateTime moveDate) {
+        game.setSecondPlayerTimeLeft(game.getSecondPlayerTimeLeft().minus(Duration.between(game.getSecondPlayerTurnStartedDate(), moveDate)));
+    }
+
+    private void calculateFirstPlayerTime(Game game, LocalDateTime moveDate) {
+        game.setFirstPlayerTimeLeft(game.getFirstPlayerTimeLeft().minus(Duration.between(game.getFirstPlayerTurnStartedDate(), moveDate)));
     }
 
     public MoveResponseDTO promote(Long gameId, PlayerEntity playerEntity, Piece.PieceType pieceType) throws GameNotExistException, InvalidRequiredArgumentException {
@@ -217,7 +258,7 @@ public class GameService {
         }
     }
 
-    public MoveResponseDTO makeMoveBot(Long gameId) throws GameNotExistException, NotPlayerTurnException, GameHasFinishedException {
+    public void makeMoveBot(Long gameId) throws GameNotExistException, NotPlayerTurnException, GameHasFinishedException {
         synchronized (gamesMap) {
             Game game = getGameFromGames(gameId);
             logger.info("Game id: " + gameId + ". Bot is trying to move.");
@@ -227,11 +268,10 @@ public class GameService {
             MoveResponseDTO moveDTO = new MoveResponseDTO(isMoveValid, listOfChanges);
             updateGamesAfterMove(gameId, moveDTO);
             logger.info("Game id: " + gameId + ". Bot moves successfully.");
-            return moveDTO;
         }
     }
 
-    private void updateGamesAfterMove(Long gameId, MoveResponseDTO moveDTO) {
+    private void updateGamesAfterMove(Long gameId, MoveResponseDTO moveDTO) throws GameNotExistException {
         List<MoveUpdateDTO> updateList = updates.get(gameId);
         MoveUpdateDTO lastUpdate = updateList.get(updateList.size() - 1);
         if (!lastUpdate.equals(moveDTO)) {
@@ -239,6 +279,21 @@ public class GameService {
             System.out.println("UPDATE: " + newId);
             MoveUpdateDTO moveUpdateDTO = new MoveUpdateDTO(newId, moveDTO);
             updateList.add(moveUpdateDTO);
+        }
+        synchronized (gamesMap){
+            Game game= getGameFromGames(gameId);
+            GameEntity gameEntity = getGameEntity(gameId);
+            if(game.getFirstPlayerTimeLeft().isNegative()){
+                game.setResult(Result.SECOND_PLAYER_WON);
+                gameEntity.setFinished(true);
+                gameEntity.setResult(Result.SECOND_PLAYER_WON);
+                gameRepository.save(gameEntity);
+            } else if(game.getSecondPlayerTimeLeft().isNegative()) {
+                game.setResult(Result.FIRST_PLAYER_WON);
+                gameEntity.setFinished(true);
+                gameEntity.setResult(Result.FIRST_PLAYER_WON);
+                gameRepository.save(gameEntity);
+            }
         }
     }
 
@@ -306,7 +361,7 @@ public class GameService {
     private String getOpponent(GameEntity gameEntity, PlayerEntity playerEntity) {
         PlayerEntity opponent = (gameEntity.getFirstPlayer() == playerEntity) ? gameEntity.getSecondPlayer() : gameEntity.getFirstPlayer();
         String opponentUsername = null;
-        if (opponent.getPlayerType() == PlayerType.BOT) {
+        if (opponent != null && opponent.getPlayerType() == PlayerType.BOT) {
             opponentUsername = "BOT";
         } else if (opponent != null && opponent.getUser() != null) {
             opponentUsername = opponent.getUser().getUsername();

@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RestController
@@ -22,6 +21,7 @@ public class GameController {
 
     @Autowired
     private PlayerService playerService;
+
 
     /**
      * Creates new Game.
@@ -79,7 +79,9 @@ public class GameController {
     @RequestMapping(value = "/{gameId}/move", method = RequestMethod.POST)
     public MoveResponseDTO makeMove(@PathVariable Long gameId, @RequestBody CreateMoveDTO createMoveDTO) throws GameNotExistException, InvalidRequiredArgumentException, NotPlayerTurnException, GameHasFinishedException {
         PlayerEntity playerEntity = playerService.getPlayerEntity(createMoveDTO.getPlayerId());
-        return gameService.makeMove(gameId, playerEntity, createMoveDTO.getOrigin(), createMoveDTO.getDestination());
+        MoveResponseDTO move = gameService.makeMove(gameId, playerEntity, createMoveDTO.getOrigin(), createMoveDTO.getDestination());
+        gameService.runBotIfRelevant(gameId);
+        return move;
     }
 
     @RequestMapping(value = "/{gameId}/promote", method = RequestMethod.POST)
@@ -116,14 +118,14 @@ public class GameController {
         return gameService.getUpdate(gameId, updateId);
     }
 
-    @RequestMapping(value = "/{gameId}/bot", method = RequestMethod.GET)
-    public MoveResponseDTO moveBot(@PathVariable Long gameId) throws GameNotExistException, GameHasFinishedException {
-        try {
-            return gameService.makeMoveBot(gameId);
-        } catch (NotPlayerTurnException e) {
-            return new MoveResponseDTO();
-        }
-    }
+//    @RequestMapping(value = "/{gameId}/bot", method = RequestMethod.GET)
+//    public MoveResponseDTO moveBot(@PathVariable Long gameId) throws GameNotExistException, GameHasFinishedException {
+//        try {
+//            return gameService.makeMoveBot(gameId);
+//        } catch (NotPlayerTurnException e) {
+//            return new MoveResponseDTO();
+//        }
+//    }
 
     //TODO RS: add timer here maybe
     @RequestMapping(value = "/{gameId}", method = RequestMethod.POST)

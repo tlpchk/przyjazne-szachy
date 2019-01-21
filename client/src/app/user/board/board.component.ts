@@ -81,8 +81,8 @@ export class BoardComponent implements OnInit {
                             this.board[cellIndex].piece = piece;
                             this.board[cellIndex].possibleMoves = possibleMoves;
                         }
-                        this.boardService.makeBotMove(this.gameId).subscribe(a => {
-                        });
+                        // this.boardService.makeBotMove(this.gameId).subscribe(a => {
+                        // });
                     } else {
                         console.log("Invalid move");
                     }
@@ -137,7 +137,7 @@ export class BoardComponent implements OnInit {
                     this.board[cellIndex].piece = piece;
                     this.board[cellIndex].possibleMoves = possibleMoves;
                 }
-                this.boardService.makeBotMove(this.gameId).subscribe();
+                // this.boardService.makeBotMove(this.gameId).subscribe();
             } else {
                 console.log("Invalid move");
             }
