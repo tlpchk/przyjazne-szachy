@@ -13,21 +13,15 @@ import com.ps.server.dto.MoveResponseDTO;
 import com.ps.server.dto.MoveUpdateDTO;
 import com.ps.server.dto.PieceDTO;
 import com.ps.server.entity.GameEntity;
-import com.ps.server.entity.MatchEntity;
-import com.ps.server.entity.MoveEntity;
 import com.ps.server.entity.PlayerEntity;
 import com.ps.server.enums.GameType;
 import com.ps.server.enums.PlayerType;
 import com.ps.server.enums.Result;
 import com.ps.server.exception.*;
 import com.ps.server.repository.GameRepository;
-import com.ps.server.repository.MatchesRepository;
-import com.ps.server.repository.MoveRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -280,19 +274,17 @@ public class GameService {
             MoveUpdateDTO moveUpdateDTO = new MoveUpdateDTO(newId, moveDTO);
             updateList.add(moveUpdateDTO);
         }
+        checkForFinishedTimer(gameId);
+    }
+
+    private void checkForFinishedTimer(Long gameId) throws GameNotExistException {
         synchronized (gamesMap){
-            Game game= getGameFromGames(gameId);
+            Game game = getGameFromGames(gameId);
+            game.checkForFinishedTimer();
             GameEntity gameEntity = getGameEntity(gameId);
-            if(game.getFirstPlayerTimeLeft().isNegative()){
-                game.setResult(Result.SECOND_PLAYER_WON);
-                gameEntity.setFinished(true);
-                gameEntity.setResult(Result.SECOND_PLAYER_WON);
-                gameRepository.save(gameEntity);
-            } else if(game.getSecondPlayerTimeLeft().isNegative()) {
-                game.setResult(Result.FIRST_PLAYER_WON);
-                gameEntity.setFinished(true);
-                gameEntity.setResult(Result.FIRST_PLAYER_WON);
-                gameRepository.save(gameEntity);
+
+            if(game.getResult()!=null && !gameEntity.isFinished()){
+                saveFinishedGame(gameEntity,game.getResult());
             }
         }
     }
@@ -337,6 +329,7 @@ public class GameService {
     }
 
     public GameInfoDTO getGameInfo(Long gameId, PlayerEntity playerEntity) throws GameNotExistException, InvalidRequiredArgumentException {
+        checkForFinishedTimer(gameId);
         synchronized (gamesMap) {
             List<MoveUpdateDTO> updateList = updates.get(gameId);
             Game game = getGameFromGames(gameId);
@@ -347,7 +340,6 @@ public class GameService {
             gameInfo.setLastUpdateId(updateList.get(updateList.size() - 1).getUpdateId());
             gameInfo.setMyTurn(game.isPlayerTurn(player));
             gameInfo.setPromotion(game.isPromotion());
-            gameInfo.setGameState(game.getGameState());
 
             gameInfo.setOpponent(getOpponent(gameEntity, playerEntity));
             gameInfo.setGameResult(game.getResult());
@@ -356,6 +348,7 @@ public class GameService {
             }
             return gameInfo;
         }
+
     }
 
     private String getOpponent(GameEntity gameEntity, PlayerEntity playerEntity) {

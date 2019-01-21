@@ -60,10 +60,10 @@ CREATE TABLE IF NOT EXISTS `player` (
 
 CREATE TABLE IF NOT EXISTS `matches` (
   `id`            int(11)    NOT NULL AUTO_INCREMENT,
-  `game_id`       int(11)    NOT NULL DEFAULT 0,
-  `player_id`     int(11)    NOT NULL DEFAULT 0,
-  `opponent_id`   int(11)    NOT NULL,
-  `player_points` tinyint(4) NOT NULL DEFAULT 0,
+  `game_id`       int(11)    NOT NULL,
+  `player_id`     int(11)    ,
+  `opponent_id`   int(11)    ,
+  `player_points` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB

@@ -1,6 +1,5 @@
 package com.ps.server.dto;
 
-import com.ps.server.Logic.GameState;
 import com.ps.server.enums.Result;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,8 +17,6 @@ public class GameInfoDTO {
     private boolean isMyTurn;
 
     private boolean isPromotion;
-
-    private GameState gameState;
 
     private Result gameResult;
 

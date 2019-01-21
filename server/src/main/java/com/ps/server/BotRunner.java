@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 public class BotRunner implements Runnable {
 
-    private static final Logger logger = LoggerFactory.getLogger(GameService.class);
+    private static final Logger logger = LoggerFactory.getLogger(BotRunner.class);
 
     private GameService gameService;
 

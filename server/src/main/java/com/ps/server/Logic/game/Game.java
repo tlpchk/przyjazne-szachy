@@ -46,11 +46,11 @@ public class Game {
 
     private Move lastBotMove;
 
-    private Duration firstPlayerTimeLeft = Duration.ofMinutes(30);
+    private Duration firstPlayerTimeLeft = Duration.ofMinutes(1);
 
     private LocalDateTime firstPlayerTurnStartedDate;
 
-    private Duration secondPlayerTimeLeft = Duration.ofMinutes(30);
+    private Duration secondPlayerTimeLeft = Duration.ofMinutes(1);
 
     private LocalDateTime secondPlayerTurnStartedDate;
 
@@ -252,4 +252,14 @@ public class Game {
         return Collections.emptyList();
     }
 
+
+    public void checkForFinishedTimer(){
+        if(getFirstPlayerTimeLeft().isNegative()){
+            setResult(Result.SECOND_PLAYER_WON);
+            setGameState(GameState.FINISHED_BY_TIMER);
+        } else if(getSecondPlayerTimeLeft().isNegative()) {
+            setResult(Result.FIRST_PLAYER_WON);
+            setGameState(GameState.FINISHED_BY_TIMER);
+        }
+    }
 }

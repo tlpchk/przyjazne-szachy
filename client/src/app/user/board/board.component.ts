@@ -6,8 +6,7 @@ import {CoordinatesAdapterService} from '../../_services/coordinates-adapter.ser
 import {Piece, PieceType} from '../../_models/piece';
 import {MoveUpdateDTO} from '../../_models/moveUpdateDTO';
 import {PopupComponent} from '../popup/popup.component';
-import {Router} from '@angular/router';
-import {GameState, Result} from '../../_models/gameInfoDTO';
+
 
 @Component({
     selector: 'app-board',
@@ -24,7 +23,7 @@ export class BoardComponent implements OnInit {
     gameId: number;
     lastUpdateId: number;
     isMyTurn: boolean;
-    isGameFinished: boolean = false;
+    // isGameFinished: boolean = false;
     result: Result;
     isPromotion = false;
     opponent = '';
@@ -107,7 +106,7 @@ export class BoardComponent implements OnInit {
                 this.board = this.boardService.getBoard(pieces);
                 this.lastUpdateId = 0;
                 this.isMyTurn = false;
-                this.isGameFinished = false;
+                // this.isGameFinished = false;
                 this.result = null;
                 this.isPromotion = false;
                 this.opponent = '';
@@ -151,7 +150,7 @@ export class BoardComponent implements OnInit {
             this.isMyTurn = gameInfo.myTurn;
             this.isPromotion = gameInfo.promotion;
             this.opponent = gameInfo.opponent;
-            this.isGameFinished = (gameInfo.gameState != GameState.game_running);
+            // this.isGameFinished = (gameInfo.gameState != GameState.game_running);
             if (gameInfo.lastUpdateId > this.lastUpdateId) {
                 while (gameInfo.lastUpdateId > this.lastUpdateId) {
                     this.lastUpdateId = this.lastUpdateId + 1;
