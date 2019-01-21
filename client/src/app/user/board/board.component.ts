@@ -8,6 +8,8 @@ import {MoveUpdateDTO} from '../../_models/moveUpdateDTO';
 import {PopupComponent} from '../popup/popup.component';
 import {GameState, Result} from '../../_models/gameInfoDTO';
 import {Move} from '../../_models/move';
+import {combineAll} from 'rxjs/operators';
+import {error} from '@angular/compiler/src/util';
 
 @Component({
     selector: 'app-board',
@@ -27,7 +29,7 @@ export class BoardComponent implements OnInit {
     result: Result;
     isPromotion: boolean;
     isMyTurn: boolean;
-
+    updator;
 
     constructor(private boardService: BoardService,
                 private coordinateService: CoordinatesAdapterService) {
@@ -38,6 +40,9 @@ export class BoardComponent implements OnInit {
         this.getGameId();
         this.move = new Move();
         this.selectedCell = null;
+        const boardComponent = this;
+        this.getGameInfo();
+        this.updator = setInterval(function() { boardComponent.getGameInfo(); }, 500);
                                 /*if (this.board.length === 0) {
                                     this.popup.routerLink = '/user/home';
                                     this.popup.show('Stwórz nową grę');
@@ -61,24 +66,8 @@ export class BoardComponent implements OnInit {
                 this.boardService.makeMove(this.move, this.gameId).subscribe(moveResponse => {
                     if (moveResponse.wasMoveValid) {
                         console.log('This move was valid');
-                        let changes: ChangeDTO[] = moveResponse.listOfChanges;
-                        for (let c in changes) {
-                            let location = changes[c].location;
-                            let pieceColor = changes[c].color;
-                            let type = changes[c].type;
-                            let cellId = this.coordinateService.backendToFrontend(location.row, location.col);
-                            let cellIndex = this.board.map(function (item) {
-                                return item.id;
-                            })
-                                .indexOf(cellId);
-                            let piece: Piece = new Piece(type, pieceColor);
-                            const possibleMoves: number[] = [];
-                            if (piece.type === null || piece.type === undefined) {
-                                piece = null;
-                            }
-                            this.board[cellIndex].piece = piece;
-                            this.board[cellIndex].possibleMoves = possibleMoves;
-                        }
+                        this.updateBoard(moveResponse.listOfChanges);
+                        // TODO: Why bot's move is made here?
                         this.boardService.makeBotMove(this.gameId).subscribe(a => {
                         });
                     } else {
@@ -108,68 +97,45 @@ export class BoardComponent implements OnInit {
                 this.isGameFinished = false;
                 this.result = null;
                 this.isPromotion = false;
-                setTimeout(this.getGameInfo(), 1000);
             });
     }
 
     promotion(pieceType: PieceType): void {
         this.boardService.promote(this.gameId, pieceType).subscribe(moveResponse => {
-            if (moveResponse.wasMoveValid) {
-                console.log('This move was valid');
-                const changes: ChangeDTO[] = moveResponse.listOfChanges;
-                for (const c in changes) {
-                    const location = changes[c].location;
-                    const pieceColor = changes[c].color;
-                    const type = changes[c].type;
-                    const cellId = this.coordinateService.backendToFrontend(location.row, location.col);
-                    const cellIndex = this.board.map(function (item) {
-                        return item.id;
-                    })
-                        .indexOf(cellId);
-                    let piece: Piece = new Piece(type, pieceColor);
-                    const possibleMoves: number[] = [];
-                    if (piece.type === null || piece.type === undefined) {
-                        piece = null;
-                    }
-                    this.board[cellIndex].piece = piece;
-                    this.board[cellIndex].possibleMoves = possibleMoves;
-                }
-                this.boardService.makeBotMove(this.gameId).subscribe(a => {
-                    console.log('BOT MOVES: ' + a);
-                });
-            } else {
-                console.log('Invalid move');
-            }
-        });
-
+            const changes: ChangeDTO[] = moveResponse.listOfChanges;
+            this.updateBoard(changes);
+            this.boardService.makeBotMove(this.gameId).subscribe(a => {
+                console.log('BOT MOVES: ' + a);
+            });
+            this.popup.hide();
+         });
     }
 
     getGameInfo(): void {
-        console.log("GET GAME INFO");
+        console.log('GET GAME INFO');
         this.boardService.getGameInfo(this.gameId).subscribe(gameInfo => {
             this.result = gameInfo.gameResult;
             this.isMyTurn = gameInfo.myTurn;
             this.isPromotion = gameInfo.promotion;
-            this.isGameFinished = (gameInfo.gameState != GameState.game_running);
+            this.isGameFinished = (gameInfo.gameState !== GameState.game_running);
             if (gameInfo.lastUpdateId > this.lastUpdateId) {
                 while (gameInfo.lastUpdateId > this.lastUpdateId) {
                     this.lastUpdateId = this.lastUpdateId + 1;
                     this.boardService.getUpdate(this.gameId, this.lastUpdateId).subscribe(moveUpdate => {
-                        this.updateBoard(moveUpdate);
+                        this.updateBoard(moveUpdate.moveDTO.listOfChanges);
                     });
                 }
-                 setTimeout(this.getGameInfo(), 1000);
-            } else {
-                setTimeout(this.getGameInfo(), 1000);
             }
-        });
+            if (this.isPromotion && this.isMyTurn) {
+                this.popup.showPromotion();
+            }
+        }, error => {this.popup.showMessage('Stwórz grę'); this.resetUpdator(); } );
     }
 
 
-    private updateBoard(moveUpdate: MoveUpdateDTO) {
-        const changes: ChangeDTO[] = moveUpdate.moveDTO.listOfChanges;
+    private updateBoard(changes: ChangeDTO[] ) {
         for (const c in changes) {
-            const location = changes[c].location;
+            let location = changes[c].location;
             const pieceColor = changes[c].color;
             const type = changes[c].type;
             const cellId = this.coordinateService.backendToFrontend(location.row, location.col);
@@ -185,5 +151,9 @@ export class BoardComponent implements OnInit {
             this.board[cellIndex].piece = piece;
             this.board[cellIndex].possibleMoves = possibleMoves;
         }
+    }
+
+    resetUpdator(){
+        clearInterval(this.updator);
     }
 }

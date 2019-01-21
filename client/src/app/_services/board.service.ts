@@ -75,7 +75,7 @@ export class BoardService {
     }
 
 
-    makeMove(move : Move, gameId: number): Observable<MoveResponseDTO> {
+    makeMove(move : Move , gameId: number): Observable<MoveResponseDTO> {
         let url = this.gamesUrl + "/" + gameId + this.moveSubUrl;
         let origin = this.coordinatesService.frontendToBackend(move.srcCell.id);
         let destination = this.coordinatesService.frontendToBackend(move.destCell.id);

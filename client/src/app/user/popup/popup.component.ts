@@ -1,12 +1,12 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Router} from '@angular/router';
-import {GameState} from '../../_models/gameInfoDTO';
 import {BoardService} from '../../_services/board.service';
+import {PieceType} from '../../_models/piece';
 
 @Component({
   selector: 'app-popup',
   templateUrl: './popup.component.html',
-  styleUrls: ['./popup.component.css']
+  styleUrls: ['./popup.component.scss']
 })
 export class PopupComponent implements OnInit {
 
@@ -14,9 +14,10 @@ export class PopupComponent implements OnInit {
               private boardService: BoardService) { }
   popupType = Object.freeze({
     PROM: 'promotion',
-    END: 'message'
+    MSG: 'message'
   });
 
+  @Output() public promotionEvent = new EventEmitter();
 
   public isDisplayed;
   public message;
@@ -25,16 +26,27 @@ export class PopupComponent implements OnInit {
   routerLink: string;
 
   ngOnInit() {
-    this.type = this.popupType.END;
+    this.type = this.popupType.PROM;
   }
 
-  show(data) {
-    this.message = data;
+  show(){
     if (!this.isDisplayed) {
       this.isDisplayed = true;
     }
-
   }
+
+  showMessage(message) {
+    this.message = message;
+    this.type = this.popupType.MSG;
+    this.show();
+  }
+
+  showPromotion(){
+    this.message = 'Promocja';
+    this.type = this.popupType.PROM;
+    this.show();
+  }
+
 
   hide() {
     this.message = '';
@@ -44,6 +56,11 @@ export class PopupComponent implements OnInit {
     if (this.routerLink != null) {
       this.router.navigateByUrl(this.routerLink);
     }
+  }
+
+  promotion(type: PieceType) {
+    console.log('EMIT PROMOTION');
+    this.promotionEvent.emit(type);
   }
 
 }
