@@ -17,19 +17,19 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 public class ChessAppConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private ChessAppAuthenticationProvider authProvider;
-
-
-    @Autowired
-    public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
-auth.authenticationProvider(authProvider);
+//    @Autowired
+//    private ChessAppAuthenticationProvider authProvider;
+//
+//
+//    @Autowired
+//    public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
+//auth.authenticationProvider(authProvider);
 //auth.authenticationProvider(authenticationProvider());
         //        auth
 //                .userDetailsService(new UserDetailsServiceImpl());
 //                .passwordEncoder(new BCryptPasswordEncoder());
 //        auth.inMemoryAuthentication().withUser("bill").password("$2a$10$f/Som3sZTUzUShz2Gnk/cuOUwujheFgbZQHuGi.niJ5hVB4WtD/7W").roles("ADMIN");
-    }
+//    }
 
 //
 //
