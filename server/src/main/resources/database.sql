@@ -3,14 +3,14 @@ CREATE DATABASE IF NOT EXISTS `chess_game`;
 USE `chess_game`;
 
 CREATE TABLE IF NOT EXISTS `game` (
-  `id`              bigint(11)            AUTO_INCREMENT,
-  `start_time`      timestamp NOT NULL DEFAULT current_timestamp(),
-  `first_player`    int(11),
-  `second_player`   int(11),
-  `game_type`       enum ('COMPETITION_GAME', 'BOT_GAME') COLLATE utf16_polish_ci,
-  `result`          enum ('FIRST_PLAYER_WON', 'SECOND_PLAYER_WON', 'DRAW') COLLATE utf16_polish_ci,
-  `is_ranked`       bool               DEFAULT FALSE,
-  `is_finished`     bool               DEFAULT FALSE,
+  `id`            bigint(11)         AUTO_INCREMENT,
+  `start_time`    timestamp NOT NULL DEFAULT current_timestamp(),
+  `first_player`  int(11),
+  `second_player` int(11),
+  `game_type`     enum ('COMPETITION_GAME', 'BOT_GAME') COLLATE utf16_polish_ci,
+  `result`        enum ('FIRST_PLAYER_WON', 'SECOND_PLAYER_WON', 'DRAW') COLLATE utf16_polish_ci,
+  `is_ranked`     bool               DEFAULT FALSE,
+  `is_finished`   bool               DEFAULT FALSE,
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
@@ -61,8 +61,8 @@ CREATE TABLE IF NOT EXISTS `player` (
 CREATE TABLE IF NOT EXISTS `matches` (
   `id`            int(11)    NOT NULL AUTO_INCREMENT,
   `game_id`       int(11)    NOT NULL,
-  `player_id`     int(11)    ,
-  `opponent_id`   int(11)    ,
+  `player_id`     int(11),
+  `opponent_id`   int(11),
   `player_points` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`)
 )
@@ -84,10 +84,11 @@ CREATE TABLE IF NOT EXISTS `ranking` (
 
 
 CREATE VIEW `ranking_view` AS
-  SELECT RANK() OVER (ORDER BY ranking.score DESC) AS `position`, user.nick AS `nick` , ranking.score AS `score`
+  SELECT RANK() OVER(ORDER BY ranking.score DESC) AS `position`, user.nick AS `nick`, ranking.score AS `score`
   FROM `user`,
        `ranking`
-  WHERE user.id = ranking.user_id ORDER BY ranking.score ASC;
+  WHERE user.id = ranking.user_id
+  ORDER BY ranking.score ASC;
 
 
 USE `chess_game`;
@@ -97,8 +98,9 @@ CREATE TRIGGER `TR_user_after_insert`
   AFTER INSERT
   ON `user`
   FOR EACH ROW
-  INSERT INTO `ranking` (`user_id`)
-  VALUES (new.id);
+  BEGIN
+    INSERT INTO `ranking` (`user_id`) VALUES (new.id);
+  END//
 DELIMITER ;
 
 DELIMITER //
@@ -107,24 +109,18 @@ CREATE TRIGGER `TR_game_after_update`
   ON `matches`
   FOR EACH ROW
   BEGIN
---     #     set isRanked = (SELECT game.is_ranked FROM game WHERE game.id = new.game_id);
---     #     IF(isRanked = TRUE )
---     #       THEN
---     #     END IF ;
+    --     #     set isRanked = (SELECT game.is_ranked FROM game WHERE game.id = new.game_id);
+    --     #     IF(isRanked = TRUE )
+    --     #       THEN
+    --     #     END IF ;
     declare current float;
     declare pnkGet float;
     declare pnkEX float;
     declare result float;
-    set current = (SELECT ranking.score
-                   FROM ranking
-                   WHERE ranking.user_id = new.player_id);
+    set current = (SELECT ranking.score FROM ranking WHERE ranking.user_id = new.player_id);
     set pnkGet = (SELECT matches.player_points FROM matches WHERE matches.id = new.id);
-    set pnkEX = ((SELECT ranking.score
-                  FROM ranking
-                  WHERE ranking.user_id = new.player_id) /
-                 (SELECT ranking.score
-                  FROM ranking
-                  WHERE ranking.user_id = new.opponent_id));
+    set pnkEX = ((SELECT ranking.score FROM ranking WHERE ranking.user_id = new.player_id) /
+                 (SELECT ranking.score FROM ranking WHERE ranking.user_id = new.opponent_id));
     IF (pnkEX > 1.75)
     THEN
       SET pnkEX = 1.75;
@@ -139,9 +135,7 @@ CREATE TRIGGER `TR_game_after_update`
       set result = 0.0;
     END IF;
 
-    UPDATE ranking
-    set ranking.score = result
-    WHERE ranking.user_id = new.player_id;
+    UPDATE ranking set ranking.score = result WHERE ranking.user_id = new.player_id;
 
   END//
 DELIMITER ;

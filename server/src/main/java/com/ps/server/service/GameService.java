@@ -186,7 +186,6 @@ public class GameService {
      */
     public MoveResponseDTO makeMove(Long gameId, PlayerEntity playerEntity, Position origin, Position destination) throws InvalidRequiredArgumentException, NotPlayerTurnException, GameNotExistException, GameHasFinishedException {
         synchronized (gamesMap) {
-            LocalDateTime moveDate = LocalDateTime.now();
             Game game = getGameFromGames(gameId);
             Player player = playerservice.createPlayerFromEntity(playerEntity);
             logger.info("Game id: " + gameId + ". Player " + playerEntity.getId() + " is trying to move.");
@@ -194,13 +193,7 @@ public class GameService {
             List<Change> listOfChanges;
             try {
                 listOfChanges = game.makeMove(origin, destination, player);
-                if (game.getFirstPlayer().getColor() == player.getColor()) {
-                    calculateFirstPlayerTime(game, moveDate);
-                    game.setSecondPlayerTurnStartedDate(LocalDateTime.now());
-                } else {
-                    calculateSecondPlayerTime(game, moveDate);
-                    game.setFirstPlayerTurnStartedDate(LocalDateTime.now());
-                }
+
                 moveService.persistMove(getGameEntity(gameId), playerEntity, origin, destination);
                 logger.info("Game id: " + gameId + ". Player " + playerEntity.getId() + " moves successfully from: " + origin + " to: " + destination);
 
@@ -219,7 +212,7 @@ public class GameService {
         synchronized (gamesMap) {
             Game game = getGameFromGames(gameId);
             if (game.getSecondPlayer() instanceof BotPlayer) {
-                Thread t = new Thread(new BotRunner(this, gameId));
+                Thread t = new Thread(new BotRunner( gameId));
                 t.start();
             }
         }
@@ -231,13 +224,7 @@ public class GameService {
         game.setFirstPlayerTurnStartedDate(LocalDateTime.now());
     }
 
-    private void calculateSecondPlayerTime(Game game, LocalDateTime moveDate) {
-        game.setSecondPlayerTimeLeft(game.getSecondPlayerTimeLeft().minus(Duration.between(game.getSecondPlayerTurnStartedDate(), moveDate)));
-    }
 
-    private void calculateFirstPlayerTime(Game game, LocalDateTime moveDate) {
-        game.setFirstPlayerTimeLeft(game.getFirstPlayerTimeLeft().minus(Duration.between(game.getFirstPlayerTurnStartedDate(), moveDate)));
-    }
 
     public MoveResponseDTO promote(Long gameId, PlayerEntity playerEntity, Piece.PieceType pieceType) throws GameNotExistException, InvalidRequiredArgumentException {
         synchronized (gamesMap) {
