@@ -1,5 +1,7 @@
 package com.ps.server.dto;
 
+import com.ps.server.Logic.Color;
+import com.ps.server.enums.PlayerType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,12 +11,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateGameDTO {
-
-    private Long firstPlayerId;
-
-    private Long secondPlayerId;
-
-    private boolean isRanked;
-
+public class CreatePlayerDTO {
+    private String username;
+    private Color color;
+    private PlayerType playerType;
 }

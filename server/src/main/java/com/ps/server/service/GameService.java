@@ -11,10 +11,15 @@ import com.ps.server.dto.MoveResponseDTO;
 import com.ps.server.dto.MoveUpdateDTO;
 import com.ps.server.dto.PieceDTO;
 import com.ps.server.entity.GameEntity;
+import com.ps.server.entity.MatchEntity;
+import com.ps.server.entity.MoveEntity;
 import com.ps.server.entity.PlayerEntity;
 import com.ps.server.enums.GameType;
+import com.ps.server.enums.Result;
 import com.ps.server.exception.*;
 import com.ps.server.repository.GameRepository;
+import com.ps.server.repository.MatchesRepository;
+import com.ps.server.repository.MoveRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +36,12 @@ public class GameService {
 
     @Autowired
     private GameRepository gameRepository;
+
+    @Autowired
+    private MoveService moveService;
+
+    @Autowired
+    private MatchService matchService;
 
     @Autowired
     private PlayerService playerservice;
@@ -53,11 +64,11 @@ public class GameService {
      * @throws InvalidRequiredArgumentException when players do not have playerType set
      * @throws SamePlayerException              when firstPlayer is the same as secondPlayer (which means they have the same color)
      */
-    public Long createNewGame(PlayerEntity firstPlayerEntity, PlayerEntity secondPlayerEntity) throws InvalidRequiredArgumentException, SamePlayerException {
+    public Long createNewGame(PlayerEntity firstPlayerEntity, PlayerEntity secondPlayerEntity, boolean isRanked) throws InvalidRequiredArgumentException, SamePlayerException {
         synchronized (gamesMap) {
             Game game = createGame(firstPlayerEntity, secondPlayerEntity);
             GameEntity gameEntity = createGameEntity(firstPlayerEntity, secondPlayerEntity);
-            Long gameId = gameEntity.getID();
+            Long gameId = gameEntity.getId();
             updateGamesAfterCreation(game, gameId);
             logger.info("Game id: " + gameId + ". Game created.");
             return gameId;
@@ -100,6 +111,7 @@ public class GameService {
      *
      * @return list of games to join
      */
+    //TODO RS: break it into ran and unranked game
     public List<Long> getGamesToJoin() {
         synchronized (gamesMap) {
             logger.info("Returned list of games.");
@@ -143,13 +155,14 @@ public class GameService {
     private void joinPlayerToGameEntity(Long gameId, PlayerEntity secondPlayerEntity) {
         GameEntity gameEntity = getGameEntity(gameId);
         gameEntity.setSecondPlayer(secondPlayerEntity);
+        gameRepository.save(gameEntity);
     }
 
     /**
-     * Returns Game with given {@param gameId}
+     * Returns GameEntity with given {@param gameId}
      *
      * @param gameId Id of the Game
-     * @return Game with given {@param gameId}, null if sucha a Game does not exist
+     * @return GameEntity with given {@param gameId}, null if such a GameEntity does not exist
      */
     public GameEntity getGameEntity(Long gameId) {
         return gameRepository.findById(gameId).orElse(null);
@@ -177,8 +190,8 @@ public class GameService {
             List<Change> listOfChanges;
             try {
                 listOfChanges = game.makeMove(origin, destination, player);
+                moveService.persistMove(getGameEntity(gameId), playerEntity, origin, destination);
                 logger.info("Game id: " + gameId + ". Player " + playerEntity.getId() + " moves successfully from: " + origin + " to: " + destination);
-                //is promto
             } catch (NotValidMoveException e) {
                 isMoveValid = false;
                 listOfChanges = Collections.emptyList();
@@ -209,6 +222,7 @@ public class GameService {
             logger.info("Game id: " + gameId + ". Bot is trying to move.");
             boolean isMoveValid = true;
             List<Change> listOfChanges = game.makeMoveBot();
+            moveService.persistMove(getGameEntity(gameId), null, game.getLastBotMove().loc, game.getLastBotMove().dest);
             MoveResponseDTO moveDTO = new MoveResponseDTO(isMoveValid, listOfChanges);
             updateGamesAfterMove(gameId, moveDTO);
             logger.info("Game id: " + gameId + ". Bot moves successfully.");
@@ -276,14 +290,22 @@ public class GameService {
             gameInfo.setMyTurn(game.isPlayerTurn(player));
             gameInfo.setPromotion(game.isPromotion());
             gameInfo.setGameState(game.getGameState());
+            GameEntity gameEntity = getGameEntity(gameId);
             gameInfo.setGameResult(game.getResult());
+            if (gameInfo.getGameResult() != null && !gameEntity.isFinished()) {
+                saveFinishedGame(gameEntity, gameInfo.getGameResult());
+            }
             return gameInfo;
         }
     }
 
 
-//    public MoveUpdateDTO getUpdateById(Long gameId, Long updateId) {
-//        updates.get(gameId)
-//    }
+    private void saveFinishedGame(GameEntity gameEntity, Result result) {
+        gameEntity.setFinished(true);
+        gameEntity.setResult(result);
+        matchService.saveResultForGameEntity(gameEntity, result);
+        gameRepository.save(gameEntity);
+    }
+
 
 }

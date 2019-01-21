@@ -66,7 +66,7 @@ public class Set {
     }
 
     boolean checkIfCanMove() {
-        for(int i = set.size()-1; i > 0; i--) {
+        for(int i = set.size()-1; i >= 0; i--) {
             if(set.get(i).canMove()) {
                 return true;
             }

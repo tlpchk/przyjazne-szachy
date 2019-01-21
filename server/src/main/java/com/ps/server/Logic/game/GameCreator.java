@@ -16,7 +16,7 @@ public class GameCreator {
      * @param firstPlayer  First Player in Game.
      * @param secondPlayer Second Player in Game. If set to null competition Game is created. BotPlayer Game is created otherwise.
      * @return Newly created Game.
-     * @throws IllegalArgumentException when {@param firstPlayer} is null
+     * @throws InvalidRequiredArgumentException when {@param firstPlayer} is null
      * @throws SamePlayerException      when firstPlayer is the same as secondPlayer (which means they have the same color)
      */
     public Game createGame(Player firstPlayer, Player secondPlayer) throws InvalidRequiredArgumentException, SamePlayerException {

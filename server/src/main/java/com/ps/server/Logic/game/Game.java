@@ -40,6 +40,8 @@ public class Game {
 
     private Move promotionMove;
 
+    private Move lastBotMove;
+
 
     /**
      * Makes given Move on board.
@@ -80,7 +82,7 @@ public class Game {
         }
     }
 
-    public List<Change> promote(Player player, Piece.PieceType promotionType){
+    public List<Change> promote(Player player, Piece.PieceType promotionType) {
         promotionMove.setPromoteTo(promotionType);
         board.makeMove(promotionMove);
         flipTurn();
@@ -119,6 +121,7 @@ public class Game {
                 BotController controller = getBotController();
                 Move botMove = controller.execute(board, secondPlayer.getColor());
                 board.makeMove(botMove);
+                lastBotMove = botMove;
                 flipTurn();
                 updateAfterMove(secondPlayer);
                 return board.getListOfChanges(botMove);

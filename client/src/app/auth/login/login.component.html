@@ -1,14 +1,14 @@
-<div class="text-center fade-bottom">
+<div class="text-center fade-bottom background">
     <h1>Przyjazne szachy</h1>
 
     <form (submit)="loginUser()">
         <input class="form-control" type="text" [(ngModel)]="username" name="username" placeholder="Username">
 
-        <input class="form-control" type="password" [(ngModel)]="password"  name="password" placeholder="Password">
+        <input class="form-control" type="password" [(ngModel)]="password"  name="password" placeholder="Hasło">
 
-        <input class="btn btn-primary form-control" type="submit" value="Login">
+        <input class="btn btn-primary form-control" type="submit" value="Zaloguj się">
 
-        <a routerLink="/auth/regist">Zarejestruj się</a>
+        <a class="form-control" routerLink="/auth/regist">Zarejestruj się</a>
     </form>
 
 </div>

@@ -8,6 +8,9 @@ import {SidebarComponent} from "./sidebar/sidebar.component";
 import {UserComponent} from "./user.component";
 import {UserRoutingModule} from "./user-routing.module";
 import {AuthGuard} from "./auth.guard";
+import {TimerComponent} from "./timer/timer.component";
+import { PopupComponent } from './popup/popup.component';
+
 
 @NgModule({
     imports: [
@@ -22,6 +25,8 @@ import {AuthGuard} from "./auth.guard";
         MessagesComponent,
         HomeComponent,
         SidebarComponent,
+        TimerComponent,
+        PopupComponent,
     ],
     providers: [AuthGuard]
 })

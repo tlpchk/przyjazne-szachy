@@ -20,7 +20,7 @@ export class TimerService {
 
   getTimeOfEnd(): Observable<number>{
     return this.http.get<number>(this.timerUrl);
-    //return of(this.mockDate);
+    //return of(300);
   }
 
 

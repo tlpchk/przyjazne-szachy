@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {Router} from '@angular/router';
+import {PopupComponent} from './popup/popup.component';
 
 @Component({
   selector: 'app-user',
@@ -10,7 +12,7 @@ export class UserComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-  }
 
+  }
 
 }

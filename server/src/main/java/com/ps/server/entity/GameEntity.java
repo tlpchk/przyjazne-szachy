@@ -16,15 +16,12 @@ import java.sql.Timestamp;
 public class GameEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID", nullable = false)
-    private Long ID;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
 
-    @Column(name = "startTime", nullable = false)
+    @Column(name = "start_time", nullable = false)
     private Timestamp startTime;
-
-    @Column(name = "breakTime")
-    private Timestamp breakTime;
 
     @ManyToOne
     @JoinColumn(name = "first_player")
@@ -40,6 +37,12 @@ public class GameEntity {
 
     @Enumerated(EnumType.STRING)
     private Result result;
+
+    @Column(name="is_ranked")
+    private boolean isRanked;
+
+    @Column(name="is_finished")
+    private boolean isFinished;
 
     @Column(name = "move_time_limit")
     private Time moveTimeLimit;
