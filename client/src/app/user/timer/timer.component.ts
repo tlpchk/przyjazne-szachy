@@ -34,7 +34,6 @@ export class TimerComponent implements OnInit {
                 }
                 distance = distance - 1000;
             }, 1000);
-
         }) ;
 
     }
