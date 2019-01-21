@@ -3,31 +3,47 @@ package com.ps.server.AI;
 import com.ps.server.Logic.Board;
 import com.ps.server.Logic.Color;
 import com.ps.server.Logic.Move;
-import com.ps.server.Logic.Pieces.Piece;
 
-import java.util.ArrayList;
-import java.util.List;
-
+/**
+ * Extended method for finding moves to play by AI, on average two times more positions are checked in the same time
+ */
 public class AlphaBeta implements MoveStrategy {
     private final BoardEvaluator boardEvaluator;
     private int boardsEvaluated;
 
+    /**
+     * Setting up default evaluator
+     */
     public AlphaBeta() {
         boardEvaluator = new ExtendedBoardEvaluator();
         boardsEvaluated = 0;
     }
 
+    /**
+     * Setting up given evaluator
+     * @param boardEvaluator specific evaluator
+     */
     public AlphaBeta(BoardEvaluator boardEvaluator) {
         this.boardEvaluator = boardEvaluator;
         boardsEvaluated = 0;
     }
 
+    /**
+     * Getter for boardsEvaluated field
+     * @return number of boards that were evaluated
+     */
     public int getBoardsEvaluated() {
         return boardsEvaluated;
     }
 
-    //TODO: Fix game update, think about board copies
-    @SuppressWarnings("Duplicates") //temporary
+    /**
+     * Calling min or max function based on player color
+     * @param board Board instance
+     * @param depth how many moves ahead are to consider
+     * @param color player color
+     * @return best move found during reviewing game tree on given depth
+     */
+    @SuppressWarnings("Duplicates")
     @Override
     public Move execute(Board board, int depth, Color color) {
         boardsEvaluated = 0;
@@ -73,6 +89,15 @@ public class AlphaBeta implements MoveStrategy {
         return bestMove;
     }
 
+    /**
+     * Level to minimize value
+     * @param board Board instance
+     * @param depth current depth
+     * @param highest highest seen value, used to perform cut-off
+     * @param lowest lowest seen value, used to perform cut-off
+     * @param color player color
+     * @return minimal value found on given level
+     */
     @SuppressWarnings("Duplicates")
     public int min(final Board board, final int depth, int highest, int lowest, Color color) {
         board.updateGame(color);
@@ -103,6 +128,15 @@ public class AlphaBeta implements MoveStrategy {
         return currentLowest;
     }
 
+    /**
+     * Level of maximization
+     * @param board Board instance
+     * @param depth current depth
+     * @param highest highest seen value, used to perform cut-off
+     * @param lowest lowest seen value, used to perform cut-off
+     * @param color player color
+     * @return maximal value found on given level
+     */
     @SuppressWarnings("Duplicates")
     public int max(final Board board, final int depth, int highest, int lowest, Color color) {
         board.updateGame(color);

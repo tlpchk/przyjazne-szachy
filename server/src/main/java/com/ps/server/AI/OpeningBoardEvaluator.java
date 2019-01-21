@@ -5,8 +5,13 @@ import com.ps.server.Logic.Pieces.Piece;
 
 import java.util.*;
 
+/**
+ * Evaluator dedicated opening phase during match
+ */
 public class OpeningBoardEvaluator extends StandardBoardEvaluator {
+    /** Stores information about pieces development */
     private Map<Position, Boolean> minorPiecesFirstMoveMap;
+    /** Stores information about castle*/
     private Map<Color, Boolean> castledKing;
 
     /**
