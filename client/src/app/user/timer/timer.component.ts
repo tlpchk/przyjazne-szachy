@@ -13,33 +13,36 @@ export class TimerComponent implements OnInit {
 
     timerValue: string;
 
+    updator;
+
     ngOnInit() {
-        let timerComponent = this;
+        const timerComponent = this;
+        this.updator = setInterval(function () {
+            let minutes = Math.floor(timerComponent.timer.timeLeftInSeconds / 60);
+            let seconds = timerComponent.timer.timeLeftInSeconds % 60;
 
-        timerComponent.timer.getTimeOfEnd().subscribe(miliseconds => {
-            let now = new Date();
-            let timeOfEnd = new Date(miliseconds);
-            let distance = timeOfEnd.getTime() - now.getTime()
-             // seconds 2 miliseconds
+            timerComponent.saveValue(minutes, seconds);
 
-            setInterval(function () {
-                let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            if (timerComponent.timer.timeLeftInSeconds < 0) {
+                timerComponent.clearTimer();
+            }
+        }, 1000);
 
-                timerComponent.updateTimer(minutes, seconds);
-
-                if (distance < 0) {
-                    clearInterval(this);
-                    timerComponent.timerValue = 'Over';
-                }
-                distance = distance - 1000;
-            }, 1000);
-        }) ;
 
     }
 
-
-    updateTimer(minutes, seconds) {
+    saveValue(minutes, seconds) {
+        if (minutes < 10) {
+            minutes = "0" + minutes;
+        }
+        if (seconds < 10) {
+            seconds = "0" + seconds;
+        }
         this.timerValue = minutes + ":" + seconds;
+    }
+
+    clearTimer() {
+        this.timerValue = "00:00";
+        clearInterval(this.updator);
     }
 }

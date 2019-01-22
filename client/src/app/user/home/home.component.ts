@@ -32,11 +32,11 @@ export class HomeComponent implements OnInit {
         });
     }
 
-    //TODO RS: creating player creation should be another option
     createNewCompetitionGame() {
         this.gameService.createPlayer(firstPlayerColor, PlayerType.human).subscribe(playerId => {
             this.gameService.createNewGame(playerId, null).subscribe(gameId => {
                 this.boardService.playerId = playerId;
+                this.boardService.playerColor = firstPlayerColor;
                 this.boardService.gameId.next(gameId);
             });
         });
@@ -47,18 +47,19 @@ export class HomeComponent implements OnInit {
             this.gameService.createPlayer(secondPlayerColor, PlayerType.bot).subscribe(botId => {
                 this.gameService.createNewGame(playerId, botId).subscribe(gameId => {
                     this.boardService.playerId = playerId;
+                    this.boardService.playerColor = firstPlayerColor;
                     this.boardService.gameId.next(gameId);
                 });
             });
         });
     }
 
-    //TODO RS: creating player creation should be another option
     joinGame(gameId: number) {
         this.gameService.createPlayer(secondPlayerColor, PlayerType.human).subscribe(playerId => {
             this.gameService.joinGame(gameId, playerId).subscribe(wasSuccessful => {
                 if (wasSuccessful) {
                     this.boardService.playerId = playerId;
+                    this.boardService.playerColor = secondPlayerColor;
                     this.boardService.gameId.next(gameId);
                 } else {
                     console.log("Cannot join to game");

@@ -1,13 +1,16 @@
 <div id="board-wrapper">
     <div id="game-info">
-        <p *ngIf="!isGameFinished">
-            Teraz jest tura: <b *ngIf="isMyTurn"> moja</b> <b *ngIf="!isMyTurn">przeciwnika</b>
+        <p *ngIf="opponent!=''">
+            Grasz z: <b>{{opponent}}</b>
         </p>
-        <p *ngIf="isGameFinished">
+        <p *ngIf="result==null && opponent!=''">
+            Teraz jest tura: <b *ngIf="isMyTurn"> moja</b> <b *ngIf="!isMyTurn">{{opponent}}</b>
+        </p>
+        <p *ngIf="result!=null">
             Wynik gry: {{result}}
         </p>
     </div>
-
+    <app-timer></app-timer>
     <div *ngIf="board.length > 0" id="board">
         <div *ngFor="let cell of board"
              class="cell {{cell.cell_color}}Cell"
@@ -31,7 +34,7 @@
     </div>
 
     <app-popup (promotionEvent)="promotion($event)"></app-popup>
-    <!--<app-timer></app-timer>-->
+
 </div>
 
 

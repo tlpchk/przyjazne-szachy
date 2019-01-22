@@ -1,6 +1,6 @@
 package com.ps.server.controller;
 
-import com.ps.server.Logic.Color;
+
 import com.ps.server.dto.CreatePlayerDTO;
 import com.ps.server.entity.PlayerEntity;
 import com.ps.server.enums.PlayerType;
@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/players")
 public class PlayerController {
 
+    private final String BOT_USERNAME = "bot";
+
     @Autowired
     PlayerService playerService;
 
@@ -25,7 +27,7 @@ public class PlayerController {
         if (createPlayerDTO.getPlayerType() == PlayerType.HUMAN) {
             username = createPlayerDTO.getUsername();
         } else {
-            username = null;
+            username = BOT_USERNAME;
         }
         PlayerEntity playerEntity = playerService.createNewPlayer(username, createPlayerDTO.getColor(), createPlayerDTO.getPlayerType());
         return playerEntity.getId();

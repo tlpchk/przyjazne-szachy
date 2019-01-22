@@ -18,8 +18,6 @@ public class UserController {
     private UserService userService;
 
 
-//    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
-
     //TODO RS: instead of sending message should send authentication token, or using session
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public LoginResponseDTO loginUser(@RequestBody UserDTO userDTO) {

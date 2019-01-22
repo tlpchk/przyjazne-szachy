@@ -32,10 +32,11 @@ public class GameEntity {
     private PlayerEntity secondPlayer;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "game_type")
+    @Column(name = "game_type",columnDefinition = "enum")
     private GameType gameType;
 
     @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "enum")
     private Result result;
 
     @Column(name="is_ranked")
@@ -44,9 +45,4 @@ public class GameEntity {
     @Column(name="is_finished")
     private boolean isFinished;
 
-    @Column(name = "move_time_limit")
-    private Time moveTimeLimit;
-
-    @Column(name = "game_time_limit")
-    private Time gameTimeLimit;
 }

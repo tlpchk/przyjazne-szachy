@@ -4,13 +4,14 @@ import {BoardService} from '../../_services/board.service';
 import {ChangeDTO} from '../../_models/changeDTO';
 import {CoordinatesAdapterService} from '../../_services/coordinates-adapter.service';
 import {Piece, PieceType} from '../../_models/piece';
-import {MoveUpdateDTO} from '../../_models/moveUpdateDTO';
 import {PopupComponent} from '../popup/popup.component';
-import {GameState, Result} from '../../_models/gameInfoDTO';
+import {Result} from '../../_models/gameInfoDTO';
 import {Move} from '../../_models/move';
 import {combineAll} from 'rxjs/operators';
 import {error} from '@angular/compiler/src/util';
 import {TimeInterval} from 'rxjs';
+import {TimerService} from "../../_services/timer.service";
+import {Color} from "../../_models/color";
 
 @Component({
     selector: 'app-board',
@@ -26,14 +27,15 @@ export class BoardComponent implements OnInit {
     board: Cell[];
     gameId: number;
     lastUpdateId: number;
-    isGameFinished: boolean;
     result: Result;
     isPromotion: boolean;
+    opponent = '';
     isMyTurn: boolean;
-    updator: number;
+    updator;
 
     constructor(private boardService: BoardService,
-                private coordinateService: CoordinatesAdapterService) {
+                private coordinateService: CoordinatesAdapterService,
+                private timerService: TimerService) {
     }
 
     ngOnInit() {
@@ -41,10 +43,12 @@ export class BoardComponent implements OnInit {
         this.getGameId();
         this.move = new Move();
         this.selectedCell = null;
-                                /*if (this.board.length === 0) {
-                                    this.popup.routerLink = '/user/home';
-                                    this.popup.show('Stwórz nową grę');
-                                }*/
+        this.timerService.startTimer();
+
+        /*if (this.board.length === 0) {
+            this.popup.routerLink = '/user/home';
+            this.popup.show('Stwórz nową grę');
+        }*/
     }
 
     onSelect(cell: Cell) {
@@ -65,9 +69,7 @@ export class BoardComponent implements OnInit {
                     if (moveResponse.wasMoveValid) {
                         console.log('This move was valid');
                         this.updateBoard(moveResponse.listOfChanges);
-                        // TODO: Why bot's move is made here?
-                        this.boardService.makeBotMove(this.gameId).subscribe(a => {
-                        });
+
                     } else {
                         console.log('Invalid move');
                     }
@@ -82,21 +84,50 @@ export class BoardComponent implements OnInit {
     getGameId(): void {
         this.boardService.gameId$.subscribe(gameId => {
             this.gameId = gameId;
+            this.timerService.gameId = this.gameId;
+            this.timerService.playerId = this.boardService.playerId;
             this.getBoard();
-        },error => {console.log('ffuuuuuuuuuuuuucK');});
+            this.getGameInfo();
+            const boardComponent = this;
+            this.updator = setInterval(function () {
+                if (boardComponent.result == null) {
+                    boardComponent.getGameInfo();
+                } else {
+                    boardComponent.endGameActions(boardComponent);
+                }
+            }, 500);
+        });
+    }
+
+    private endGameActions(boardComponent: BoardComponent) {
+        let resultText;
+        switch (boardComponent.result) {
+            case Result.first_player_won:
+                resultText = "Wygrał pierwszy gracz";
+                break;
+            case Result.second_player_won:
+                resultText = "Wygrał drugi gracz";
+                break;
+            case Result.draw:
+                resultText = "Remis";
+                break;
+        }
+        boardComponent.popup.showMessage(resultText);
+        boardComponent.resetUpdator();
     }
 
     getBoard(): void {
-        const boardComponent = this;
         this.boardService.getPieces(this.gameId)
             .subscribe(pieces => {
                 this.board = this.boardService.getBoard(pieces);
+                if(this.boardService.playerColor==Color.black){
+                    this.board.reverse();
+                }
                 this.lastUpdateId = 0;
                 this.isMyTurn = false;
-                this.isGameFinished = false;
                 this.result = null;
                 this.isPromotion = false;
-                this.updator = setInterval(function() {boardComponent.getGameInfo(); }, 500);
+                this.opponent = '';
             });
     }
 
@@ -104,11 +135,8 @@ export class BoardComponent implements OnInit {
         this.boardService.promote(this.gameId, pieceType).subscribe(moveResponse => {
             const changes: ChangeDTO[] = moveResponse.listOfChanges;
             this.updateBoard(changes);
-            this.boardService.makeBotMove(this.gameId).subscribe(a => {
-                console.log('BOT MOVES: ' + a);
-            });
             this.popup.hide();
-         });
+        });
     }
 
     getGameInfo(): void {
@@ -117,7 +145,12 @@ export class BoardComponent implements OnInit {
             this.result = gameInfo.gameResult;
             this.isMyTurn = gameInfo.myTurn;
             this.isPromotion = gameInfo.promotion;
-            this.isGameFinished = (gameInfo.gameState !== GameState.game_running);
+            this.opponent = gameInfo.opponent;
+            // if (this.isMyTurn) {
+            //     this.timerService.startTimer();
+            // } else {
+            //     this.timerService.pauseTimer();
+            // }
             if (gameInfo.lastUpdateId > this.lastUpdateId) {
                 while (gameInfo.lastUpdateId > this.lastUpdateId) {
                     this.lastUpdateId = this.lastUpdateId + 1;
@@ -129,16 +162,19 @@ export class BoardComponent implements OnInit {
             if (this.isPromotion && this.isMyTurn) {
                 this.popup.showPromotion();
             }
-        }, error => {this.popup.routerLink = 'user/home'; this.popup.showMessage('Stwórz grę'); this.resetUpdator(); } );
+        }, error => {
+            this.popup.showMessage('Stwórz grę');
+            this.resetUpdator();
+        });
     }
 
 
-    private updateBoard(changes: ChangeDTO[] ) {
+    private updateBoard(changes: ChangeDTO[]) {
         for (const c in changes) {
             let location = changes[c].location;
             const pieceColor = changes[c].color;
             const type = changes[c].type;
-            const cellId = this.coordinateService.backendToFrontend(location.row, location.col);
+            const cellId = this.coordinateService.backendToFrontend(location.row, location.col,this.boardService.playerColor);
             const cellIndex = this.board.map(function (item) {
                 return item.id;
             })
@@ -153,7 +189,7 @@ export class BoardComponent implements OnInit {
         }
     }
 
-    resetUpdator(){
+    resetUpdator() {
         clearInterval(this.updator);
     }
 }

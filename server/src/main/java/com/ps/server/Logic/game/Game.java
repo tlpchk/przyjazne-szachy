@@ -14,13 +14,19 @@ import com.ps.server.exception.NotValidMoveException;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Time;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 @Getter
 @Setter
 public class Game {
+
+    private final Long GAME_TIME_LIMIT_IN_MINUTES = 30L;
 
     private Player firstPlayer;
 
@@ -42,6 +48,14 @@ public class Game {
 
     private Move lastBotMove;
 
+    private Duration firstPlayerTimeLeft = Duration.ofMinutes(GAME_TIME_LIMIT_IN_MINUTES);
+
+    private LocalDateTime firstPlayerTurnStartedDate;
+
+    private Duration secondPlayerTimeLeft = Duration.ofMinutes(GAME_TIME_LIMIT_IN_MINUTES);
+
+    private LocalDateTime secondPlayerTurnStartedDate;
+
 
     /**
      * Makes given Move on board.
@@ -55,12 +69,14 @@ public class Game {
      */
     public List<Change> makeMove(Position origin, Position destination, Player player) throws NotPlayerTurnException, NotValidMoveException, GameHasFinishedException {
         if (isPlayerTurn(player)) {
+            LocalDateTime moveDate = LocalDateTime.now();
             updateGame(player);
             if (gameState == GameState.GAME_RUNNING) {
                 Move move = board.validatePlayersMove(origin, destination, player.getColor());
                 if (isMoveValid(move)) {
                     if (move.type != Move.MoveType.PROMOTION) {
                         board.makeMove(move);
+                        calculatePlayersTime(moveDate);
                         flipTurn();
                         updateAfterMove(player);
                         isPromotion = false;
@@ -79,6 +95,28 @@ public class Game {
             }
         } else {
             throw new NotPlayerTurnException();
+        }
+    }
+
+    private void calculatePlayersTime(LocalDateTime localDateTime) {
+        if (gameStatus == GameStatus.FIRST_PLAYER_TURN) {
+            calculateFirstPlayerTime(localDateTime);
+            setFirstPlayerTurnStartedDate(LocalDateTime.now());
+        } else if (gameStatus == GameStatus.SECOND_PLAYER_TURN) {
+            calculateSecondPlayerTime(localDateTime);
+            setSecondPlayerTurnStartedDate(LocalDateTime.now());
+        }
+    }
+
+    private void calculateSecondPlayerTime(LocalDateTime localDateTime) {
+        if (getSecondPlayerTurnStartedDate() != null) {
+            setSecondPlayerTimeLeft(getSecondPlayerTimeLeft().minus(Duration.between(getSecondPlayerTurnStartedDate(), localDateTime)));
+        }
+    }
+
+    private void calculateFirstPlayerTime(LocalDateTime localDateTime) {
+        if (getFirstPlayerTurnStartedDate() != null) {
+            setFirstPlayerTimeLeft(getFirstPlayerTimeLeft().minus(Duration.between(getFirstPlayerTurnStartedDate(), localDateTime)));
         }
     }
 
@@ -114,12 +152,15 @@ public class Game {
         }
     }
 
-    public List<Change> makeMoveBot() throws NotPlayerTurnException, GameHasFinishedException {
+    public List<Change> makeMoveBot() throws GameHasFinishedException {
         if (isPlayerTurn(secondPlayer) && secondPlayer instanceof BotPlayer) {
             updateGame(secondPlayer);
             if (gameState == GameState.GAME_RUNNING) {
                 BotController controller = getBotController();
                 Move botMove = controller.execute(board, secondPlayer.getColor());
+                LocalDateTime moveDate = LocalDateTime.now();
+                setSecondPlayerTimeLeft(getSecondPlayerTimeLeft().minus(Duration.between(getSecondPlayerTurnStartedDate(), moveDate)));
+                setFirstPlayerTurnStartedDate(LocalDateTime.now());
                 board.makeMove(botMove);
                 lastBotMove = botMove;
                 flipTurn();
@@ -130,7 +171,7 @@ public class Game {
             }
 
         }
-        throw new NotPlayerTurnException();
+        return Collections.emptyList();
     }
 
     private BotController getBotController() {
@@ -152,8 +193,10 @@ public class Game {
     private void flipTurn() {
         if (gameStatus == GameStatus.FIRST_PLAYER_TURN) {
             gameStatus = GameStatus.SECOND_PLAYER_TURN;
+            setSecondPlayerTurnStartedDate(LocalDateTime.now());
         } else if (gameStatus == GameStatus.SECOND_PLAYER_TURN) {
             gameStatus = GameStatus.FIRST_PLAYER_TURN;
+            setFirstPlayerTurnStartedDate(LocalDateTime.now());
         }
     }
 
@@ -240,4 +283,24 @@ public class Game {
         return Collections.emptyList();
     }
 
+
+    public void checkForFinishedTimer() {
+        calculatePlayersTime(LocalDateTime.now());
+        if (getFirstPlayerTimeLeft().isNegative() || getSecondPlayerTimeLeft().isZero()) {
+            setResult(Result.SECOND_PLAYER_WON);
+            setGameState(GameState.FINISHED_BY_TIMER);
+        } else if (getSecondPlayerTimeLeft().isNegative() || getSecondPlayerTimeLeft().isZero()) {
+            setResult(Result.FIRST_PLAYER_WON);
+            setGameState(GameState.FINISHED_BY_TIMER);
+        }
+    }
+
+
+    public Long getLeftTimeInSeconds(Player player) {
+        if (player.getColor() == Color.WHITE) {
+            return firstPlayerTimeLeft.getSeconds();
+        } else {
+            return secondPlayerTimeLeft.getSeconds();
+        }
+    }
 }

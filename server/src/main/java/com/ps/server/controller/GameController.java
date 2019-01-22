@@ -8,9 +8,9 @@ import com.ps.server.service.GameService;
 import com.ps.server.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RestController
@@ -79,7 +79,9 @@ public class GameController {
     @RequestMapping(value = "/{gameId}/move", method = RequestMethod.POST)
     public MoveResponseDTO makeMove(@PathVariable Long gameId, @RequestBody CreateMoveDTO createMoveDTO) throws GameNotExistException, InvalidRequiredArgumentException, NotPlayerTurnException, GameHasFinishedException {
         PlayerEntity playerEntity = playerService.getPlayerEntity(createMoveDTO.getPlayerId());
-        return gameService.makeMove(gameId, playerEntity, createMoveDTO.getOrigin(), createMoveDTO.getDestination());
+        MoveResponseDTO move = gameService.makeMove(gameId, playerEntity, createMoveDTO.getOrigin(), createMoveDTO.getDestination());
+        gameService.runBotIfRelevant(gameId);
+        return move;
     }
 
     @RequestMapping(value = "/{gameId}/promote", method = RequestMethod.POST)
@@ -105,31 +107,21 @@ public class GameController {
         return gameService.getPossibleMoves(gameId, position);
     }
 
-    //TODO RS: remove it, funcionality should be implemented in getGameInfo
-    @RequestMapping(value = "/{gameId}/update/last", method = RequestMethod.GET)
-    public MoveUpdateDTO getLastUpdate(@PathVariable Long gameId) {
-        return gameService.getLastUpdate(gameId);
-    }
-
     @RequestMapping(value = "/{gameId}/update/{updateId}", method = RequestMethod.GET)
     public MoveUpdateDTO getUpdate(@PathVariable Long gameId, @PathVariable Integer updateId) {
         return gameService.getUpdate(gameId, updateId);
     }
 
-    @RequestMapping(value = "/{gameId}/bot", method = RequestMethod.GET)
-    public MoveResponseDTO moveBot(@PathVariable Long gameId) throws GameNotExistException, GameHasFinishedException {
-        try {
-            return gameService.makeMoveBot(gameId);
-        } catch (NotPlayerTurnException e) {
-            return new MoveResponseDTO();
-        }
-    }
-
-    //TODO RS: add timer here maybe
     @RequestMapping(value = "/{gameId}", method = RequestMethod.POST)
     public GameInfoDTO getGameInfo(@PathVariable Long gameId, @RequestBody Long playerId) throws GameNotExistException, InvalidRequiredArgumentException {
         PlayerEntity playerEntity = playerService.getPlayerEntity(playerId);
         return gameService.getGameInfo(gameId, playerEntity);
+    }
+
+    @RequestMapping(value = "/{gameId}/timer", method = RequestMethod.POST)
+    public Long getLeftTimeInSeconds(@PathVariable Long gameId, @RequestBody Long playerId) throws GameNotExistException, InvalidRequiredArgumentException {
+        PlayerEntity playerEntity = playerService.getPlayerEntity(playerId);
+        return gameService.getTimer(gameId,playerEntity);
     }
 
 }
