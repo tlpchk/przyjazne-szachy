@@ -10,6 +10,7 @@ import {GameState, Result} from '../../_models/gameInfoDTO';
 import {Move} from '../../_models/move';
 import {combineAll} from 'rxjs/operators';
 import {error} from '@angular/compiler/src/util';
+import {TimeInterval} from 'rxjs';
 
 @Component({
     selector: 'app-board',
@@ -29,7 +30,7 @@ export class BoardComponent implements OnInit {
     result: Result;
     isPromotion: boolean;
     isMyTurn: boolean;
-    updator;
+    updator: number;
 
     constructor(private boardService: BoardService,
                 private coordinateService: CoordinatesAdapterService) {
@@ -40,9 +41,6 @@ export class BoardComponent implements OnInit {
         this.getGameId();
         this.move = new Move();
         this.selectedCell = null;
-        const boardComponent = this;
-        this.getGameInfo();
-        this.updator = setInterval(function() { boardComponent.getGameInfo(); }, 500);
                                 /*if (this.board.length === 0) {
                                     this.popup.routerLink = '/user/home';
                                     this.popup.show('Stwórz nową grę');
@@ -85,10 +83,11 @@ export class BoardComponent implements OnInit {
         this.boardService.gameId$.subscribe(gameId => {
             this.gameId = gameId;
             this.getBoard();
-        });
+        },error => {console.log('ffuuuuuuuuuuuuucK');});
     }
 
     getBoard(): void {
+        const boardComponent = this;
         this.boardService.getPieces(this.gameId)
             .subscribe(pieces => {
                 this.board = this.boardService.getBoard(pieces);
@@ -97,6 +96,7 @@ export class BoardComponent implements OnInit {
                 this.isGameFinished = false;
                 this.result = null;
                 this.isPromotion = false;
+                this.updator = setInterval(function() {boardComponent.getGameInfo(); }, 500);
             });
     }
 
@@ -129,7 +129,7 @@ export class BoardComponent implements OnInit {
             if (this.isPromotion && this.isMyTurn) {
                 this.popup.showPromotion();
             }
-        }, error => {this.popup.showMessage('Stwórz grę'); this.resetUpdator(); } );
+        }, error => {this.popup.routerLink = 'user/home'; this.popup.showMessage('Stwórz grę'); this.resetUpdator(); } );
     }
 
 

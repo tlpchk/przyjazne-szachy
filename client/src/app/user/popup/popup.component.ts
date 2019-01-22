@@ -55,6 +55,7 @@ export class PopupComponent implements OnInit {
     }
     if (this.routerLink != null) {
       this.router.navigateByUrl(this.routerLink);
+      this.routerLink = null;
     }
   }
 

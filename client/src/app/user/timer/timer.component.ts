@@ -4,7 +4,7 @@ import {TimerService} from '../../_services/timer.service';
 @Component({
     selector: 'app-timer',
     templateUrl: './timer.component.html',
-    styleUrls: ['']
+    styleUrls: ['./timer.component.scss']
 })
 export class TimerComponent implements OnInit {
 
@@ -14,11 +14,11 @@ export class TimerComponent implements OnInit {
     timerValue: string;
 
     ngOnInit() {
-        const timerComponent = this;
+        let timerComponent = this;
 
         timerComponent.timer.getTimeOfEnd().subscribe(miliseconds => {
-            const now = new Date();
-            const timeOfEnd = new Date(miliseconds);
+            let now = new Date();
+            let timeOfEnd = new Date(miliseconds);
             let distance = timeOfEnd.getTime() - now.getTime()
              // seconds 2 miliseconds
 

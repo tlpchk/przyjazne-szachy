@@ -12,7 +12,7 @@ const httpOptions = {
 })
 export class TimerService {
 
-  private timerUrl = 'http://localhost:8080/timer';
+  private timerUrl = 'api/timer';
 
   private mockDate = new Date("Dec 12, 2018 22:12:25");
 

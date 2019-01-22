@@ -28,7 +28,7 @@ export class BoardService {
     gameId = new ReplaySubject<number>();
     gameId$ = this.gameId.asObservable();
 
-    private gamesUrl = 'http://localhost:8080/games';
+    private gamesUrl = 'api/games';
     private moveSubUrl = '/move';
     private boardSubUrl = '/board';
     private updateSubUrl = '/update';

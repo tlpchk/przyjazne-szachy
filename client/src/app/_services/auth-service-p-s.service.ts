@@ -1,6 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http'
 import {Observable, of} from "rxjs";
+import {AuthService, GoogleLoginProvider} from 'angularx-social-login';
+import {SocialUser} from 'angularx-social-login';
+
 
 const httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -8,8 +11,15 @@ const httpOptions = {
 
 
 interface myData {
-    success: boolean,
-    message: string
+    success: boolean;
+    message: string;
+}
+
+interface UserDetails {
+    username: string;
+    games: number;
+    wonGames: number;
+    lostGames: number;
 }
 
 class User {
@@ -18,23 +28,22 @@ class User {
 }
 
 @Injectable()
-export class AuthService {
+export class AuthServicePS {
     public username = "";
     public password = "";
-    private host = 'http://localhost:8080';
-    private loginUrl = this.host + '/login';
-    private registerUrl = this.host + '/register';
+    private loginUrl = 'api/login';
+    private registerUrl = 'api/register';
     private loggedInStatus = false;
 
     constructor(private http: HttpClient) {
     }
 
     setLoggedIn(value: boolean) {
-        this.loggedInStatus = value
+        this.loggedInStatus = value;
     }
 
     get isLoggedIn() {
-        return this.loggedInStatus
+        return this.loggedInStatus;
     }
 
     logInUser(username, password): Observable<myData> {
@@ -57,5 +66,14 @@ export class AuthService {
         else {
             return this.http.post<myData>(this.registerUrl, newUser, httpOptions);
         }
+    }
+    getUserData(): Observable<UserDetails> {
+        // return this.http.post<User>(this.profileUrl, httpOptions);
+        return of(<UserDetails>{
+            username: this.username,
+            games: 10,
+            wonGames: 10,
+            lostGames: 0,
+        });
     }
 }
