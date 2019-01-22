@@ -1,12 +1,12 @@
-DROP DATABASE `chess_game`;
-CREATE DATABASE IF NOT EXISTS `chess_game`;
-USE `chess_game`;
+DROP DATABASE `chess_game_app`;
+CREATE DATABASE IF NOT EXISTS `chess_game_app`;
+USE `chess_game_app`;
 
 CREATE TABLE IF NOT EXISTS `game` (
   `id`            bigint(11)         AUTO_INCREMENT,
   `start_time`    timestamp NOT NULL DEFAULT current_timestamp(),
-  `first_player`  int(11),
-  `second_player` int(11),
+  `first_player`  bigint(11),
+  `second_player` bigint(11),
   `game_type`     enum ('COMPETITION_GAME', 'BOT_GAME') COLLATE utf16_polish_ci,
   `result`        enum ('FIRST_PLAYER_WON', 'SECOND_PLAYER_WON', 'DRAW') COLLATE utf16_polish_ci,
   `is_ranked`     bool               DEFAULT FALSE,
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 
 
 CREATE TABLE IF NOT EXISTS `player` (
-  `id`          int(11)                                         NOT NULL AUTO_INCREMENT,
+  `id`          bigint(11)                                         NOT NULL AUTO_INCREMENT,
   `color`       enum ('WHITE', 'BLACK') COLLATE utf16_polish_ci NOT NULL,
   `player_type` enum ('HUMAN', 'BOT') COLLATE utf16_polish_ci   NOT NULL,
   `user_id`     int(11),
@@ -59,11 +59,11 @@ CREATE TABLE IF NOT EXISTS `player` (
   COLLATE = utf16_polish_ci;
 
 CREATE TABLE IF NOT EXISTS `matches` (
-  `id`            int(11)    NOT NULL AUTO_INCREMENT,
-  `game_id`       int(11)    NOT NULL,
+  `id`            bigint(11)    NOT NULL AUTO_INCREMENT,
+  `game_id`       bigint(11)    NOT NULL,
   `player_id`     int(11),
   `opponent_id`   int(11),
-  `player_points` tinyint(4) NOT NULL,
+  `player_points` smallint(4) NOT NULL,
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
@@ -93,9 +93,6 @@ CREATE VIEW `ranking_view` AS
                         WHERE user.nick = "bot"
                            OR user.nick = "noname")
   ORDER BY ranking.score ASC;
-
-
-USE `chess_game`;
 
 DELIMITER //
 CREATE TRIGGER `TR_user_after_insert`

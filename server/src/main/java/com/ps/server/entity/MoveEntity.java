@@ -16,7 +16,7 @@ public class MoveEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private BigInteger id;
+    private Long id;
 
     @Column(name = "created", nullable = false)
     private Timestamp creationDate;

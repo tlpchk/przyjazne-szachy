@@ -21,11 +21,11 @@ public class PlayerEntity {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "color")
+    @Column(name = "color", columnDefinition = "enum")
     private Color color;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "player_type", nullable = false)
+    @Column(name = "player_type", columnDefinition = "enum", nullable = false)
     private PlayerType playerType;
 
     @ManyToOne
