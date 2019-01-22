@@ -32,7 +32,6 @@ export class HomeComponent implements OnInit {
         });
     }
 
-    //TODO RS: creating player creation should be another option
     createNewCompetitionGame() {
         this.userService.createPlayer(firstPlayerColor, PlayerType.human).subscribe(playerId => {
             this.userService.createNewGame(playerId, null).subscribe(gameId => {
@@ -53,7 +52,6 @@ export class HomeComponent implements OnInit {
         });
     }
 
-    //TODO RS: creating player creation should be another option
     joinGame(gameId: number) {
         this.userService.createPlayer(secondPlayerColor, PlayerType.human).subscribe(playerId => {
             this.userService.joinGame(gameId, playerId).subscribe(wasSuccessful => {

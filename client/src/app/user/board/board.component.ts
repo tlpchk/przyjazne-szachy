@@ -4,12 +4,10 @@ import {BoardService} from '../../_services/board.service';
 import {ChangeDTO} from '../../_models/changeDTO';
 import {CoordinatesAdapterService} from '../../_services/coordinates-adapter.service';
 import {Piece, PieceType} from '../../_models/piece';
-import {MoveUpdateDTO} from '../../_models/moveUpdateDTO';
 import {PopupComponent} from '../popup/popup.component';
-import {GameState, Result} from '../../_models/gameInfoDTO';
+import {Result} from '../../_models/gameInfoDTO';
 import {Move} from '../../_models/move';
-import {combineAll} from 'rxjs/operators';
-import {error} from '@angular/compiler/src/util';
+import {TimerService} from "../../_services/timer.service";
 
 @Component({
     selector: 'app-board',
@@ -32,7 +30,8 @@ export class BoardComponent implements OnInit {
     updator;
 
     constructor(private boardService: BoardService,
-                private coordinateService: CoordinatesAdapterService) {
+                private coordinateService: CoordinatesAdapterService,
+                private timerService: TimerService) {
     }
 
     ngOnInit() {
@@ -40,13 +39,12 @@ export class BoardComponent implements OnInit {
         this.getGameId();
         this.move = new Move();
         this.selectedCell = null;
-        const boardComponent = this;
-        this.getGameInfo();
-        this.updator = setInterval(function() { boardComponent.getGameInfo(); }, 500);
-                                /*if (this.board.length === 0) {
-                                    this.popup.routerLink = '/user/home';
-                                    this.popup.show('Stwórz nową grę');
-                                }*/
+        this.timerService.startTimer();
+
+        /*if (this.board.length === 0) {
+            this.popup.routerLink = '/user/home';
+            this.popup.show('Stwórz nową grę');
+        }*/
     }
 
     onSelect(cell: Cell) {
@@ -82,8 +80,36 @@ export class BoardComponent implements OnInit {
     getGameId(): void {
         this.boardService.gameId$.subscribe(gameId => {
             this.gameId = gameId;
+            this.timerService.gameId = this.gameId;
+            this.timerService.playerId = this.boardService.playerId;
             this.getBoard();
+            this.getGameInfo();
+            const boardComponent = this;
+            this.updator = setInterval(function () {
+                if (boardComponent.result == null) {
+                    boardComponent.getGameInfo();
+                } else {
+                    boardComponent.endGameActions(boardComponent);
+                }
+            }, 500);
         });
+    }
+
+    private endGameActions(boardComponent: BoardComponent) {
+        let resultText;
+        switch (boardComponent.result) {
+            case Result.first_player_won:
+                resultText = "Wygrał pierwszy gracz";
+                break;
+            case Result.second_player_won:
+                resultText = "Wygrał drugi gracz";
+                break;
+            case Result.draw:
+                resultText = "Remis";
+                break;
+        }
+        boardComponent.popup.showMessage(resultText);
+        boardComponent.resetUpdator();
     }
 
     getBoard(): void {
@@ -103,7 +129,7 @@ export class BoardComponent implements OnInit {
             const changes: ChangeDTO[] = moveResponse.listOfChanges;
             this.updateBoard(changes);
             this.popup.hide();
-         });
+        });
     }
 
     getGameInfo(): void {
@@ -112,6 +138,12 @@ export class BoardComponent implements OnInit {
             this.result = gameInfo.gameResult;
             this.isMyTurn = gameInfo.myTurn;
             this.isPromotion = gameInfo.promotion;
+            this.opponent = gameInfo.opponent;
+            // if (this.isMyTurn) {
+            //     this.timerService.startTimer();
+            // } else {
+            //     this.timerService.pauseTimer();
+            // }
             if (gameInfo.lastUpdateId > this.lastUpdateId) {
                 while (gameInfo.lastUpdateId > this.lastUpdateId) {
                     this.lastUpdateId = this.lastUpdateId + 1;
@@ -123,11 +155,14 @@ export class BoardComponent implements OnInit {
             if (this.isPromotion && this.isMyTurn) {
                 this.popup.showPromotion();
             }
-        }, error => {this.popup.showMessage('Stwórz grę'); this.resetUpdator(); } );
+        }, error => {
+            this.popup.showMessage('Stwórz grę');
+            this.resetUpdator();
+        });
     }
 
 
-    private updateBoard(changes: ChangeDTO[] ) {
+    private updateBoard(changes: ChangeDTO[]) {
         for (const c in changes) {
             let location = changes[c].location;
             const pieceColor = changes[c].color;
@@ -147,7 +182,7 @@ export class BoardComponent implements OnInit {
         }
     }
 
-    resetUpdator(){
+    resetUpdator() {
         clearInterval(this.updator);
     }
 }

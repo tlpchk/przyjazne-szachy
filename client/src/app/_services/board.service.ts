@@ -32,10 +32,8 @@ export class BoardService {
     private moveSubUrl = '/move';
     private boardSubUrl = '/board';
     private updateSubUrl = '/update';
-    private lastUpdateSubUrl = '/update/last';
     private possibleMovesSubUrl = '/possibleMoves';
     private promotionSubUrl = '/promote';
-    private botSubUrl = '/bot';
 
     constructor(private http: HttpClient,
                 private messageService: MessageService,
@@ -84,11 +82,6 @@ export class BoardService {
         return this.http.post<MoveResponseDTO>(url, createMoveDTO, httpOptions);
     }
 
-    makeBotMove(gameId: number): Observable<MoveResponseDTO> {
-        let url = this.gamesUrl + "/" + gameId + this.botSubUrl;
-        return this.http.get<MoveResponseDTO>(url);
-    }
-
     /**
      * Handle Http operation that failed.
      * Let the app continue.
@@ -122,10 +115,6 @@ export class BoardService {
             })
         );
     }*/
-    getLastUpdate(gameId: number): Observable<MoveUpdateDTO> {
-        let url = this.gamesUrl + "/" + gameId + this.lastUpdateSubUrl;
-        return this.http.get<MoveUpdateDTO>(url);
-    }
 
     getUpdate(gameId: number, updateId: number): Observable<MoveUpdateDTO> {
         let url = this.gamesUrl + "/" + gameId + this.updateSubUrl + "/" + updateId;

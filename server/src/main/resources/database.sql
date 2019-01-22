@@ -139,3 +139,12 @@ CREATE TRIGGER `TR_game_after_update`
 
   END//
 DELIMITER ;
+
+# password: noname
+INSERT INTO `user`(`nick`, `password`)
+VALUES ("noname","$2a$10$rEPSup5zQg2RdJ32hn6Ud.bKTghrKrbYZ4zmBRB1sY8oiXiYsECFy");
+
+
+# password: bot
+INSERT INTO `user`(`nick`, `password`)
+VALUES ("bot","$2a$10$0Y0mJx7gIx6/2Cyc4TkUne6T8.S1cHD3BcGMICsecvr2rqA6OMjv2");

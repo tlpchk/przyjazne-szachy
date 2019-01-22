@@ -26,6 +26,8 @@ import java.util.List;
 @Setter
 public class Game {
 
+    private final Long GAME_TIME_LIMIT_IN_MINUTES = 30L;
+
     private Player firstPlayer;
 
     private Player secondPlayer;
@@ -46,11 +48,11 @@ public class Game {
 
     private Move lastBotMove;
 
-    private Duration firstPlayerTimeLeft = Duration.ofMinutes(1);
+    private Duration firstPlayerTimeLeft = Duration.ofMinutes(GAME_TIME_LIMIT_IN_MINUTES);
 
     private LocalDateTime firstPlayerTurnStartedDate;
 
-    private Duration secondPlayerTimeLeft = Duration.ofMinutes(1);
+    private Duration secondPlayerTimeLeft = Duration.ofMinutes(GAME_TIME_LIMIT_IN_MINUTES);
 
     private LocalDateTime secondPlayerTurnStartedDate;
 
@@ -107,11 +109,15 @@ public class Game {
     }
 
     private void calculateSecondPlayerTime(LocalDateTime localDateTime) {
-        setSecondPlayerTimeLeft(getSecondPlayerTimeLeft().minus(Duration.between(getSecondPlayerTurnStartedDate(), localDateTime)));
+        if (getSecondPlayerTurnStartedDate() != null) {
+            setSecondPlayerTimeLeft(getSecondPlayerTimeLeft().minus(Duration.between(getSecondPlayerTurnStartedDate(), localDateTime)));
+        }
     }
 
     private void calculateFirstPlayerTime(LocalDateTime localDateTime) {
-        setFirstPlayerTimeLeft(getFirstPlayerTimeLeft().minus(Duration.between(getFirstPlayerTurnStartedDate(), localDateTime)));
+        if (getFirstPlayerTurnStartedDate() != null) {
+            setFirstPlayerTimeLeft(getFirstPlayerTimeLeft().minus(Duration.between(getFirstPlayerTurnStartedDate(), localDateTime)));
+        }
     }
 
     public List<Change> promote(Player player, Piece.PieceType promotionType) {
@@ -279,14 +285,22 @@ public class Game {
 
 
     public void checkForFinishedTimer() {
-        calculateFirstPlayerTime(LocalDateTime.now());
-        System.out.println("LEFT: " + getFirstPlayerTimeLeft().getSeconds());
+        calculatePlayersTime(LocalDateTime.now());
         if (getFirstPlayerTimeLeft().isNegative() || getSecondPlayerTimeLeft().isZero()) {
             setResult(Result.SECOND_PLAYER_WON);
             setGameState(GameState.FINISHED_BY_TIMER);
         } else if (getSecondPlayerTimeLeft().isNegative() || getSecondPlayerTimeLeft().isZero()) {
             setResult(Result.FIRST_PLAYER_WON);
             setGameState(GameState.FINISHED_BY_TIMER);
+        }
+    }
+
+
+    public Long getLeftTimeInSeconds(Player player) {
+        if (player.getColor() == Color.WHITE) {
+            return firstPlayerTimeLeft.getSeconds();
+        } else {
+            return secondPlayerTimeLeft.getSeconds();
         }
     }
 }

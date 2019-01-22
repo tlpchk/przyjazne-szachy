@@ -13,12 +13,13 @@ public class BotRunner implements Runnable {
 
     private static final Logger logger = LoggerFactory.getLogger(BotRunner.class);
 
-    @Autowired
+
     private GameService gameService;
 
     private Long gameId;
 
-    public BotRunner(Long gameId) {
+    public BotRunner(GameService gameService, Long gameId) {
+        this.gameService = gameService;
         this.gameId = gameId;
     }
 

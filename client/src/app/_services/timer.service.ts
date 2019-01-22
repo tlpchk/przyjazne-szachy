@@ -1,27 +1,57 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Observable, of} from "rxjs";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {CreateGameDTO} from "../_models/createGameDTO";
 
 const httpOptions = {
-  headers: new HttpHeaders({'Content-Type': 'application/json'})
+    headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class TimerService {
 
-  private timerUrl = 'http://localhost:8080/timer';
+    private gamesUrl = 'http://localhost:8080/games';
 
-  private mockDate = new Date("Dec 12, 2018 22:12:25");
+    private timerSubUrl = '/timer';
 
-  constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) {
+    }
 
-  getTimeOfEnd(): Observable<number>{
-    return this.http.get<number>(this.timerUrl);
-    //return of(300);
-  }
+    timeLeftInSeconds: number = 30 * 60;
+    playerId: number;
+    gameId: number;
+    updator;
+
+
+    public startTimer() {
+        const timerService = this;
+        this.updator = setInterval(function () {
+            timerService.synchronize();
+            if (timerService.timeLeftInSeconds < 0) {
+                timerService.clearTimer();
+            }
+        }, 1000);
+    }
+
+    synchronize() {
+        if (this.playerId != null && this.gameId != null) {
+            this.getLeftTimeFor(this.playerId, this.gameId).subscribe(seconds => {
+                this.timeLeftInSeconds = seconds;
+            });
+        }
+    }
+
+    clearTimer() {
+        this.timeLeftInSeconds = 0;
+        clearInterval(this.updator);
+    }
+
+    getLeftTimeFor(playerId: number, gameId: number): Observable<number> {
+        let url = this.gamesUrl + '/' + gameId + this.timerSubUrl;
+        return this.http.post<number>(url, playerId, httpOptions);
+    }
 
 
 }
