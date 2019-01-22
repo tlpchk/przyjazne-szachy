@@ -65,7 +65,7 @@ public class Pawn extends Piece {
         move = createLegalCapture(newRow, position.col - 1);
         if(move != null) {legalCaptures.add(move);}
         if(enPassant != null) {
-            legalMoves.add(new Move(this.type, color, position, new Position( newRow, enPassant.col), EN_PASSANT));
+            legalCaptures.add(new Move(this.type, color, position, new Position( newRow, enPassant.col), EN_PASSANT));
         }
         return legalCaptures;
     }

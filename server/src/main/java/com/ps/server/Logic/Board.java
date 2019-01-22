@@ -234,7 +234,17 @@ public class Board {
         return piece.getMoveTo(dest);
     }
 
-    private boolean checkIfKingInCapture(Color color) {
+    /**
+     * Getter for set of pieces in given color
+     * @param color
+     * @return Set of pieces
+     */
+    public Set getSet(Color color)
+    {
+        return (color == WHITE) ? whiteSet : blackSet;
+    }
+
+    public boolean checkIfKingInCapture(Color color) {
         Set thisSet = (color == WHITE) ? whiteSet : blackSet;
         Set oppositeSet = (color == WHITE) ? blackSet : whiteSet;
         return oppositeSet.checkIfCanCaptureKingOn(thisSet.getKingsPosition());
