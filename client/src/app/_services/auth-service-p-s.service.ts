@@ -31,8 +31,8 @@ class User {
 export class AuthServicePS {
     public username = "";
     public password = "";
-    private loginUrl = 'api/login';
-    private registerUrl = 'api/register';
+    private loginUrl = 'http://localhost:8080/login';
+    private registerUrl = 'http://localhost:8080/register';
     private loggedInStatus = false;
 
     constructor(private http: HttpClient) {

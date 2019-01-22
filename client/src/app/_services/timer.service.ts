@@ -12,7 +12,9 @@ const httpOptions = {
 })
 export class TimerService {
 
-  private timerUrl = 'api/timer';
+    private gamesUrl = 'http://localhost:8080/games';
+
+    private timerSubUrl = '/timer';
 
     constructor(private http: HttpClient) {
     }

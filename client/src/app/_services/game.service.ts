@@ -16,8 +16,8 @@ const httpOptions = {
 })
 export class GameService {
 
-    private gamesUrl = 'api/games';
-    private playersUrl = 'api/players';
+    private gamesUrl = 'http://localhost:8080/games';
+    private playersUrl = 'http://localhost:8080/players';
     private joinSubUrl = "/join";
 
     constructor(private http: HttpClient,

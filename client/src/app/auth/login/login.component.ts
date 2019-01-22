@@ -48,7 +48,7 @@ export class LoginComponent{
         );
     }
     sendToRestApiMethod(token: string): void {
-        this.http.post('api/googlesingin', { token: token }).subscribe(onSuccess => {
+        this.http.post('http://localhost:8080/googlesingin', { token: token }).subscribe(onSuccess => {
         console.log('YEAH'); // login was successful save
                             // the token that you got from your REST
                             // API in your preferred location i.e. as a Cookie or LocalStorage as you do with normal login
