@@ -1,4 +1,4 @@
-.wrapper {
+#popup-wrapper {
     height: 100%;
     width: 100%;
     top:0;
@@ -6,7 +6,7 @@
     position: absolute;
     z-index: 10;
     background: rgba(100,100,100,0.5);
-    .box {
+    .popup {
         font-family: "Montserrat";
         padding: 10px;
         text-align: center;
@@ -20,6 +20,7 @@
         position: absolute;
         width: 300px;
         background: #f1f1f1;
+        text-align: center;
 
         .promotion-cell{
             height: auto;
@@ -36,16 +37,15 @@
                 drop-shadow(0 1px 0 white);
             }
         }
-    }
-
-    .close{
-        font-size: 20px;
-        color: white;
-        padding: 10px 30px;
-        cursor: pointer;
-        background: #3498db;
-        display: inline-block;
-        border-radius: 4px;
+        #closePopup{
+            font-size: 20px;
+            color: white;
+            padding: 5px 30px;
+            cursor: pointer;
+            background: #3498db;
+            display: inline-block;
+            border-radius: 4px;
+        }
     }
 }
 

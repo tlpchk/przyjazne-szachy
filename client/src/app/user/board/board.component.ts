@@ -7,6 +7,9 @@ import {Piece, PieceType} from '../../_models/piece';
 import {PopupComponent} from '../popup/popup.component';
 import {Result} from '../../_models/gameInfoDTO';
 import {Move} from '../../_models/move';
+import {combineAll} from 'rxjs/operators';
+import {error} from '@angular/compiler/src/util';
+import {TimeInterval} from 'rxjs';
 import {TimerService} from "../../_services/timer.service";
 import {Color} from "../../_models/color";
 

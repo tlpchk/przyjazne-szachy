@@ -1,10 +1,10 @@
-<div class="wrapper" *ngIf="isDisplayed">
+<div id="popup-wrapper" *ngIf="isDisplayed">
   <div [ngSwitch]="type">
-    <div *ngSwitchCase="'message'" class = "box">
+    <div *ngSwitchCase="'message'" class="popup">
       <h1>{{message}}</h1>
-      <a class="close" (click)="hide()">Close</a>
+      <a id="closePopup" (click)="hide()">Ok</a>
     </div>
-    <div *ngSwitchCase="'promotion'" class = "box">
+    <div *ngSwitchCase="'promotion'" class="popup">
       <p>{{message}}</p>
       <div class="cell promotion-cell" (click)="promotion('rook')">
         <img src="/assets/png/white_rook.png">

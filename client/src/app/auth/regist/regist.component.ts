@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthService} from "../../_services/auth.service";
+import {AuthServicePS} from "../../_services/auth-service-p-s.service";
 import {Router} from "@angular/router";
 
 @Component({
@@ -14,7 +14,7 @@ export class RegistComponent implements OnInit {
     passwordConfirmation: string;
 
 
-    constructor(private auth: AuthService,
+    constructor(private auth: AuthServicePS,
                 private router: Router) {
     }
 

@@ -19,12 +19,11 @@ form{
   }
 
   a.form-control{
-      display: block;
+      display: inline-block;
       padding: 5px ;
       color: white;
       background-color: #003380;
-
-    margin: 5px;
+      cursor: pointer;
       border: none;
       text-decoration: none;
     &:hover{

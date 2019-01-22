@@ -5,6 +5,7 @@ Aby zainstalować tę aplikację, uruchom następujące polecenia:
     npm install
 	npm install bootstrap
 	npm install jquery popper.js --save
+	npm install --save angularx-social-login
 Aby uruchomić serwer, przejdź do folderu server i uruchom:
 
     bash ./server.sh
