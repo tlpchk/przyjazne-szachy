@@ -36,6 +36,7 @@ export class HomeComponent implements OnInit {
         this.userService.createPlayer(firstPlayerColor, PlayerType.human).subscribe(playerId => {
             this.userService.createNewGame(playerId, null).subscribe(gameId => {
                 this.boardService.playerId = playerId;
+                this.boardService.playerColor = firstPlayerColor;
                 this.boardService.gameId.next(gameId);
             });
         });
@@ -46,6 +47,7 @@ export class HomeComponent implements OnInit {
             this.userService.createPlayer(secondPlayerColor, PlayerType.bot).subscribe(botId => {
                 this.userService.createNewGame(playerId, botId).subscribe(gameId => {
                     this.boardService.playerId = playerId;
+                    this.boardService.playerColor = firstPlayerColor;
                     this.boardService.gameId.next(gameId);
                 });
             });
@@ -57,6 +59,7 @@ export class HomeComponent implements OnInit {
             this.userService.joinGame(gameId, playerId).subscribe(wasSuccessful => {
                 if (wasSuccessful) {
                     this.boardService.playerId = playerId;
+                    this.boardService.playerColor = secondPlayerColor;
                     this.boardService.gameId.next(gameId);
                 } else {
                     console.log("Cannot join to game");

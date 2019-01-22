@@ -8,6 +8,7 @@ import {PopupComponent} from '../popup/popup.component';
 import {Result} from '../../_models/gameInfoDTO';
 import {Move} from '../../_models/move';
 import {TimerService} from "../../_services/timer.service";
+import {Color} from "../../_models/color";
 
 @Component({
     selector: 'app-board',
@@ -116,6 +117,9 @@ export class BoardComponent implements OnInit {
         this.boardService.getPieces(this.gameId)
             .subscribe(pieces => {
                 this.board = this.boardService.getBoard(pieces);
+                if(this.boardService.playerColor==Color.black){
+                    this.board.reverse();
+                }
                 this.lastUpdateId = 0;
                 this.isMyTurn = false;
                 this.result = null;
@@ -167,7 +171,7 @@ export class BoardComponent implements OnInit {
             let location = changes[c].location;
             const pieceColor = changes[c].color;
             const type = changes[c].type;
-            const cellId = this.coordinateService.backendToFrontend(location.row, location.col);
+            const cellId = this.coordinateService.backendToFrontend(location.row, location.col,this.boardService.playerColor);
             const cellIndex = this.board.map(function (item) {
                 return item.id;
             })

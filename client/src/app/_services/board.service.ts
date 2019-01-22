@@ -25,6 +25,7 @@ const httpOptions = {
 
 export class BoardService {
     playerId: number;
+    playerColor: Color;
     gameId = new ReplaySubject<number>();
     gameId$ = this.gameId.asObservable();
 
@@ -48,7 +49,7 @@ export class BoardService {
     getBoard(pieces: PieceDTO[]): Cell[] {
         let board: Cell[] = [];
         for (let i in pieces) {
-            let id = this.coordinatesService.backendToFrontend(pieces[i].row, pieces[i].column);
+            let id = this.coordinatesService.backendToFrontend(pieces[i].row, pieces[i].column,this.playerColor);
             let sum = pieces[i].row + pieces[i].column;
             let color: Color = (sum % 2 === 0) ? Color.white : Color.black;
             let piece: Piece = new Piece(pieces[i].type, pieces[i].color);
@@ -56,13 +57,14 @@ export class BoardService {
             for (let j in pieces[i].possibleMoves) {
                 let row = pieces[i].possibleMoves[j].row;
                 let column = pieces[i].possibleMoves[j].col;
-                let possibleMoveId = this.coordinatesService.backendToFrontend(row, column);
+                let possibleMoveId = this.coordinatesService.backendToFrontend(row, column,this.playerColor);
                 possibleMoves.push(possibleMoveId);
             }
             if (piece.type === null || piece.type === undefined) {
                 piece = null;
             }
             let cell = new Cell(id, color, piece, possibleMoves);
+            console.log(cell);
             board.push(cell);
         }
         return board;
@@ -75,8 +77,8 @@ export class BoardService {
 
     makeMove(move : Move , gameId: number): Observable<MoveResponseDTO> {
         let url = this.gamesUrl + "/" + gameId + this.moveSubUrl;
-        let origin = this.coordinatesService.frontendToBackend(move.srcCell.id);
-        let destination = this.coordinatesService.frontendToBackend(move.destCell.id);
+        let origin = this.coordinatesService.frontendToBackend(move.srcCell.id,this.playerColor);
+        let destination = this.coordinatesService.frontendToBackend(move.destCell.id,this.playerColor);
         let createMoveDTO = new CreateMoveDTO(this.playerId,
             origin, destination);
         return this.http.post<MoveResponseDTO>(url, createMoveDTO, httpOptions);
@@ -123,7 +125,7 @@ export class BoardService {
 
     getPossibleMove(selectedCell: Cell, gameId: number) {
         let url = this.gamesUrl + "/" + gameId + this.possibleMovesSubUrl;
-        let position = this.coordinatesService.frontendToBackend(selectedCell.id);
+        let position = this.coordinatesService.frontendToBackend(selectedCell.id,this.playerColor);
         return this.http.post<PositionDTO[]>(url, position, httpOptions);
     }
 
@@ -131,7 +133,7 @@ export class BoardService {
         let possibleMovesToReturn: number[] = [];
         for (let i in possibleMoves) {
             let possibleMove = possibleMoves[i];
-            let possibleMoveId = this.coordinatesService.backendToFrontend(possibleMove.row, possibleMove.col);
+            let possibleMoveId = this.coordinatesService.backendToFrontend(possibleMove.row, possibleMove.col,this.playerColor);
             possibleMovesToReturn.push(possibleMoveId);
         }
         return possibleMovesToReturn;

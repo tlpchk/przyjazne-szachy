@@ -88,6 +88,10 @@ CREATE VIEW `ranking_view` AS
   FROM `user`,
        `ranking`
   WHERE user.id = ranking.user_id
+    AND user.id NOT IN (SELECT user.id
+                        FROM `user`
+                        WHERE user.nick = "bot"
+                           OR user.nick = "noname")
   ORDER BY ranking.score ASC;
 
 
@@ -141,10 +145,9 @@ CREATE TRIGGER `TR_game_after_update`
 DELIMITER ;
 
 # password: noname
-INSERT INTO `user`(`nick`, `password`)
-VALUES ("noname","$2a$10$rEPSup5zQg2RdJ32hn6Ud.bKTghrKrbYZ4zmBRB1sY8oiXiYsECFy");
-
+INSERT INTO `user` (`nick`, `password`)
+VALUES ("noname", "$2a$10$rEPSup5zQg2RdJ32hn6Ud.bKTghrKrbYZ4zmBRB1sY8oiXiYsECFy");
 
 # password: bot
-INSERT INTO `user`(`nick`, `password`)
-VALUES ("bot","$2a$10$0Y0mJx7gIx6/2Cyc4TkUne6T8.S1cHD3BcGMICsecvr2rqA6OMjv2");
+INSERT INTO `user` (`nick`, `password`)
+VALUES ("bot", "$2a$10$0Y0mJx7gIx6/2Cyc4TkUne6T8.S1cHD3BcGMICsecvr2rqA6OMjv2");
