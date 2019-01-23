@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {MessageService} from "../../_services/message.service";
+import {AuthServicePS} from "../../_services/auth-service-p-s.service";
 
 @Component({
   selector: 'sidebar',
@@ -8,12 +9,17 @@ import {MessageService} from "../../_services/message.service";
 })
 export class SidebarComponent implements OnInit {
 
-  constructor(private messeageService: MessageService) { }
+  constructor(private messeageService: MessageService,
+              private auth: AuthServicePS) { }
 
   ngOnInit() {
   }
 
   clearMessages(){
     this.messeageService.clear();
+  }
+
+  logOut(){
+    this.auth.setLoggedIn(false);
   }
 }

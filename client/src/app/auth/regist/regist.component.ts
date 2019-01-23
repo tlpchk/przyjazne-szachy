@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthServicePS} from "../../_services/auth-service-p-s.service";
+import {AuthServicePS, User} from "../../_services/auth-service-p-s.service";
 import {Router} from "@angular/router";
 
 @Component({
@@ -24,8 +24,7 @@ export class RegistComponent implements OnInit {
     registerUser() {
         this.auth.registerUser(this.username, this.email, this.password, this.passwordConfirmation).subscribe(data => {
             if (data.success) {
-                this.auth.username = this.username;
-                this.auth.password = this.password;
+                this.auth.currentUser = new User(this.username,this.password);
                 this.auth.setLoggedIn(true);
                 this.router.navigate(['/user/home']);
             } else {

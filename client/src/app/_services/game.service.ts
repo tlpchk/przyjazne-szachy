@@ -35,7 +35,7 @@ export class GameService {
     }
 
     createPlayer(playerColor: Color, playerType: PlayerType): Observable<number> {
-        let createPlayerDTO = new CreatePlayerDTO(this.auth.username, playerColor, playerType);
+        let createPlayerDTO = new CreatePlayerDTO(this.auth.currentUser.username, playerColor, playerType);
         return this.http.post<number>(this.playersUrl, createPlayerDTO, httpOptions);
     }
 

@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, OnInit} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http'
 import {Observable, of} from "rxjs";
 import {AuthService, GoogleLoginProvider} from 'angularx-social-login';
@@ -10,7 +10,7 @@ const httpOptions = {
 };
 
 
-interface myData {
+interface authResponse {
     success: boolean;
     message: string;
 }
@@ -22,18 +22,27 @@ interface UserDetails {
     lostGames: number;
 }
 
-class User {
+export class User {
     username: string;
     password: string;
+
+    constructor(username: string, password: string){
+        this.username = username;
+        this.password = password;
+    }
 }
 
+const loginUrl = 'http://localhost:8080/login';
+const registerUrl = 'http://localhost:8080/register';
+
 @Injectable()
-export class AuthServicePS {
-    public username = "";
-    public password = "";
-    private loginUrl = 'http://localhost:8080/login';
-    private registerUrl = 'http://localhost:8080/register';
-    private loggedInStatus = false;
+export class AuthServicePS implements OnInit{
+    public currentUser;
+    private loggedInStatus : boolean;
+
+    ngOnInit(): void {
+         this.loggedInStatus = false;
+    }
 
     constructor(private http: HttpClient) {
     }
@@ -46,34 +55,31 @@ export class AuthServicePS {
         return this.loggedInStatus;
     }
 
-    logInUser(username, password): Observable<myData> {
-        let user = new User();
-        user.username = username;
-        user.password = password;
-        return this.http.post<myData>(this.loginUrl, user, httpOptions);
+    logInUser(username, password): Observable<authResponse> {
+        this.currentUser = new User(username,password);
+        return this.http.post<authResponse>(loginUrl, this.currentUser, httpOptions);
     }
 
-    registerUser(username: string, email: string, password: string, passwordConfirmation: string): Observable<myData> {
-        let newUser = new User();
-        newUser.username = username;
-        newUser.password = password;
+    registerUser(username: string, email: string, password: string, passwordConfirmation: string): Observable<authResponse> {
+        this.currentUser = new User(username,password);
         if (password != passwordConfirmation) {
-            return of(<myData>{
+            return of(<authResponse>{
                 success: false,
                 message: "Confirm password error"
             })
         }
         else {
-            return this.http.post<myData>(this.registerUrl, newUser, httpOptions);
+            return this.http.post<authResponse>(registerUrl, this.currentUser, httpOptions);
         }
     }
     getUserData(): Observable<UserDetails> {
         // return this.http.post<User>(this.profileUrl, httpOptions);
         return of(<UserDetails>{
-            username: this.username,
+            username: this.currentUser.username,
             games: 10,
             wonGames: 10,
             lostGames: 0,
         });
     }
+
 }

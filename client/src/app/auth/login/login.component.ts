@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {AuthServicePS} from '../../_services/auth-service-p-s.service';
+import {AuthServicePS, User} from '../../_services/auth-service-p-s.service';
 import {Router} from '@angular/router';
 import {AuthService, GoogleLoginProvider} from 'angularx-social-login';
 import {HttpClient} from '@angular/common/http';
@@ -25,8 +25,7 @@ export class LoginComponent{
         this.auth.logInUser(this.username, this.password).subscribe(data => {
                 console.log(this.username, this.password);
                 if (data.success) {
-                    this.auth.username = this.username;
-                    this.auth.password = this.password;
+                    this.auth.currentUser = new User(this.username, this.password);
                     this.auth.setLoggedIn(true);
                     this.router.navigateByUrl('/user/home');
                 } else {
@@ -49,11 +48,11 @@ export class LoginComponent{
     }
     sendToRestApiMethod(token: string): void {
         this.http.post('http://localhost:8080/googlesingin', { token: token }).subscribe(onSuccess => {
-        console.log('YEAH'); // login was successful save
+        console.log('You are logged in with google'); // login was successful save
                             // the token that you got from your REST
                             // API in your preferred location i.e. as a Cookie or LocalStorage as you do with normal login
         }, onFail => {
-        console.log('NO');
+        console.log('You aren\'t logged in with google');
         // login was unsuccessful show an error message
         }
     );
