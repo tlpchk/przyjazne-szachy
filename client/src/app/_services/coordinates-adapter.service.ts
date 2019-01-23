@@ -1,15 +1,13 @@
 import {Injectable} from '@angular/core';
-import {PositionDTO} from "../_models/positionDTO";
+import {PositionDTO} from "../DTO/positionDTO";
 import {Color} from "../_models/color";
 
+/** Adaptor danych */
 @Injectable({
     providedIn: 'root'
 })
 export class CoordinatesAdapterService {
-
-    constructor() {
-    }
-
+    /** Adaptacja danych z serwera do klienta*/
     backendToFrontend(row: number, column: number, playerColor: Color): number {
         let r = row;
         let c = column;
@@ -20,6 +18,7 @@ export class CoordinatesAdapterService {
         return 8 * r + c + 1;
     }
 
+    /** Adaptacja danych z klienta do serwera*/
     frontendToBackend(cellId: number, playerColor: Color): PositionDTO {
         let row = Math.floor((cellId - 1) / 8);
         let column = cellId % 8 - 1;

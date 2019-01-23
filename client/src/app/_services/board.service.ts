@@ -1,51 +1,61 @@
 import {Injectable} from '@angular/core';
-import {Observable, of, ReplaySubject} from 'rxjs';
+import {Observable, ReplaySubject} from 'rxjs';
 import {Cell} from '../_models/cell';
-import {MessageService} from './message.service';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {CoordinatesAdapterService} from "./coordinates-adapter.service";
-import {MoveResponseDTO} from "../_models/moveResponseDTO";
-import {MoveUpdateDTO} from "../_models/moveUpdateDTO";
-import {CreateMoveDTO} from "../_models/createMoveDTO";
-import {PieceDTO} from "../_models/pieceDTO";
+import {MoveResponseDTO} from "../DTO/moveResponseDTO";
+import {MoveUpdateDTO} from "../DTO/moveUpdateDTO";
+import {CreateMoveDTO} from "../DTO/createMoveDTO";
+import {PieceDTO} from "../DTO/pieceDTO";
 import {Color} from "../_models/color";
 import {Piece, PieceType} from "../_models/piece";
-import {PositionDTO} from "../_models/positionDTO";
-import {GameInfoDTO} from "../_models/gameInfoDTO";
-import {PromotionDTO} from "../_models/promotionDTO";
+import {PositionDTO} from "../DTO/positionDTO";
+import {GameInfoDTO} from "../DTO/gameInfoDTO";
+import {PromotionDTO} from "../DTO/promotionDTO";
 import {Move} from '../_models/move';
+import {
+    boardSubUrl,
+    gamesUrl,
+    httpOptions,
+    moveSubUrl,
+    possibleMovesSubUrl,
+    promotionSubUrl,
+    updateSubUrl
+} from "./httpConection";
 
-const httpOptions = {
-    headers: new HttpHeaders({'Content-Type': 'application/json'})
-};
 
+/** Serwis, który służy do pobierania informacji o planszy*/
 @Injectable({
     providedIn: 'root'
 })
-
 export class BoardService {
+    /** Id gracza*/
     playerId: number;
+    /** Kolor gracza*/
     playerColor: Color;
+    /** Id gry*/
     gameId = new ReplaySubject<number>();
+    /** Id gry (Observable)*/
     gameId$ = this.gameId.asObservable();
 
-    private gamesUrl = 'http://localhost:8080/games';
-    private moveSubUrl = '/move';
-    private boardSubUrl = '/board';
-    private updateSubUrl = '/update';
-    private possibleMovesSubUrl = '/possibleMoves';
-    private promotionSubUrl = '/promote';
-
+    /** @ignore*/
     constructor(private http: HttpClient,
-                private messageService: MessageService,
                 private coordinatesService: CoordinatesAdapterService) {
     }
 
+    /**
+     * Pobieranie pozycji figurek z serweru
+     * @param gameId Id gry
+     */
     getPieces(gameId: number): Observable<PieceDTO[]> {
-        let url = this.gamesUrl + "/" + gameId + this.boardSubUrl;
+        let url = gamesUrl + "/" + gameId + boardSubUrl;
         return this.http.get<PieceDTO[]>(url);
     }
 
+    /**
+     * Pobieranie planszy
+     * @param pieces lista figurek
+     */
     getBoard(pieces: PieceDTO[]): Cell[] {
         let board: Cell[] = [];
         for (let i in pieces) {
@@ -70,13 +80,11 @@ export class BoardService {
         return board;
     }
 
-    private log(message: string) {
-        this.messageService.add(`BoardService: ${message}`);
-    }
-
-
+    /**
+     * Wysyłanie do serweru informacji o wykonanym ruchu
+     */
     makeMove(move : Move , gameId: number): Observable<MoveResponseDTO> {
-        let url = this.gamesUrl + "/" + gameId + this.moveSubUrl;
+        let url = gamesUrl + "/" + gameId + moveSubUrl;
         let origin = this.coordinatesService.frontendToBackend(move.srcCell.id,this.playerColor);
         let destination = this.coordinatesService.frontendToBackend(move.destCell.id,this.playerColor);
         let createMoveDTO = new CreateMoveDTO(this.playerId,
@@ -84,51 +92,20 @@ export class BoardService {
         return this.http.post<MoveResponseDTO>(url, createMoveDTO, httpOptions);
     }
 
-    /**
-     * Handle Http operation that failed.
-     * Let the app continue.
-     * @param operation - name of the operation that failed
-     * @param result - optional value to return as the observable playerPoints
-     */
-    private handleError<T>(operation = 'operation', result?: T) {
-        return (error: any): Observable<T> => {
-
-            // TODO: send the error to remote logging infrastructure
-            console.error(error); // log to console instead
-
-            // TODO: better job of transforming error for user consumption
-            this.log(`${operation} failed: ${error.message}`);
-
-            // Let the app keep running by returning an empty playerPoints.
-            return of(result as T);
-        };
-    }
-
-    /*TODO: Don't pipe logs*/
-
-    /*makeMove(moveElement: Cell, moveElement2: Cell) {
-        forkJoin(
-            this.updateCell(moveElement),
-            this.updateCell(moveElement2)
-        ).pipe(
-            map(([first, second]) => {
-                // combineLatest returns an array of values, here we map those values to an object
-                return { first, second };
-            })
-        );
-    }*/
-
+    /** Aktualizaja planszy*/
     getUpdate(gameId: number, updateId: number): Observable<MoveUpdateDTO> {
-        let url = this.gamesUrl + "/" + gameId + this.updateSubUrl + "/" + updateId;
+        let url = gamesUrl + "/" + gameId + updateSubUrl + "/" + updateId;
         return this.http.get<MoveUpdateDTO>(url);
     }
 
+    /** Obliczanie możliwych ruchów dla wybranej komórki*/
     getPossibleMove(selectedCell: Cell, gameId: number) {
-        let url = this.gamesUrl + "/" + gameId + this.possibleMovesSubUrl;
+        let url = gamesUrl + "/" + gameId + possibleMovesSubUrl;
         let position = this.coordinatesService.frontendToBackend(selectedCell.id,this.playerColor);
         return this.http.post<PositionDTO[]>(url, position, httpOptions);
     }
 
+    /** Konwertacja możliwych ruchów*/
     getPossibleMoveArray(possibleMoves: PositionDTO[]) {
         let possibleMovesToReturn: number[] = [];
         for (let i in possibleMoves) {
@@ -139,13 +116,15 @@ export class BoardService {
         return possibleMovesToReturn;
     }
 
+    /** Pobieranie informacji o grze*/
     getGameInfo(gameId: number): Observable<GameInfoDTO> {
-        let url = this.gamesUrl + "/" + gameId;
+        let url = gamesUrl + "/" + gameId;
         return this.http.post<GameInfoDTO>(url, this.playerId, httpOptions);
     }
 
+    /** Obsługa promocji*/
     promote(gameId: number, pieceType: PieceType): Observable<MoveResponseDTO> {
-        let url = this.gamesUrl + "/" + gameId + this.promotionSubUrl;
+        let url = gamesUrl + "/" + gameId + promotionSubUrl;
         let promotionDTO = new PromotionDTO(this.playerId, pieceType);
         return this.http.post<MoveResponseDTO>(url, promotionDTO, httpOptions);
 

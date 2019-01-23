@@ -4,7 +4,7 @@ import {GameService} from '../../_services/game.service';
 import {BoardService} from '../../_services/board.service';
 import {PlayerType} from '../../_models/playerType';
 import {Observable} from "rxjs";
-import {CreateGameDTO} from "../../_models/createGameDTO";
+import {CreateGameDTO} from "../../DTO/createGameDTO";
 
 
 const firstPlayerColor = Color.white;

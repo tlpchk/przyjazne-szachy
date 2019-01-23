@@ -1,29 +1,27 @@
 import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
+import {gamesUrl, httpOptions, timerSubUrl} from "./httpConection";
 
-const httpOptions = {
-    headers: new HttpHeaders({'Content-Type': 'application/json'})
-};
 
+/** Serwis nadaje informację o tajmerze*/
 @Injectable({
     providedIn: 'root'
 })
 export class TimerService {
+    /** @ignore*/
+    constructor(private http: HttpClient) {}
 
-    private gamesUrl = 'http://localhost:8080/games';
-
-    private timerSubUrl = '/timer';
-
-    constructor(private http: HttpClient) {
-    }
-
-    timeLeftInSeconds: number = 30 * 60;
+    /** Pozostały czas*/
+    timeLeftInSeconds = 30 * 60;
+    /** Id gracza*/
     playerId: number;
+    /** Id gry*/
     gameId: number;
+    /** Aktualizator*/
     updator;
 
-
+    /** Zacząć liczyć czas*/
     public startTimer() {
         const timerService = this;
         this.updator = setInterval(function () {
@@ -34,6 +32,7 @@ export class TimerService {
         }, 1000);
     }
 
+    /** Synchronizacja*/
     synchronize() {
         if (this.playerId != null && this.gameId != null) {
             this.getLeftTimeFor(this.playerId, this.gameId).subscribe(seconds => {
@@ -42,13 +41,15 @@ export class TimerService {
         }
     }
 
+    /** Oczyścić tajmer*/
     clearTimer() {
         this.timeLeftInSeconds = 0;
         clearInterval(this.updator);
     }
 
+    /** Pobrać pozostały czas*/
     getLeftTimeFor(playerId: number, gameId: number): Observable<number> {
-        let url = this.gamesUrl + '/' + gameId + this.timerSubUrl;
+        let url = gamesUrl + '/' + gameId + timerSubUrl;
         return this.http.post<number>(url, playerId, httpOptions);
     }
 

@@ -1,15 +1,12 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Cell} from '../../_models/cell';
 import {BoardService} from '../../_services/board.service';
-import {ChangeDTO} from '../../_models/changeDTO';
+import {ChangeDTO} from '../../DTO/changeDTO';
 import {CoordinatesAdapterService} from '../../_services/coordinates-adapter.service';
 import {Piece, PieceType} from '../../_models/piece';
 import {PopupComponent} from '../popup/popup.component';
-import {Result} from '../../_models/gameInfoDTO';
+import {Result} from '../../DTO/gameInfoDTO';
 import {Move} from '../../_models/move';
-import {combineAll} from 'rxjs/operators';
-import {error} from '@angular/compiler/src/util';
-import {TimeInterval} from 'rxjs';
 import {TimerService} from "../../_services/timer.service";
 import {Color} from "../../_models/color";
 

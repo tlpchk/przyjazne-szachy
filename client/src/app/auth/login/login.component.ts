@@ -1,8 +1,9 @@
 import {Component} from '@angular/core';
-import {AuthServicePS, User} from '../../_services/auth-service-p-s.service';
+import {AuthServicePS} from '../../_services/auth-service-p-s.service';
 import {Router} from '@angular/router';
 import {AuthService, GoogleLoginProvider} from 'angularx-social-login';
 import {HttpClient} from '@angular/common/http';
+import {User} from "../../_services/httpConection";
 
 @Component({
     selector: 'app-login',

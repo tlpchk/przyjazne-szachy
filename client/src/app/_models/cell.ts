@@ -1,11 +1,17 @@
 import {Color} from './color';
 import {Piece} from './piece';
 
-/* Kl*/
+/**
+ * Klasa służy do wyświetlania komórek planszy
+ * */
 export class Cell {
+    /** Id komórki*/
     private _id: number;
+    /** Color komórki*/
     private _cell_color: Color;
+    /** Figurka stojąca na tej komórce*/
     private _piece: Piece;
+    /** Możliwe ruchy które są dostępne z komórki*/
     private _possibleMoves: number[];
     
     get id(): number {
@@ -40,6 +46,7 @@ export class Cell {
         this._possibleMoves = value;
     }
 
+    /** @ignore */
     constructor( id: number, cell_color: Color , piece: Piece, possibleMoves: number[]) {
         this._id = id;
         this._cell_color = cell_color;
