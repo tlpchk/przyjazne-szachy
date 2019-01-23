@@ -1,0 +1,1587 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>ps documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">ps documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li>BoardComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/user/board/board.component.ts</code>
+</p>
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-board</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./board.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./board.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#board">board</a>
+                            </li>
+                            <li>
+                                <a href="#gameId">gameId</a>
+                            </li>
+                            <li>
+                                <a href="#isMyTurn">isMyTurn</a>
+                            </li>
+                            <li>
+                                <a href="#isPromotion">isPromotion</a>
+                            </li>
+                            <li>
+                                <a href="#lastUpdateId">lastUpdateId</a>
+                            </li>
+                            <li>
+                                <a href="#move">move</a>
+                            </li>
+                            <li>
+                                <a href="#opponent">opponent</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#popup">popup</a>
+                            </li>
+                            <li>
+                                <a href="#result">result</a>
+                            </li>
+                            <li>
+                                <a href="#selectedCell">selectedCell</a>
+                            </li>
+                            <li>
+                                <a href="#updator">updator</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#getBoard">getBoard</a>
+                            </li>
+                            <li>
+                                <a href="#getGameId">getGameId</a>
+                            </li>
+                            <li>
+                                <a href="#getGameInfo">getGameInfo</a>
+                            </li>
+                            <li>
+                                <a href="#makeMove">makeMove</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit">ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onSelect">onSelect</a>
+                            </li>
+                            <li>
+                                <a href="#promotion">promotion</a>
+                            </li>
+                            <li>
+                                <a href="#resetUpdator">resetUpdator</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#showEndGameMessage">showEndGameMessage</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#updateBoard">updateBoard</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(boardService: <a href="../injectables/BoardService.html">BoardService</a>, coordinateService: <a href="../injectables/CoordinatesAdapterService.html">CoordinatesAdapterService</a>, timerService: <a href="../injectables/TimerService.html">TimerService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/user/board/board.component.ts:31</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>boardService</td>
+                                                  
+                                                        <td>
+                                                                    <code><a href="../injectables/BoardService.html" target="_self" >BoardService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>coordinateService</td>
+                                                  
+                                                        <td>
+                                                                    <code><a href="../injectables/CoordinatesAdapterService.html" target="_self" >CoordinatesAdapterService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>timerService</td>
+                                                  
+                                                        <td>
+                                                                    <code><a href="../injectables/TimerService.html" target="_self" >TimerService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section>
+    
+        <h3 id="methods">
+            Methods
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="getBoard"></a>
+                        <span class="name">
+                            <b>
+                            getBoard
+                            </b>
+                            <a href="#getBoard"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>getBoard()</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="112" class="link-to-prism">src/app/user/board/board.component.ts:112</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="getGameId"></a>
+                        <span class="name">
+                            <b>
+                            getGameId
+                            </b>
+                            <a href="#getGameId"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>getGameId()</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="76" class="link-to-prism">src/app/user/board/board.component.ts:76</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="getGameInfo"></a>
+                        <span class="name">
+                            <b>
+                            getGameInfo
+                            </b>
+                            <a href="#getGameInfo"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>getGameInfo()</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="135" class="link-to-prism">src/app/user/board/board.component.ts:135</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="makeMove"></a>
+                        <span class="name">
+                            <b>
+                            makeMove
+                            </b>
+                            <a href="#makeMove"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>makeMove()</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="51" class="link-to-prism">src/app/user/board/board.component.ts:51</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="ngOnInit"></a>
+                        <span class="name">
+                            <b>
+                            ngOnInit
+                            </b>
+                            <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>ngOnInit()</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/app/user/board/board.component.ts:38</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="onSelect"></a>
+                        <span class="name">
+                            <b>
+                            onSelect
+                            </b>
+                            <a href="#onSelect"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>onSelect(cell: <a href="../classes/Cell.html">Cell</a>)</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/app/user/board/board.component.ts:46</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+
+                            <div class="io-description">
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>cell</td>
+                                                        <td>
+                                                                    <code><a href="../classes/Cell.html" target="_self" >Cell</a></code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                            </div>
+                                <div class="io-description">
+                                    
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="promotion"></a>
+                        <span class="name">
+                            <b>
+                            promotion
+                            </b>
+                            <a href="#promotion"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>promotion(pieceType: <a href="../classes/Piece.html">PieceType</a>)</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="127" class="link-to-prism">src/app/user/board/board.component.ts:127</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+
+                            <div class="io-description">
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>pieceType</td>
+                                                        <td>
+                                                                    <code><a href="../classes/Piece.html" target="_self" >PieceType</a></code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                            </div>
+                                <div class="io-description">
+                                    
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="resetUpdator"></a>
+                        <span class="name">
+                            <b>
+                            resetUpdator
+                            </b>
+                            <a href="#resetUpdator"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>resetUpdator()</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="185" class="link-to-prism">src/app/user/board/board.component.ts:185</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="showEndGameMessage"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Private</span>
+                            showEndGameMessage
+                            </b>
+                            <a href="#showEndGameMessage"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                            <span class="modifier-icon icon ion-ios-reset"></span>
+                        <code>showEndGameMessage()</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="96" class="link-to-prism">src/app/user/board/board.component.ts:96</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="updateBoard"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Private</span>
+                            updateBoard
+                            </b>
+                            <a href="#updateBoard"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                            <span class="modifier-icon icon ion-ios-reset"></span>
+                        <code>updateBoard(changes: ChangeDTO[])</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="165" class="link-to-prism">src/app/user/board/board.component.ts:165</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+
+                            <div class="io-description">
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>changes</td>
+                                                        <td>
+                                                                    <code>ChangeDTO[]</code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                            </div>
+                                <div class="io-description">
+                                    
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+    <section>
+    
+        <h3 id="inputs">
+            Properties
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="board"></a>
+                        <span class="name">
+                            <b>
+                            board
+                            </b>
+                            <a href="#board"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <code>board:     <code><a href="../classes/Cell.html" target="_self" >Cell[]</a></code>
+</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code><a href="../classes/Cell.html" target="_self" >Cell[]</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/user/board/board.component.ts:24</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="gameId"></a>
+                        <span class="name">
+                            <b>
+                            gameId
+                            </b>
+                            <a href="#gameId"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <code>gameId:     <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/app/user/board/board.component.ts:25</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="isMyTurn"></a>
+                        <span class="name">
+                            <b>
+                            isMyTurn
+                            </b>
+                            <a href="#isMyTurn"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <code>isMyTurn:     <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/app/user/board/board.component.ts:30</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="isPromotion"></a>
+                        <span class="name">
+                            <b>
+                            isPromotion
+                            </b>
+                            <a href="#isPromotion"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <code>isPromotion:     <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/user/board/board.component.ts:28</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="lastUpdateId"></a>
+                        <span class="name">
+                            <b>
+                            lastUpdateId
+                            </b>
+                            <a href="#lastUpdateId"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <code>lastUpdateId:     <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/user/board/board.component.ts:26</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="move"></a>
+                        <span class="name">
+                            <b>
+                            move
+                            </b>
+                            <a href="#move"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <code>move:     <code><a href="../classes/Move.html" target="_self" >Move</a></code>
+</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code><a href="../classes/Move.html" target="_self" >Move</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/app/user/board/board.component.ts:23</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="opponent"></a>
+                        <span class="name">
+                            <b>
+                            opponent
+                            </b>
+                            <a href="#opponent"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <code>opponent:     <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>&#x27;&#x27;</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/app/user/board/board.component.ts:29</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="popup"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Private</span>
+                            popup
+                            </b>
+                            <a href="#popup"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span><code>popup:     <code><a href="../components/PopupComponent.html" target="_self" >PopupComponent</a></code>
+</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code><a href="../components/PopupComponent.html" target="_self" >PopupComponent</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Decorators : </b>
+                            <br />
+                            <code>
+                                @ViewChild(PopupComponent)<br />
+                            </code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">src/app/user/board/board.component.ts:20</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="result"></a>
+                        <span class="name">
+                            <b>
+                            result
+                            </b>
+                            <a href="#result"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <code>result:     <code>Result</code>
+</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>Result</code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/app/user/board/board.component.ts:27</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="selectedCell"></a>
+                        <span class="name">
+                            <b>
+                            selectedCell
+                            </b>
+                            <a href="#selectedCell"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <code>selectedCell:     <code><a href="../classes/Cell.html" target="_self" >Cell</a></code>
+</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code><a href="../classes/Cell.html" target="_self" >Cell</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/app/user/board/board.component.ts:22</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="updator"></a>
+                        <span class="name">
+                            <b>
+                            updator
+                            </b>
+                            <a href="#updator"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <code>updator:     <code></code>
+</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/user/board/board.component.ts:31</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {Component, OnInit, ViewChild} from &#x27;@angular/core&#x27;;
+import {Cell} from &#x27;../../_models/cell&#x27;;
+import {BoardService} from &#x27;../../_services/board.service&#x27;;
+import {ChangeDTO} from &#x27;../../DTO/changeDTO&#x27;;
+import {CoordinatesAdapterService} from &#x27;../../_services/coordinates-adapter.service&#x27;;
+import {Piece, PieceType} from &#x27;../../_models/piece&#x27;;
+import {PopupComponent} from &#x27;../popup/popup.component&#x27;;
+import {Result} from &#x27;../../DTO/gameInfoDTO&#x27;;
+import {Move} from &#x27;../../_models/move&#x27;;
+import {TimerService} from &quot;../../_services/timer.service&quot;;
+import {Color} from &quot;../../_models/color&quot;;
+
+@Component({
+    selector: &#x27;app-board&#x27;,
+    templateUrl: &#x27;./board.component.html&#x27;,
+    styleUrls: [&#x27;./board.component.scss&#x27;]
+})
+export class BoardComponent implements OnInit {
+    @ViewChild(PopupComponent)
+    private popup: PopupComponent;
+
+    selectedCell: Cell;
+    move: Move;
+    board: Cell[];
+    gameId: number;
+    lastUpdateId: number;
+    result: Result;
+    isPromotion: boolean;
+    opponent &#x3D; &#x27;&#x27;;
+    isMyTurn: boolean;
+    updator;
+
+    constructor(private boardService: BoardService,
+                private coordinateService: CoordinatesAdapterService,
+                private timerService: TimerService) {
+    }
+
+    ngOnInit() {
+        this.board &#x3D; [];
+        this.getGameId();
+        this.move &#x3D; new Move();
+        this.selectedCell &#x3D; null;
+        this.timerService.startTimer();
+    }
+
+    onSelect(cell: Cell) {
+        this.selectedCell &#x3D; cell;
+        this.makeMove();
+    }
+
+    makeMove(): void {
+        if (this.move.srcCell &#x3D;&#x3D; null) {
+            this.move.srcCell &#x3D; this.selectedCell;
+            this.boardService.getPossibleMove(this.selectedCell, this.gameId).subscribe(possibleMoves &#x3D;&gt; {
+                this.selectedCell.possibleMoves &#x3D; this.boardService.getPossibleMoveArray(possibleMoves);
+            });
+        } else {
+            this.move.destCell &#x3D; this.selectedCell;
+            if (this.move.srcCell !&#x3D;&#x3D; this.move.destCell) {
+                this.boardService.makeMove(this.move, this.gameId).subscribe(moveResponse &#x3D;&gt; {
+                    if (moveResponse.wasMoveValid) {
+                        console.log(&#x27;This move was valid&#x27;);
+                        this.updateBoard(moveResponse.listOfChanges);
+
+                    } else {
+                        console.log(&#x27;Invalid move&#x27;);
+                    }
+                });
+            }
+            // Reset move
+            this.move &#x3D; new Move();
+            this.selectedCell &#x3D; null;
+        }
+    }
+
+    getGameId(): void {
+        this.boardService.gameId$.subscribe(gameId &#x3D;&gt; {
+            this.gameId &#x3D; gameId;
+            this.timerService.gameId &#x3D; this.gameId;
+            this.timerService.playerId &#x3D; this.boardService.playerId;
+            this.getBoard();
+            this.getGameInfo();
+            const boardComponent &#x3D; this;
+            this.updator &#x3D; setInterval(function () {
+                if (boardComponent.result &#x3D;&#x3D; null) {
+                    boardComponent.getGameInfo();
+                } else {
+                    boardComponent.showEndGameMessage();
+                    boardComponent.resetUpdator();
+                }
+            }, 500);
+        });
+    }
+
+
+    private showEndGameMessage() {
+        let resultText;
+        switch (this.result) {
+            case Result.first_player_won:
+                resultText &#x3D; &quot;Wygrały białe&quot;;
+                break;
+            case Result.second_player_won:
+                resultText &#x3D; &quot;Wygrały czarne&quot;;
+                break;
+            case Result.draw:
+                resultText &#x3D; &quot;Remis&quot;;
+                break;
+        }
+        this.popup.showMessage(resultText);
+    }
+
+    getBoard(): void {
+        this.boardService.getPieces(this.gameId)
+            .subscribe(pieces &#x3D;&gt; {
+                this.board &#x3D; this.boardService.getBoard(pieces);
+                if (this.boardService.playerColor &#x3D;&#x3D; Color.black) {
+                    this.board.reverse();
+                }
+                this.lastUpdateId &#x3D; 0;
+                this.isMyTurn &#x3D; false;
+                this.result &#x3D; null;
+                this.isPromotion &#x3D; false;
+                this.opponent &#x3D; &#x27;&#x27;;
+            });
+    }
+
+    promotion(pieceType: PieceType): void {
+        this.boardService.promote(this.gameId, pieceType).subscribe(moveResponse &#x3D;&gt; {
+            const changes: ChangeDTO[] &#x3D; moveResponse.listOfChanges;
+            this.updateBoard(changes);
+            this.popup.hide();
+        });
+    }
+
+    getGameInfo(): void {
+        console.log(&#x27;GET GAME INFO&#x27;);
+        this.boardService.getGameInfo(this.gameId).subscribe(gameInfo &#x3D;&gt; {
+            this.result &#x3D; gameInfo.gameResult;
+            this.isMyTurn &#x3D; gameInfo.myTurn;
+            this.isPromotion &#x3D; gameInfo.promotion;
+            this.opponent &#x3D; gameInfo.opponent;
+            // if (this.isMyTurn) {
+            //     this.timerService.startTimer();
+            // } else {
+            //     this.timerService.pauseTimer();
+            // }
+            if (gameInfo.lastUpdateId &gt; this.lastUpdateId) {
+                while (gameInfo.lastUpdateId &gt; this.lastUpdateId) {
+                    this.lastUpdateId &#x3D; this.lastUpdateId + 1;
+                    this.boardService.getUpdate(this.gameId, this.lastUpdateId).subscribe(moveUpdate &#x3D;&gt; {
+                        this.updateBoard(moveUpdate.moveDTO.listOfChanges);
+                    });
+                }
+            }
+            if (this.isPromotion &amp;&amp; this.isMyTurn) {
+                this.popup.showPromotion();
+            }
+        }, error &#x3D;&gt; {
+            this.popup.showMessage(&#x27;Stwórz grę&#x27;);
+            this.resetUpdator();
+        });
+    }
+
+
+    private updateBoard(changes: ChangeDTO[]) {
+        for (const c in changes) {
+            let location &#x3D; changes[c].location;
+            const pieceColor &#x3D; changes[c].color;
+            const type &#x3D; changes[c].type;
+            const cellId &#x3D; this.coordinateService.backendToFrontend(location.row, location.col, this.boardService.playerColor);
+            const cellIndex &#x3D; this.board.map(function (item) {
+                return item.id;
+            })
+                .indexOf(cellId);
+            let piece: Piece &#x3D; new Piece(type, pieceColor);
+            const possibleMoves: number[] &#x3D; [];
+            if (piece.type &#x3D;&#x3D;&#x3D; null || piece.type &#x3D;&#x3D;&#x3D; undefined) {
+                piece &#x3D; null;
+            }
+            this.board[cellIndex].piece &#x3D; piece;
+            this.board[cellIndex].possibleMoves &#x3D; possibleMoves;
+        }
+    }
+
+    resetUpdator() {
+        clearInterval(this.updator);
+    }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div id&#x3D;&quot;board-wrapper&quot;&gt;
+    &lt;div id&#x3D;&quot;game-info&quot;&gt;
+        &lt;p *ngIf&#x3D;&quot;opponent!&#x3D;&#x27;&#x27;&quot;&gt;
+            Grasz z: &lt;b&gt;{{opponent}}&lt;/b&gt;
+        &lt;/p&gt;
+        &lt;p *ngIf&#x3D;&quot;result&#x3D;&#x3D;null &amp;&amp; opponent!&#x3D;&#x27;&#x27;&quot;&gt;
+            Teraz jest tura: &lt;b *ngIf&#x3D;&quot;isMyTurn&quot;&gt; moja&lt;/b&gt; &lt;b *ngIf&#x3D;&quot;!isMyTurn&quot;&gt;{{opponent}}&lt;/b&gt;
+        &lt;/p&gt;
+        &lt;p *ngIf&#x3D;&quot;result!&#x3D;null&quot;&gt;
+            Wynik gry: {{result}}
+        &lt;/p&gt;
+    &lt;/div&gt;
+    &lt;app-timer&gt;&lt;/app-timer&gt;
+    &lt;div *ngIf&#x3D;&quot;board.length &gt; 0&quot; id&#x3D;&quot;board&quot;&gt;
+        &lt;div *ngFor&#x3D;&quot;let cell of board&quot;
+             class&#x3D;&quot;cell {{cell.cell_color}}Cell&quot;
+             [class.selected]&#x3D;&quot;cell &#x3D;&#x3D;&#x3D; selectedCell&quot;
+             [class.possible]&#x3D;&quot;selectedCell !&#x3D;&#x3D; null
+                        &amp;&amp; selectedCell.possibleMoves.includes(cell.id)&quot;
+             (click)&#x3D;&quot;onSelect(cell)&quot;&gt;
+            &lt;img *ngIf&#x3D;&quot;cell.piece !&#x3D;&#x3D; null &amp;&amp; cell.piece !&#x3D;&#x3D; undefined
+             then piece;
+             else emptyCell&quot;
+            /&gt;
+
+            &lt;ng-template #piece&gt;
+                &lt;img src&#x3D;&quot;/assets/png/{{cell.piece.color}}_{{cell.piece.type}}.png&quot;&gt;
+            &lt;/ng-template&gt;
+
+            &lt;ng-template #emptyCell&gt;
+                &lt;img *ngIf&#x3D;&quot;cell.piece &#x3D;&#x3D;&#x3D; null&quot; src&#x3D;&quot;/assets/png/none.png&quot;/&gt;
+            &lt;/ng-template&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;app-popup (promotionEvent)&#x3D;&quot;promotion($event)&quot;&gt;&lt;/app-popup&gt;
+
+&lt;/div&gt;
+
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./board.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">#board {
+  height: 480px;
+  width: 480px;
+  border: 1px solid black;
+}
+
+#game-info{
+  color: black;
+}
+
+#promotion-wrapper{
+  z-index: 100;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background: black;
+  opacity: 0.3;
+}
+
+#promotion{
+  color: white;
+  background: grey;
+  transform: translateX(-50%);
+  left: 50%;
+  z-index: 200;
+  height: 120px;
+  width: 240px;
+  position: absolute;
+  top: 240px;
+}
+
+.cell {
+  box-sizing: border-box;
+  position: relative;
+  text-align: center;
+  display: inline-block;
+  height: 12.5%;
+  width: 12.5%;
+  margin: 0 !important;
+  img{
+    position: relative;
+    width: 90%;
+    height: 90%;
+    -webkit-filter: drop-shadow(2px 0 0 white)
+    drop-shadow(-2px 0 0 white)
+    drop-shadow(0 -1px 0 white)
+    drop-shadow(0 1px 0 white);
+    /* TODO: Good layout with full image
+    width: 100%;
+    height: auto;
+    */
+  }
+}
+
+.promotion-cell{
+  height: auto;
+  width: 25%;
+}
+
+.selected {
+  background-color: lightgreen !important;
+}
+
+.possible{
+  background-color: lightblue !important;
+}
+
+.whiteCell{
+  background-color: rgba(255,255,255,1);
+}
+
+.blackCell{
+  background-color: rgba(0,0,0,1);
+}
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div id="board-wrapper">    <div id="game-info">        <p *ngIf="opponent!=\'\'">            Grasz z: <b>{{opponent}}</b>        </p>        <p *ngIf="result==null && opponent!=\'\'">            Teraz jest tura: <b *ngIf="isMyTurn"> moja</b> <b *ngIf="!isMyTurn">{{opponent}}</b>        </p>        <p *ngIf="result!=null">            Wynik gry: {{result}}        </p>    </div>    <app-timer></app-timer>    <div *ngIf="board.length > 0" id="board">        <div *ngFor="let cell of board"             class="cell {{cell.cell_color}}Cell"             [class.selected]="cell === selectedCell"             [class.possible]="selectedCell !== null                        && selectedCell.possibleMoves.includes(cell.id)"             (click)="onSelect(cell)">            <img *ngIf="cell.piece !== null && cell.piece !== undefined             then piece;             else emptyCell"            />            <ng-template #piece>                <img src="/assets/png/{{cell.piece.color}}_{{cell.piece.type}}.png">            </ng-template>            <ng-template #emptyCell>                <img *ngIf="cell.piece === null" src="/assets/png/none.png"/>            </ng-template>        </div>    </div>    <app-popup (promotionEvent)="promotion($event)"></app-popup></div></div>'
+    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AuthComponent', 'selector': 'app-auth'},{'name': 'BoardComponent', 'selector': 'app-board'},{'name': 'HomeComponent', 'selector': 'app-start'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'PopupComponent', 'selector': 'app-popup'},{'name': 'ProfileComponent', 'selector': 'app-profile'},{'name': 'RankingComponent', 'selector': 'app-ranking'},{'name': 'RegistComponent', 'selector': 'app-regist'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'ResetPasswordMailSenderComponent', 'selector': 'app-reset-password-mail-sender'},{'name': 'SidebarComponent', 'selector': 'sidebar'},{'name': 'TimerComponent', 'selector': 'app-timer'},{'name': 'UserComponent', 'selector': 'app-user'},{'name': 'VerifyMailComponent', 'selector': 'app-verify-mail'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'BoardComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'BoardComponent.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
