@@ -8,6 +8,8 @@ import com.ps.server.exception.EmailNotAvailableException;
 import com.ps.server.exception.GameNotExistException;
 import com.ps.server.exception.UserNotFoundException;
 import com.ps.server.exception.UsernameNotAvailableException;
+import com.ps.server.exceptions.UserNotActiveException;
+import com.ps.server.service.EmailService;
 import com.ps.server.service.PlayerService;
 import com.ps.server.service.RankingService;
 import com.ps.server.service.UserService;
@@ -17,8 +19,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 public class UserController {
+
+    @Autowired
+    private EmailService emailService;
 
     @Autowired
     private PlayerService playerService;
@@ -39,6 +46,9 @@ public class UserController {
         } catch (UserNotFoundException e) {
             isUserAvailable = false;
             message = "Zły login lub hasło";
+        } catch (UserNotActiveException e) {
+            isUserAvailable = false;
+            message = "Użytkownik nie aktywny";
         } finally {
             LoginResponseDTO response = new LoginResponseDTO(isUserAvailable, message);
             return response;
@@ -47,11 +57,13 @@ public class UserController {
 
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public LoginResponseDTO registerPlayer(@RequestBody UserDTO userDTO) {
+    public LoginResponseDTO registerPlayer(@RequestBody UserDTO userDTO, HttpServletRequest request) {
         String message = "Hello!";
         boolean success = true;
         try {
-            userService.createNewUser(userDTO.getUsername(), userDTO.getPassword(),userDTO.getEmail());
+            UserEntity newUser = userService.createNewUser(userDTO.getUsername(), userDTO.getPassword(), userDTO.getEmail());
+            String appUrl = request.getScheme() + "://" + request.getServerName();
+            emailService.sendVerificationEmail(newUser, appUrl);
         } catch (UsernameNotAvailableException e) {
             message = "Nazwa użytkownika zajęta";
             success = false;

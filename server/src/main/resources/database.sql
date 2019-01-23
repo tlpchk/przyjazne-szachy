@@ -35,16 +35,20 @@ CREATE TABLE IF NOT EXISTS `move` (
   COLLATE = utf16_polish_ci;
 
 CREATE TABLE IF NOT EXISTS `user` (
-  `id`       int(11)                              NOT NULL AUTO_INCREMENT,
-  `nick`     varchar(64) COLLATE utf16_polish_ci  NOT NULL,
-  `e_mail`   varchar(128) COLLATE utf16_polish_ci,
-  `password` varchar(128) COLLATE utf16_polish_ci NOT NULL DEFAULT '0',
+  `id`          int(11)                              NOT NULL AUTO_INCREMENT,
+  `nick`        varchar(64) COLLATE utf16_polish_ci  NOT NULL,
+  `e_mail`      varchar(128) COLLATE utf16_polish_ci,
+  `password`    varchar(128) COLLATE utf16_polish_ci NOT NULL DEFAULT '0',
+  `is_active`   bool                                          DEFAULT FALSE,
+  `verification_token` VARCHAR(255),
+  `reset_token` VARCHAR(255),
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
   AUTO_INCREMENT = 2
   DEFAULT CHARSET = utf16
   COLLATE = utf16_polish_ci;
+
 
 
 CREATE TABLE IF NOT EXISTS `player` (

@@ -5,12 +5,15 @@ import com.ps.server.entity.UserEntity;
 import com.ps.server.exception.EmailNotAvailableException;
 import com.ps.server.exception.UserNotFoundException;
 import com.ps.server.exception.UsernameNotAvailableException;
+import com.ps.server.exceptions.UserNotActiveException;
 import com.ps.server.repository.UserRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -21,7 +24,6 @@ public class UserService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-
     public UserEntity findByUsername(String username) throws UserNotFoundException {
         UserEntity user = userRepository.findByUsername(username);
         if (user == null) {
@@ -30,8 +32,11 @@ public class UserService {
         return user;
     }
 
-    public boolean areCredentialsValid(String username, String password) throws UserNotFoundException {
+    public boolean areCredentialsValid(String username, String password) throws UserNotFoundException, UserNotActiveException {
         UserEntity user = findByUsername(username);
+        if(!user.getIsActive()){
+            throw new UserNotActiveException();
+        }
         return bCryptPasswordEncoder.matches(password, user.getPassword());
     }
 
@@ -45,6 +50,9 @@ public class UserService {
         UserEntity newUser = new UserEntity();
         newUser.setUsername(username);
         newUser.setPassword(bCryptPasswordEncoder.encode(password));
+        newUser.setEmail(email);
+        newUser.setIsActive(false);
+        newUser.setVerificationToken(UUID.randomUUID().toString());
         userRepository.save(newUser);
         return newUser;
 
@@ -58,5 +66,8 @@ public class UserService {
         return null == userRepository.findByUsername(username);
     }
 
+    public UserEntity findUserByResetToken(String resetToken) {
+        return userRepository.findByResetToken(resetToken);
+    }
 
 }
