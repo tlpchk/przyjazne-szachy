@@ -29,8 +29,8 @@ export class GameService {
         return this.http.get<number[]>(this.gamesUrl);
     }
 
-    createNewGame(firstPlayerId: number, secondPlayerId: number): Observable<number> {
-        let createGameDTO = new CreateGameDTO(firstPlayerId, secondPlayerId, true);
+    createNewGame(firstPlayerId: number, secondPlayerId: number , isRanked: boolean): Observable<number> {
+        let createGameDTO = new CreateGameDTO(firstPlayerId, secondPlayerId, isRanked);
         return this.http.post<number>(this.gamesUrl, createGameDTO, httpOptions);
     }
 

@@ -3,6 +3,8 @@ import {Component, OnInit} from '@angular/core';
 import {GameService} from '../../_services/game.service';
 import {BoardService} from '../../_services/board.service';
 import {PlayerType} from '../../_models/playerType';
+import {Observable} from "rxjs";
+import {CreateGameDTO} from "../../_models/createGameDTO";
 
 
 const firstPlayerColor = Color.white;
@@ -14,16 +16,20 @@ const secondPlayerColor = Color.black;
     styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-
+    isRanked: boolean;
+    botGame: boolean;
     gameList: number[];
-
 
     constructor(private gameService: GameService,
                 private boardService: BoardService) {
     }
 
     ngOnInit() {
-        this.getGameList();
+        this.gameList = [];
+        const homeComponent = this;
+        setInterval(function () {
+            homeComponent.getGameList()
+        },1000);
     }
 
     getGameList() {
@@ -32,9 +38,10 @@ export class HomeComponent implements OnInit {
         });
     }
 
-    createNewCompetitionGame() {
+
+    createNewCompetitionGame(isRanked:boolean) {
         this.gameService.createPlayer(firstPlayerColor, PlayerType.human).subscribe(playerId => {
-            this.gameService.createNewGame(playerId, null).subscribe(gameId => {
+            this.gameService.createNewGame(playerId, null, isRanked).subscribe(gameId => {
                 this.boardService.playerId = playerId;
                 this.boardService.playerColor = firstPlayerColor;
                 this.boardService.gameId.next(gameId);
@@ -42,10 +49,10 @@ export class HomeComponent implements OnInit {
         });
     }
 
-    createNewBotGame() {
+    createNewBotGame(isRanked:boolean) {
         this.gameService.createPlayer(firstPlayerColor, PlayerType.human).subscribe(playerId => {
             this.gameService.createPlayer(secondPlayerColor, PlayerType.bot).subscribe(botId => {
-                this.gameService.createNewGame(playerId, botId).subscribe(gameId => {
+                this.gameService.createNewGame(playerId, botId,isRanked).subscribe(gameId => {
                     this.boardService.playerId = playerId;
                     this.boardService.playerColor = firstPlayerColor;
                     this.boardService.gameId.next(gameId);
@@ -67,4 +74,5 @@ export class HomeComponent implements OnInit {
             });
         });
     }
+
 }

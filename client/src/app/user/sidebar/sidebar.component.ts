@@ -21,7 +21,7 @@ export class SidebarComponent implements OnInit {
     }
 
     logout() {
-        this.authService.logOutUser();
+        this.authService.logOutUser().subscribe( response => { console.log('OK')});
     }
 
 }

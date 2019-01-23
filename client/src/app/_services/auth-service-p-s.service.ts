@@ -28,9 +28,10 @@ export class User {
     password: string;
     email: string;
 
-    constructor(username: string, password: string){
+    constructor(username: string, password: string, email: string = ""){
         this.username = username;
         this.password = password;
+        this.email = email;
     }
 }
 
@@ -64,10 +65,10 @@ export class AuthServicePS implements OnInit{
         return this.http.post<authResponse>(loginUrl, this.currentUser, httpOptions);
     }
 
-    logOutUser() {
+    logOutUser(): Observable<Object> {
         console.log("BYE");
         this.setLoggedIn(false);
-        this.http.post<Object>(logoutUrl, this.currentUser.username, httpOptions);
+        return this.http.post<Object>(logoutUrl, this.currentUser.username, httpOptions);
     }
 
     validateEmail(email: string): boolean {
@@ -76,7 +77,7 @@ export class AuthServicePS implements OnInit{
     }
 
     registerUser(username: string, email: string, password: string, passwordConfirmation: string): Observable<authResponse> {
-        this.currentUser = new User(username,password);
+        this.currentUser = new User(username, password, email);
         if (password != passwordConfirmation) {
             return of(<authResponse>{
                 success: false,
@@ -87,8 +88,7 @@ export class AuthServicePS implements OnInit{
                 success: false,
                 message: "False email"
             })
-        }
-        else {
+        } else {
             return this.http.post<authResponse>(registerUrl, this.currentUser, httpOptions);
         }
     }

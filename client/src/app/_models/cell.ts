@@ -1,6 +1,7 @@
 import {Color} from './color';
 import {Piece} from './piece';
 
+/* Kl*/
 export class Cell {
     private _id: number;
     private _cell_color: Color;

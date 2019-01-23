@@ -13,7 +13,17 @@ export class UserComponent implements OnInit {
   constructor( private auth: AuthServicePS) { }
 
   ngOnInit() {
-
+    const userComponent = this;
+      window.onbeforeunload = function() {
+      userComponent.auth.logOutUser().subscribe(response => {
+        console.log('Loged out')
+      });
+    };
+    window.onclose = function() {
+      userComponent.auth.logOutUser().subscribe(response => {
+          console.log('Loged out')
+      });
+    };
   }
 
 
