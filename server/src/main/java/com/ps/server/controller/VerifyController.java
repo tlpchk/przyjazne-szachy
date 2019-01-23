@@ -15,8 +15,7 @@ public class VerifyController {
     private TokenService tokenService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public String verifyEmail(@RequestParam(name = "token") String token) {
-        tokenService.checkVerifyToken(token);
-        return "redirect: /auth/login";
+    public boolean verifyEmail(@RequestParam(name = "token") String token) {
+        return tokenService.checkVerifyToken(token);
     }
 }

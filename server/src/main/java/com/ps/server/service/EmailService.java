@@ -14,7 +14,7 @@ public class EmailService {
     @Autowired
     private JavaMailSender mailSender;
 
-    private String FROM = "\tprzyjazne.szachy@gmail.com";
+    private String FROM = "przyjazne.szachy@gmail.com";
 
     @Async
     public void sendEmail(SimpleMailMessage email) {
@@ -28,7 +28,7 @@ public class EmailService {
         verificationEmail.setTo(user.getEmail());
         verificationEmail.setSubject("Mail uwierzytelniający");
         verificationEmail.setText("Potwierdź swój e-mail:\n" + appUrl
-                + "/verify?token=" + user.getVerificationToken());
+                + "/auth/verify-mail?token=" + user.getVerificationToken());
         sendEmail(verificationEmail);
     }
 
@@ -38,7 +38,7 @@ public class EmailService {
         passwordResetEmail.setTo(user.getEmail());
         passwordResetEmail.setSubject("Reset hasła");
         passwordResetEmail.setText("Zresetuj swoje hasło:\n" + appUrl
-                + "/reset?token=" + user.getVerificationToken());
+                + "/auth/reset-password?token=" + user.getResetToken());
         sendEmail(passwordResetEmail);
     }
 }

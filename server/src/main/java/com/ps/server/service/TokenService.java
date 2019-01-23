@@ -11,12 +11,25 @@ public class TokenService {
     @Autowired
     private UserRepository userRepository;
 
-    public void checkVerifyToken(String token) {
+    public boolean checkVerifyToken(String token) {
         UserEntity userEntity = userRepository.findByVerificationToken(token);
         if (userEntity != null) {
             userEntity.setIsActive(true);
             userEntity.setVerificationToken("");
             userRepository.save(userEntity);
+            return true;
         }
+        return false;
+    }
+
+    public boolean checkResetToken(String token) {
+        UserEntity userEntity = userRepository.findByResetToken(token);
+        if (userEntity != null) {
+            userEntity.setIsActive(true);
+            userEntity.setResetToken("");
+            userRepository.save(userEntity);
+            return true;
+        }
+        return false;
     }
 }

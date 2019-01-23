@@ -32,6 +32,14 @@ public class UserService {
         return user;
     }
 
+    public UserEntity findByEmail(String email) throws UserNotFoundException {
+        UserEntity user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new UserNotFoundException();
+        }
+        return user;
+    }
+
     public boolean areCredentialsValid(String username, String password) throws UserNotFoundException, UserNotActiveException {
         UserEntity user = findByUsername(username);
         if(!user.getIsActive()){
