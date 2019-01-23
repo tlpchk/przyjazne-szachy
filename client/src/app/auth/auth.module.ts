@@ -7,6 +7,8 @@ import {LoginComponent} from "./login/login.component";
 import {RegistComponent} from "./regist/regist.component";
 import {FormsModule} from "@angular/forms";
 import {AuthServiceConfig, GoogleLoginProvider, SocialLoginModule} from 'angularx-social-login';
+import { VerifyMailComponent } from './verify-mail/verify-mail.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 @NgModule({
     imports: [
@@ -17,7 +19,9 @@ import {AuthServiceConfig, GoogleLoginProvider, SocialLoginModule} from 'angular
     declarations: [
         AuthComponent,
         LoginComponent,
-        RegistComponent
+        RegistComponent,
+        VerifyMailComponent,
+        ResetPasswordComponent
     ],
     providers: [
         AuthServicePS,

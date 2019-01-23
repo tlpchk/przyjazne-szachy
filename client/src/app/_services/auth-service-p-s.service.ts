@@ -1,4 +1,4 @@
-import {Injectable, OnInit} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http'
 import {Observable, of} from "rxjs";
 import {AuthService, GoogleLoginProvider} from 'angularx-social-login';
@@ -20,11 +20,13 @@ interface UserDetails {
     games: number;
     wonGames: number;
     lostGames: number;
+    drawGames: number;
 }
 
 export class User {
     username: string;
     password: string;
+    email: string;
 
     constructor(username: string, password: string){
         this.username = username;
@@ -34,6 +36,8 @@ export class User {
 
 const loginUrl = 'http://localhost:8080/login';
 const registerUrl = 'http://localhost:8080/register';
+const logoutUrl = 'http://localhost:8080/bye';
+const profileUrl = 'http://localhost:8080/user';
 
 @Injectable()
 export class AuthServicePS implements OnInit{
@@ -60,6 +64,16 @@ export class AuthServicePS implements OnInit{
         return this.http.post<authResponse>(loginUrl, this.currentUser, httpOptions);
     }
 
+    logOutUser() {
+        console.log("BYE");
+        this.http.post<Object>(this.logoutUrl, this.username, httpOptions);
+    }
+
+    validateEmail(email: string): boolean {
+        let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    }
+
     registerUser(username: string, email: string, password: string, passwordConfirmation: string): Observable<authResponse> {
         this.currentUser = new User(username,password);
         if (password != passwordConfirmation) {
@@ -67,19 +81,18 @@ export class AuthServicePS implements OnInit{
                 success: false,
                 message: "Confirm password error"
             })
+        } else if (!this.validateEmail(email)) {
+            return of(<myData>{
+                success: false,
+                message: "False email"
+            })
         }
         else {
             return this.http.post<authResponse>(registerUrl, this.currentUser, httpOptions);
         }
     }
-    getUserData(): Observable<UserDetails> {
-        // return this.http.post<User>(this.profileUrl, httpOptions);
-        return of(<UserDetails>{
-            username: this.currentUser.username,
-            games: 10,
-            wonGames: 10,
-            lostGames: 0,
-        });
-    }
 
+    getUserData(): Observable<UserDetails> {
+        return this.http.post<UserDetails>(this.profileUrl, this.username, httpOptions);
+    }
 }

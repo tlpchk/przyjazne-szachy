@@ -1,19 +1,25 @@
 package com.ps.server.service;
 
+import com.ps.server.entity.GameEntity;
 import com.ps.server.entity.UserEntity;
 import com.ps.server.enums.PlayerType;
+import com.ps.server.enums.Result;
+import com.ps.server.exception.GameNotExistException;
 import com.ps.server.exception.InvalidRequiredArgumentException;
 import com.ps.server.Logic.Color;
 import com.ps.server.entity.PlayerEntity;
 import com.ps.server.Logic.player.BotPlayer;
 import com.ps.server.Logic.player.HumanPlayer;
 import com.ps.server.Logic.player.Player;
+import com.ps.server.repository.GameRepository;
 import com.ps.server.repository.PlayerRepository;
 import com.ps.server.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.LinkedList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -24,6 +30,9 @@ public class PlayerService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private GameService gameService;
 
     public PlayerEntity createNewPlayer(String username, Color color, PlayerType playerType) {
         PlayerEntity newPlayer = new PlayerEntity();
@@ -76,4 +85,37 @@ public class PlayerService {
     public UserEntity getUserForPlayer(PlayerEntity playerEntity) {
         return playerEntity.getUser();
     }
+
+    private List<PlayerEntity> getPlayersForUser(UserEntity userEntity) {
+        Iterable<PlayerEntity> players = playerRepository.findAll();
+        List<PlayerEntity> playersToReturn = new LinkedList<>();
+        for (PlayerEntity p : players) {
+            if (p.getUser().getUsername().equals(userEntity.getUsername())) {
+                playersToReturn.add(p);
+            }
+        }
+        return playersToReturn;
+    }
+
+    private void finishAllGamesForPlayer(PlayerEntity playerEntity) throws GameNotExistException {
+        List<GameEntity> games = gameService.getAllUnfinishedGamesForPlayer(playerEntity);
+        for (GameEntity g : games) {
+            Result result;
+            if (g.getFirstPlayer().getId().equals(playerEntity.getId())) {
+                result = Result.SECOND_PLAYER_WON;
+            } else {
+                result = Result.SECOND_PLAYER_WON;
+            }
+            gameService.setResultForGame(g.getId(),result);
+        }
+    }
+
+    public void finishAllGamesForUser(UserEntity userEntity) throws GameNotExistException {
+        List<PlayerEntity> players = getPlayersForUser(userEntity);
+        for(PlayerEntity p : players){
+            finishAllGamesForPlayer(p);
+        }
+    }
+
+
 }

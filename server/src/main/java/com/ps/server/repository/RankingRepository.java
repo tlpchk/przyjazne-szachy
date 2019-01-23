@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface RankingRepository extends CrudRepository<RankingEntity, Long> {
     List<RankingEntity> findAll();
+    RankingEntity findByUser(String user);
 }
 

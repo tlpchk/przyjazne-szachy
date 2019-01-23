@@ -4,16 +4,36 @@ import com.ps.server.Logic.Board;
 import com.ps.server.Logic.Color;
 import com.ps.server.Logic.Pieces.*;
 
+/**
+ * Base class of evaluating positions
+ */
 public class StandardBoardEvaluator implements BoardEvaluator {
+    /**
+     *
+     * @param board Board instance
+     * @return evaluation of position
+     */
     @Override
     public int evaluate(Board board) {
         return scorePlayer(board, Color.WHITE) - scorePlayer(board, Color.BLACK);
     }
 
+    /**
+     * Calls methods to score points for single player
+     * @param board Board instance
+     * @param color player color
+     * @return score for individual player
+     */
     protected int scorePlayer(final Board board, final Color color) {
         return scorePieces(board, color);
     }
 
+    /**
+     * Calculates sum of pieces values
+     * @param board Board instance
+     * @param color player color
+     * @return total pieces value
+     */
     protected int scorePieces(final Board board, final Color color) {
         int pieceValueScore = 0;
         Piece[][] chessBoard = board.getBoard();
@@ -31,6 +51,11 @@ public class StandardBoardEvaluator implements BoardEvaluator {
         return pieceValueScore;
     }
 
+    /**
+     * Determines heuristic value of single piece
+     * @param piece single piece
+     * @return score for given piece
+     */
     protected int pieceValue(Piece.PieceType piece) {
         if(piece == Piece.PieceType.PAWN) {
             return 1;

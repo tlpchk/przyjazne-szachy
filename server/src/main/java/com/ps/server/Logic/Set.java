@@ -21,6 +21,15 @@ public class Set {
         this.set = set;
     }
 
+    /**
+     * Getter for list of pieces held by this class
+     * @return List of pieces
+     */
+    public List<Piece> getPieceSet()
+    {
+        return this.set;
+    }
+
     List<Move> semiLegalMoves() {
         return set.stream().flatMap(piece -> piece.semiLegalMoves().stream()).collect(Collectors.toList());
     }

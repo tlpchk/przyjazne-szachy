@@ -26,7 +26,8 @@ export class RegistComponent implements OnInit {
             if (data.success) {
                 this.auth.currentUser = new User(this.username,this.password);
                 this.auth.setLoggedIn(true);
-                this.router.navigate(['/user/home']);
+                // this.router.navigate(['/user/home']);
+                this.router.navigate(['/auth/login']);
             } else {
                 window.alert(data.message)
             }

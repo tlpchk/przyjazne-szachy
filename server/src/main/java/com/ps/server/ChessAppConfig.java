@@ -1,12 +1,14 @@
 package com.ps.server;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.core.env.Environment;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -15,32 +17,36 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Properties;
+
 @EnableWebSecurity
 @Configuration
 
+@PropertySource("classpath:email.properties")
 public class ChessAppConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private ChessAppAuthenticationProvider authProvider;
+    private Environment env;
 
 
-    @Autowired
-    public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
-auth.authenticationProvider(authProvider);
-//auth.authenticationProvider(authenticationProvider());
-        //        auth
-//                .userDetailsService(new UserDetailsServiceImpl());
-//                .passwordEncoder(new BCryptPasswordEncoder());
-//        auth.inMemoryAuthentication().withUser("bill").password("$2a$10$f/Som3sZTUzUShz2Gnk/cuOUwujheFgbZQHuGi.niJ5hVB4WtD/7W").roles("ADMIN");
+    @Bean
+    public JavaMailSenderImpl mailSender() {
+        final JavaMailSenderImpl mailSenderImpl = new JavaMailSenderImpl();
+        mailSenderImpl.setHost(env.getProperty("smtp.host"));
+        mailSenderImpl.setPort(env.getProperty("smtp.port", Integer.class));
+        mailSenderImpl.setProtocol(env.getProperty("smtp.protocol"));
+        mailSenderImpl.setUsername(env.getProperty("smtp.username"));
+        mailSenderImpl.setPassword(env.getProperty("smtp.password"));
+        final Properties javaMailProps = new Properties();
+        javaMailProps.put("mail.smtp.auth", true);
+        javaMailProps.put("mail.smtp.starttls.enable", true);
+        javaMailProps.put("mail.smtp.socketFactory.port", "465");
+        javaMailProps.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+        mailSenderImpl.setJavaMailProperties(javaMailProps);
+        return mailSenderImpl;
     }
 
-//
-//
-//    @Bean
-//    @Override
-//    public AuthenticationManager authenticationManagerBean() throws Exception {
-//        return super.authenticationManagerBean();
-//    }
+
 
 
     @Override
@@ -50,10 +56,6 @@ auth.authenticationProvider(authProvider);
                 .and()
                 .csrf().disable()
                 .headers().frameOptions().disable()
-//                .and()
-//                .authorizeRequests()
-//                .antMatchers("/login", "/register").permitAll()
-//                .anyRequest().authenticated()
                 .and()
                 .httpBasic()
         .and()

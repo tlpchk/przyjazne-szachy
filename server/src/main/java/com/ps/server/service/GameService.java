@@ -49,7 +49,7 @@ public class GameService {
 
     private GameCreator gameCreator = new GameCreator();
 
-    private HashMap<Long, Game> gamesMap = new HashMap<>();
+    private final HashMap<Long, Game> gamesMap = new HashMap<>();
 
     private HashMap<Long, List<MoveUpdateDTO>> updates = new HashMap<>();
 
@@ -325,6 +325,13 @@ public class GameService {
 
     }
 
+    public void setResultForGame(Long gameId, Result result) throws GameNotExistException {
+        synchronized (gamesMap){
+            Game game = getGameFromGames(gameId);
+            game.setResult(result);
+        }
+    }
+
     private String getOpponent(GameEntity gameEntity, PlayerEntity playerEntity) {
         PlayerEntity opponent = (gameEntity.getFirstPlayer() == playerEntity) ? gameEntity.getSecondPlayer() : gameEntity.getFirstPlayer();
         String opponentUsername = "";
@@ -354,5 +361,16 @@ public class GameService {
             Player player = playerservice.createPlayerFromEntity(playerEntity);
             return game.getLeftTimeInSeconds(player);
         }
+    }
+
+    public List<GameEntity> getAllUnfinishedGamesForPlayer(PlayerEntity playerEntity) {
+        Iterable<GameEntity> games = gameRepository.findAll();
+        List<GameEntity> gamesToReturn = new LinkedList<>();
+        for (GameEntity g : games) {
+            if (!g.isFinished() && (g.getFirstPlayer().getId().equals(playerEntity.getId()) || g.getSecondPlayer().getId().equals(playerEntity.getId()))) {
+                gamesToReturn.add(g);
+            }
+        }
+        return gamesToReturn;
     }
 }

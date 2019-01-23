@@ -20,4 +20,13 @@ public class RankingEntity {
 
     @Column(name="score")
     private Double score;
+
+    @Column(name="won")
+    private Long numberOfWonGames;
+
+    @Column(name="lost")
+    private Long numberOfLostGames;
+
+    @Column(name="draw")
+    private Long numberOfDrawGames;
 }

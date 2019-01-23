@@ -9,8 +9,11 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTO {
+public class UserDetailsDTO {
     private String username;
-    private String password;
-    private String email;
+    private Long games;
+    private Long wonGames;
+    private Long lostGames;
+    private Long drawGames;
 }
+

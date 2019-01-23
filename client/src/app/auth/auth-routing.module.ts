@@ -1,11 +1,10 @@
 import {RouterModule, Routes} from "@angular/router";
 import {AuthComponent} from "./auth.component";
 import {NgModule} from "@angular/core";
-import {UserComponent} from "../user/user.component";
-import {HomeComponent} from "../user/home/home.component";
-import {BoardComponent} from "../user/board/board.component";
 import {LoginComponent} from "./login/login.component";
 import {RegistComponent} from "./regist/regist.component";
+import {VerifyMailComponent} from "./verify-mail/verify-mail.component";
+import {ResetPasswordComponent} from "./reset-password/reset-password.component";
 
 
 const routes: Routes = [
@@ -25,6 +24,14 @@ const routes: Routes = [
             {
                 path: 'regist',
                 component: RegistComponent
+            },
+            {
+                path: 'verify-mail',
+                component: VerifyMailComponent
+            },
+            {
+                path: 'reset-password',
+                component: ResetPasswordComponent
             },
         ]
     },

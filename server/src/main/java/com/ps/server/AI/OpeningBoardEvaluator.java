@@ -1,19 +1,22 @@
 package com.ps.server.AI;
 
-import com.ps.server.Logic.Board;
-import com.ps.server.Logic.ChessSquareState;
-import com.ps.server.Logic.Color;
+import com.ps.server.Logic.*;
 import com.ps.server.Logic.Pieces.Piece;
-import com.ps.server.Logic.Position;
 
-import java.util.Iterator;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
+/**
+ * Evaluator dedicated opening phase during match
+ */
 public class OpeningBoardEvaluator extends StandardBoardEvaluator {
+    /** Stores information about pieces development */
     private Map<Position, Boolean> minorPiecesFirstMoveMap;
+    /** Stores information about castle*/
     private Map<Color, Boolean> castledKing;
 
+    /**
+     * Class constructor, setting MinorPiecesMoveMap and CastledKingMap
+     */
     public OpeningBoardEvaluator() {
         minorPiecesFirstMoveMap = new HashMap<>();
         minorPiecesFirstMoveMap.put(new Position(7, 1), true);
@@ -30,6 +33,12 @@ public class OpeningBoardEvaluator extends StandardBoardEvaluator {
         castledKing.put(Color.BLACK, false);
     }
 
+    /**
+     * Function counting points of given player position
+     * @param board Board instance of interest
+     * @param color pieces color
+     * @return position score
+     */
     @Override
     protected int scorePlayer(final Board board, final Color color) {
         return scorePieces(board, color)
@@ -38,14 +47,45 @@ public class OpeningBoardEvaluator extends StandardBoardEvaluator {
                 + pawnsInCenter(board, color)
                 + castledKing(board, color)
                 + rooksConnected(board, color);
-        //TODO add score for castling, moving central pawns, connecting rooks, subtract score for too early queen moves
+        //TODO add score for too early queen moves
     }
 
-    //TODO implement
+    /**
+     * Checks if rooks are connected
+     * @param board board situation
+     * @param color player color
+     * @return 30 if rooks are connected, 0 otherwise
+     */
     private int rooksConnected(Board board, Color color) {
+        List<Piece> pieces = board.getSet(color).getPieceSet();
+        List<Piece> rooks = new ArrayList();
+
+        for(Piece p : pieces)
+        {
+            if(p.type == Piece.PieceType.ROOK && p.getPosition() != null)
+            {
+                rooks.add(p);
+            }
+        }
+
+        if(rooks.size() == 2)
+        {
+            if(rooks.get(0).getPosition().row == rooks.get(1).getPosition().row
+                    || rooks.get(0).getPosition().col == rooks.get(1).getPosition().col)
+            {
+                return 30;
+            }
+        }
+
         return 0;
     }
 
+    /**
+     * Checks if king has castled
+     * @param board Board instance
+     * @param color player color
+     * @return 90 if king has castled, 0 otherwise
+     */
     @SuppressWarnings("Duplicates")
     private int castledKing(Board board, Color color) {
         if(castledKing.get(color).booleanValue() == true) {
@@ -83,6 +123,12 @@ public class OpeningBoardEvaluator extends StandardBoardEvaluator {
         return 0;
     }
 
+    /**
+     * Adds score for pushing central pawns
+     * @param board Board instance
+     * @param color player color
+     * @return score for pawns in center plus score for pawns in semi-center
+     */
     @SuppressWarnings("Duplicates")
     private int pawnsInCenter(final Board board, final Color color) {
         int semiCenter = 0;
@@ -120,9 +166,15 @@ public class OpeningBoardEvaluator extends StandardBoardEvaluator {
             }
         }
 
-        return center * 30 + semiCenter * 20;
+        return center * 50 + semiCenter * 25;
     }
 
+    /**
+     * Adds score for developing pieces
+     * @param board Board instance
+     * @param color player color
+     * @return score if a piece has just been developed
+     */
     private int developPiece(final Board board, final Color color) {
         Iterator<Map.Entry<Position, Boolean>> iterator = minorPiecesFirstMoveMap.entrySet().iterator();
 
@@ -141,13 +193,19 @@ public class OpeningBoardEvaluator extends StandardBoardEvaluator {
                     && entry.getValue() == true) {
                 minorPiecesFirstMoveMap.put(entry.getKey(), false);
 
-                return 30;
+                return 10;
             }
         }
 
         return 0;
     }
 
+    /**
+     * Adds score for total pieces developed
+     * @param board Board instance
+     * @param color player color
+     * @return number of total pieces developed multiplied by 25
+     */
     private int totalPiecesDeveloped(final Board board, final Color color) {
         Iterator<Map.Entry<Position, Boolean>> iterator = minorPiecesFirstMoveMap.entrySet().iterator();
         int piecesDeveloped = 0;
@@ -170,6 +228,11 @@ public class OpeningBoardEvaluator extends StandardBoardEvaluator {
         return 25 * piecesDeveloped;
     }
 
+    /**
+     * Table of heuristic pieces values
+     * @param piece object with value assigned in this function
+     * @return value of given piece
+     */
     @SuppressWarnings("Duplicates")
     @Override
     protected int pieceValue(Piece.PieceType piece) {
