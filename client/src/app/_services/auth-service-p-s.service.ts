@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, OnInit} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http'
 import {Observable, of} from "rxjs";
 import {AuthService, GoogleLoginProvider} from 'angularx-social-login';
@@ -66,7 +66,8 @@ export class AuthServicePS implements OnInit{
 
     logOutUser() {
         console.log("BYE");
-        this.http.post<Object>(this.logoutUrl, this.username, httpOptions);
+        this.setLoggedIn(false);
+        this.http.post<Object>(logoutUrl, this.currentUser.username, httpOptions);
     }
 
     validateEmail(email: string): boolean {
@@ -82,7 +83,7 @@ export class AuthServicePS implements OnInit{
                 message: "Confirm password error"
             })
         } else if (!this.validateEmail(email)) {
-            return of(<myData>{
+            return of(<authResponse>{
                 success: false,
                 message: "False email"
             })
@@ -93,6 +94,6 @@ export class AuthServicePS implements OnInit{
     }
 
     getUserData(): Observable<UserDetails> {
-        return this.http.post<UserDetails>(this.profileUrl, this.username, httpOptions);
+        return this.http.post<UserDetails>(profileUrl, this.currentUser.username, httpOptions);
     }
 }
