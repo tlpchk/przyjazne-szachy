@@ -1,25 +1,25 @@
 import {HttpHeaders} from "@angular/common/http";
 
 /** @ignore*/
-export const loginUrl = 'http://localhost:8080/login';
+export const loginUrl = 'http://localhost:8080/api/login';
 /** @ignore*/
-export const registerUrl = 'http://localhost:8080/register';
+export const registerUrl = 'http://localhost:8080/api/register';
 /** @ignore*/
-export const  logoutUrl = 'http://localhost:8080/bye';
+export const  logoutUrl = 'http://localhost:8080/api/bye';
 /** @ignore*/
-export const  profileUrl = 'http://localhost:8080/user';
+export const  profileUrl = 'http://localhost:8080/api/user';
 /** @ignore*/
-export const  gamesUrl = 'http://localhost:8080/games';
+export const  gamesUrl = 'http://localhost:8080/api/games';
 /** @ignore*/
-export const playersUrl = 'http://localhost:8080/players';
+export const playersUrl = 'http://localhost:8080/api/players';
 /** @ignore*/
-export const verifyUrl = 'http://localhost:8080/verify';
+export const verifyUrl = 'http://localhost:8080/api/verify';
 /** @ignore*/
-export const resetUrl = 'http://localhost:8080/reset';
+export const resetUrl = 'http://localhost:8080/api/reset';
 /** @ignore*/
-export const changeUrl = 'http://localhost:8080/reset/change';
+export const changeUrl = 'http://localhost:8080/api/reset/change';
 /** @ignore*/
-export const rankingUrl = 'http://localhost:8080/ranking';
+export const rankingUrl = 'http://localhost:8080/api/ranking';
 /** @ignore*/
 export const  moveSubUrl = '/move';
 /** @ignore*/

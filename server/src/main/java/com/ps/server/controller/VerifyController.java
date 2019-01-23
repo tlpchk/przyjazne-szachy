@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/verify")
+@RequestMapping("/api/verify")
 public class VerifyController {
 
     @Autowired

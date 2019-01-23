@@ -5,6 +5,7 @@ import {BoardService} from '../../_services/board.service';
 import {PlayerType} from '../../_models/playerType';
 import {Observable} from "rxjs";
 import {CreateGameDTO} from "../../DTO/createGameDTO";
+import {AuthServicePS} from "../../_services/auth-service-p-s.service";
 
 
 const firstPlayerColor = Color.white;
@@ -19,17 +20,20 @@ export class HomeComponent implements OnInit {
     isRanked: boolean;
     botGame: boolean;
     gameList: number[];
+    isLoggedUser: boolean;
 
     constructor(private gameService: GameService,
-                private boardService: BoardService) {
+                private boardService: BoardService,
+                private authService: AuthServicePS) {
     }
 
     ngOnInit() {
+        this.isLoggedUser = (this.authService.currentUser.username != "noname");
         this.gameList = [];
         const homeComponent = this;
         setInterval(function () {
             homeComponent.getGameList()
-        },1000);
+        }, 1000);
     }
 
     getGameList() {
@@ -39,7 +43,7 @@ export class HomeComponent implements OnInit {
     }
 
 
-    createNewCompetitionGame(isRanked:boolean) {
+    createNewCompetitionGame(isRanked: boolean) {
         this.gameService.createPlayer(firstPlayerColor, PlayerType.human).subscribe(playerId => {
             this.gameService.createNewGame(playerId, null, isRanked).subscribe(gameId => {
                 this.boardService.playerId = playerId;
@@ -49,10 +53,10 @@ export class HomeComponent implements OnInit {
         });
     }
 
-    createNewBotGame(isRanked:boolean) {
+    createNewBotGame(isRanked: boolean) {
         this.gameService.createPlayer(firstPlayerColor, PlayerType.human).subscribe(playerId => {
             this.gameService.createPlayer(secondPlayerColor, PlayerType.bot).subscribe(botId => {
-                this.gameService.createNewGame(playerId, botId,isRanked).subscribe(gameId => {
+                this.gameService.createNewGame(playerId, botId, isRanked).subscribe(gameId => {
                     this.boardService.playerId = playerId;
                     this.boardService.playerColor = firstPlayerColor;
                     this.boardService.gameId.next(gameId);

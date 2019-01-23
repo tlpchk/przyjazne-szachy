@@ -8,14 +8,19 @@ import {AuthServicePS} from "../../_services/auth-service-p-s.service";
 })
 export class SidebarComponent implements OnInit {
 
+    isLoggedUser: boolean;
+
     constructor(private authService: AuthServicePS) {
     }
 
     ngOnInit() {
+        this.isLoggedUser = (this.authService.currentUser.username != "noname");
     }
 
     logout() {
-        this.authService.logOutUser().subscribe( response => { console.log('OK')});
+        this.authService.logOutUser().subscribe(response => {
+            console.log('OK')
+        });
     }
 
 }

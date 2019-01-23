@@ -15,14 +15,14 @@
       </a>
     </li>
     <li>
-      <a routerLink="/user/profile">
+      <a *ngIf="isLoggedUser" routerLink="/user/profile">
         <i class="material-icons">
           account_circle
         </i>
       </a>
     </li>
     <li>
-      <a routerLink="/user/ranking">
+      <a *ngIf="isLoggedUser" routerLink="/user/ranking">
         <i class="material-icons">
           show_chart
         </i>

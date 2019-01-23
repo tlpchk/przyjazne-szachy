@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @RestController
-@RequestMapping("/ranking")
+@RequestMapping("/api/ranking")
 public class RankingController {
 
     @Autowired

@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/reset")
+@RequestMapping("/api/reset")
 public class ResetController {
 
     @Autowired
