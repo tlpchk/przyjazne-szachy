@@ -445,11 +445,11 @@ export class ProfileComponent implements OnInit {
 
     <div class="tab-pane fade " id="c-templateData">
         <pre class="line-numbers"><code class="language-html">&lt;div&gt;
-  &lt;p&gt; Your profile &lt;/p&gt;
-  &lt;p&gt;{{username}}&lt;/p&gt;
-  &lt;p&gt;{{games}}&lt;/p&gt;
-  &lt;p&gt;{{wonGames}}&lt;/p&gt;
-  &lt;p&gt;{{lostGames}}&lt;/p&gt;
+  &lt;p&gt; Twój profil &lt;/p&gt;
+  &lt;p&gt;Nick: {{username}}&lt;/p&gt;
+  &lt;p&gt;Liczba gier: {{games}}&lt;/p&gt;
+  &lt;p&gt;Wygrane: {{wonGames}}&lt;/p&gt;
+  &lt;p&gt;Przegrane: {{lostGames}}&lt;/p&gt;
 &lt;/div&gt;
 </code></pre>
     </div>
@@ -486,7 +486,7 @@ export class ProfileComponent implements OnInit {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><div>  <p> Your profile </p>  <p>{{username}}</p>  <p>{{games}}</p>  <p>{{wonGames}}</p>  <p>{{lostGames}}</p></div></div>'
+        var COMPONENT_TEMPLATE = '<div><div>  <p> Twój profil </p>  <p>Nick: {{username}}</p>  <p>Liczba gier: {{games}}</p>  <p>Wygrane: {{wonGames}}</p>  <p>Przegrane: {{lostGames}}</p></div></div>'
     var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AuthComponent', 'selector': 'app-auth'},{'name': 'BoardComponent', 'selector': 'app-board'},{'name': 'HomeComponent', 'selector': 'app-start'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'PopupComponent', 'selector': 'app-popup'},{'name': 'ProfileComponent', 'selector': 'app-profile'},{'name': 'RankingComponent', 'selector': 'app-ranking'},{'name': 'RegistComponent', 'selector': 'app-regist'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'ResetPasswordMailSenderComponent', 'selector': 'app-reset-password-mail-sender'},{'name': 'SidebarComponent', 'selector': 'sidebar'},{'name': 'TimerComponent', 'selector': 'app-timer'},{'name': 'UserComponent', 'selector': 'app-user'},{'name': 'VerifyMailComponent', 'selector': 'app-verify-mail'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'ProfileComponent'};

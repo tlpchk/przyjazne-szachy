@@ -242,7 +242,7 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/app/user/ranking/ranking.component.ts:17</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/app/user/ranking/ranking.component.ts:18</a></div>
                             </td>
                         </tr>
 
@@ -329,6 +329,11 @@
 
                         </td>
                     </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>[]</code>
+                        </td>
+                    </tr>
                         <tr>
                             <td class="col-md-4">
                                     <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">src/app/user/ranking/ranking.component.ts:13</a></div>
@@ -344,42 +349,43 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit } from &#x27;@angular/core&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {Component, OnInit} from &#x27;@angular/core&#x27;;
 import {RankingRecord} from &quot;../../_services/httpConection&quot;;
 import {RankingService} from &quot;../../_services/ranking.service&quot;;
 
 @Component({
-  selector: &#x27;app-ranking&#x27;,
-  templateUrl: &#x27;./ranking.component.html&#x27;,
-  styleUrls: [&#x27;./ranking.component.scss&#x27;]
+    selector: &#x27;app-ranking&#x27;,
+    templateUrl: &#x27;./ranking.component.html&#x27;,
+    styleUrls: [&#x27;./ranking.component.scss&#x27;]
 })
 export class RankingComponent implements OnInit {
 
-  loading &#x3D; &quot;Łąduję...&quot;;
-  ranking: RankingRecord[];
+    loading &#x3D; &quot;Łąduję...&quot;;
+    ranking: RankingRecord[]&#x3D;[];
 
-  constructor(private rankService: RankingService) { }
+    constructor(private rankService: RankingService) {
+    }
 
-  ngOnInit() {
-    this.rankService.getRanking().subscribe( ranking &#x3D;&gt; {
-      this.loading &#x3D; &quot;&quot;;
-      this.ranking &#x3D; ranking;
-    })
-  }
+    ngOnInit() {
+        this.rankService.getRanking().subscribe(ranking &#x3D;&gt; {
+            this.loading &#x3D; &quot;&quot;;
+            this.ranking &#x3D; ranking;
+        })
+    }
 
 }
 </code></pre>
     </div>
 
     <div class="tab-pane fade " id="c-templateData">
-        <pre class="line-numbers"><code class="language-html">&lt;table *ngIf&#x3D;&quot;loading !&#x3D;&#x3D; &#x27;&#x27;&quot; id&#x3D;&quot;ranking&quot;&gt;
+        <pre class="line-numbers"><code class="language-html">&lt;table *ngIf&#x3D;&quot;loading &#x3D;&#x3D; &#x27;&#x27;&quot; id&#x3D;&quot;ranking&quot;&gt;
   &lt;tr&gt;
-    &lt;th&gt;Position&lt;/th&gt;
+    &lt;th&gt;Pozycja&lt;/th&gt;
     &lt;th&gt;Nick&lt;/th&gt;
-    &lt;th&gt;Score&lt;/th&gt;
-    &lt;th&gt;Won&lt;/th&gt;
-    &lt;th&gt;Lost&lt;/th&gt;
-    &lt;th&gt;Draw&lt;/th&gt;
+    &lt;th&gt;Punkty&lt;/th&gt;
+    &lt;th&gt;Wygrane&lt;/th&gt;
+    &lt;th&gt;Przegrane&lt;/th&gt;
+    &lt;th&gt;Remis&lt;/th&gt;
   &lt;/tr&gt;
 
   &lt;tr *ngFor&#x3D;&quot;let record of ranking&quot;&gt;
@@ -453,7 +459,7 @@ export class RankingComponent implements OnInit {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><table *ngIf="loading !== \'\'" id="ranking">  <tr>    <th>Position</th>    <th>Nick</th>    <th>Score</th>    <th>Won</th>    <th>Lost</th>    <th>Draw</th>  </tr>  <tr *ngFor="let record of ranking">      <td>{{record.position}}</td>      <td>{{record.user}}</td>      <td>{{record.score}}</td>      <td>{{record.numberOfWonGames}}</td>      <td>{{record.numberOfLostGames}}</td>      <td>{{record.numberOfDrawGames}}</td>  </tr></table></div>'
+        var COMPONENT_TEMPLATE = '<div><table *ngIf="loading == \'\'" id="ranking">  <tr>    <th>Pozycja</th>    <th>Nick</th>    <th>Punkty</th>    <th>Wygrane</th>    <th>Przegrane</th>    <th>Remis</th>  </tr>  <tr *ngFor="let record of ranking">      <td>{{record.position}}</td>      <td>{{record.user}}</td>      <td>{{record.score}}</td>      <td>{{record.numberOfWonGames}}</td>      <td>{{record.numberOfLostGames}}</td>      <td>{{record.numberOfDrawGames}}</td>  </tr></table></div>'
     var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AuthComponent', 'selector': 'app-auth'},{'name': 'BoardComponent', 'selector': 'app-board'},{'name': 'HomeComponent', 'selector': 'app-start'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'PopupComponent', 'selector': 'app-popup'},{'name': 'ProfileComponent', 'selector': 'app-profile'},{'name': 'RankingComponent', 'selector': 'app-ranking'},{'name': 'RegistComponent', 'selector': 'app-regist'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'ResetPasswordMailSenderComponent', 'selector': 'app-reset-password-mail-sender'},{'name': 'SidebarComponent', 'selector': 'sidebar'},{'name': 'TimerComponent', 'selector': 'app-timer'},{'name': 'UserComponent', 'selector': 'app-user'},{'name': 'VerifyMailComponent', 'selector': 'app-verify-mail'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'RankingComponent'};
