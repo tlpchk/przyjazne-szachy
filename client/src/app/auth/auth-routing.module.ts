@@ -5,6 +5,7 @@ import {LoginComponent} from "./login/login.component";
 import {RegistComponent} from "./regist/regist.component";
 import {VerifyMailComponent} from "./verify-mail/verify-mail.component";
 import {ResetPasswordComponent} from "./reset-password/reset-password.component";
+import {ResetPasswordMailSenderComponent} from "./reset-password-mail-sender/reset-password-mail-sender.component";
 
 
 const routes: Routes = [
@@ -32,6 +33,10 @@ const routes: Routes = [
             {
                 path: 'reset-password',
                 component: ResetPasswordComponent
+            },
+            {
+                path: 'reset-mail',
+                component: ResetPasswordMailSenderComponent
             },
         ]
     },

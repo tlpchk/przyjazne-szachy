@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Observable, of} from "rxjs";
+import {changeUrl, resetUrl, verifyUrl} from "./httpConection";
 
 const httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -15,25 +16,24 @@ interface myData {
     success: boolean;
     message: string;
 }
+
 /** Serwis, śłużący do weryfikacji użytkownika*/
 @Injectable({
     providedIn: 'root'
 })
 export class TokenService {
 
-    private verifyUrl = 'http://localhost:8080/verify';
-    private resetUrl = 'http://localhost:8080/reset';
-    private changeUrl = 'http://localhost:8080/reset/change';
 
     /** @ignore*/
     constructor(private http: HttpClient) {
     }
+
     /** Weryfikować użytkownika
      *@param token token weryfikacji
      */
     verifyUser(token: string): Observable<boolean> {
         let params = new HttpParams().set('token', token);
-        return this.http.get<boolean>(this.verifyUrl, {params});
+        return this.http.get<boolean>(verifyUrl, {params});
     }
 
     /** Resetowanie
@@ -41,7 +41,7 @@ export class TokenService {
      */
     checkResetToken(token: string): Observable<boolean> {
         let params = new HttpParams().set('token', token);
-        return this.http.get<boolean>(this.resetUrl, {params});
+        return this.http.get<boolean>(resetUrl, {params});
     }
 
     changePassword(token: string, password: string, passwordConfirmation: string): Observable<myData> {
@@ -55,8 +55,11 @@ export class TokenService {
             })
         }
         else {
-            return this.http.post<myData>(this.changeUrl, passReset, httpOptions);
+            return this.http.post<myData>(changeUrl, passReset, httpOptions);
         }
     }
 
+    sendResetMail(email: string): Observable<boolean> {
+        return this.http.post<boolean>(resetUrl, email, httpOptions);
+    }
 }

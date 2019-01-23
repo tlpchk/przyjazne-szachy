@@ -8,6 +8,7 @@ import {RegistComponent} from "./regist/regist.component";
 import {FormsModule} from "@angular/forms";
 import { VerifyMailComponent } from './verify-mail/verify-mail.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { ResetPasswordMailSenderComponent } from './reset-password-mail-sender/reset-password-mail-sender.component';
 
 @NgModule({
     imports: [
@@ -21,6 +22,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
         RegistComponent,
         VerifyMailComponent,
         ResetPasswordComponent,
+        ResetPasswordMailSenderComponent,
     ],
     providers: [
         AuthServicePS,

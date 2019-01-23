@@ -4,6 +4,7 @@ import com.ps.server.dto.LoginResponseDTO;
 import com.ps.server.dto.ResetPasswordDTO;
 import com.ps.server.entity.UserEntity;
 import com.ps.server.exception.UserNotFoundException;
+import com.ps.server.repository.UserRepository;
 import com.ps.server.service.EmailService;
 import com.ps.server.service.TokenService;
 import com.ps.server.service.UserService;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/reset")
@@ -21,6 +23,9 @@ public class ResetController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private EmailService emailService;
@@ -39,7 +44,7 @@ public class ResetController {
     /**
      * Sends password reset mail.
      *
-     * @param email on which mail should be sent
+     * @param email   on which mail should be sent
      * @param request
      * @return true if mail was valid, false otherwise
      */
@@ -47,6 +52,8 @@ public class ResetController {
     public boolean sendMail(@RequestBody String email, HttpServletRequest request) {
         try {
             UserEntity user = userService.findByEmail(email);
+            user.setResetToken(UUID.randomUUID().toString());
+            userRepository.save(user);
             String appUrl = request.getScheme() + "://" + request.getServerName();
             emailService.sendPasswordResetEmail(user, appUrl);
             return true;
