@@ -93,34 +93,34 @@ export class BoardComponent implements OnInit {
                 if (boardComponent.result == null) {
                     boardComponent.getGameInfo();
                 } else {
-                    boardComponent.endGameActions(boardComponent);
+                    boardComponent.showEndGameMessage(boardComponent);
+                    boardComponent.resetUpdator();
                 }
             }, 500);
         });
     }
 
-    private endGameActions(boardComponent: BoardComponent) {
+    private showEndGameMessage(boardComponent: BoardComponent) {
         let resultText;
         switch (boardComponent.result) {
             case Result.first_player_won:
-                resultText = "Wygrał pierwszy gracz";
+                resultText = "Wygrały białe";
                 break;
             case Result.second_player_won:
-                resultText = "Wygrał drugi gracz";
+                resultText = "Wygrały czarne";
                 break;
             case Result.draw:
                 resultText = "Remis";
                 break;
         }
         boardComponent.popup.showMessage(resultText);
-        boardComponent.resetUpdator();
     }
 
     getBoard(): void {
         this.boardService.getPieces(this.gameId)
             .subscribe(pieces => {
                 this.board = this.boardService.getBoard(pieces);
-                if(this.boardService.playerColor==Color.black){
+                if (this.boardService.playerColor == Color.black) {
                     this.board.reverse();
                 }
                 this.lastUpdateId = 0;
@@ -174,7 +174,7 @@ export class BoardComponent implements OnInit {
             let location = changes[c].location;
             const pieceColor = changes[c].color;
             const type = changes[c].type;
-            const cellId = this.coordinateService.backendToFrontend(location.row, location.col,this.boardService.playerColor);
+            const cellId = this.coordinateService.backendToFrontend(location.row, location.col, this.boardService.playerColor);
             const cellIndex = this.board.map(function (item) {
                 return item.id;
             })

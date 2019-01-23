@@ -20,6 +20,7 @@ interface UserDetails {
     games: number;
     wonGames: number;
     lostGames: number;
+    drawGames: number;
 }
 
 class User {
@@ -32,8 +33,10 @@ export class AuthServicePS {
     public username = "";
     public password = "";
     private loginUrl = 'http://localhost:8080/login';
+    private logoutUrl = 'http://localhost:8080/logut';
     private registerUrl = 'http://localhost:8080/register';
     private loggedInStatus = false;
+    private profileUrl = 'http://localhost:8080/user';
 
     constructor(private http: HttpClient) {
     }
@@ -45,6 +48,11 @@ export class AuthServicePS {
     get isLoggedIn() {
         return this.loggedInStatus;
     }
+
+    logOutUser(){
+        this.http.post<Object>(this.logoutUrl,this.username,httpOptions);
+    }
+
 
     logInUser(username, password): Observable<myData> {
         let user = new User();
@@ -67,13 +75,8 @@ export class AuthServicePS {
             return this.http.post<myData>(this.registerUrl, newUser, httpOptions);
         }
     }
+
     getUserData(): Observable<UserDetails> {
-        // return this.http.post<User>(this.profileUrl, httpOptions);
-        return of(<UserDetails>{
-            username: this.username,
-            games: 10,
-            wonGames: 10,
-            lostGames: 0,
-        });
+        return this.http.post<UserDetails>(this.profileUrl, this.username, httpOptions);
     }
 }

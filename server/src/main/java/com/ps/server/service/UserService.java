@@ -1,15 +1,19 @@
 package com.ps.server.service;
 
+import com.ps.server.dto.UserDetailsDTO;
 import com.ps.server.entity.UserEntity;
 import com.ps.server.exception.UserNotFoundException;
 import com.ps.server.exception.UsernameNotAvailableException;
 import com.ps.server.repository.UserRepository;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
+
     @Autowired
     private UserRepository userRepository;
 
@@ -45,4 +49,6 @@ public class UserService {
     private boolean isUsernameAvailable(String username) {
         return null == userRepository.findByUsername(username);
     }
+
+
 }

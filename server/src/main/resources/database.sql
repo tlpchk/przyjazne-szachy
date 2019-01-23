@@ -74,6 +74,9 @@ CREATE TABLE IF NOT EXISTS `matches` (
 CREATE TABLE IF NOT EXISTS `ranking` (
   `id`      int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
+  `won` bigint(11) NOT NULL DEFAULT 0,
+  `lost` bigint(11) NOT NULL DEFAULT 0,
+  `draw` bigint(11) NOT NULL DEFAULT 0,
   `score`   double  NOT NULL DEFAULT 1000,
   PRIMARY KEY (`id`),
   CONSTRAINT `FK_ranking_user_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
@@ -84,7 +87,7 @@ CREATE TABLE IF NOT EXISTS `ranking` (
 
 
 CREATE VIEW `ranking_view` AS
-  SELECT RANK() OVER(ORDER BY ranking.score DESC) AS `position`, user.nick AS `nick`, ranking.score AS `score`
+  SELECT RANK() OVER(ORDER BY ranking.score DESC) AS `position`, user.nick AS `nick`, ranking.won AS `won`, ranking.lost AS `lost`, ranking.draw AS `draw`, ranking.score AS `score`
   FROM `user`,
        `ranking`
   WHERE user.id = ranking.user_id
@@ -118,10 +121,19 @@ CREATE TRIGGER `TR_game_after_update`
     declare pnkGet float;
     declare pnkEX float;
     declare result float;
+    declare won int;
+    declare lost int;
+    declare draw int;
+
     set current = (SELECT ranking.score FROM ranking WHERE ranking.user_id = new.player_id);
     set pnkGet = (SELECT matches.player_points FROM matches WHERE matches.id = new.id);
     set pnkEX = ((SELECT ranking.score FROM ranking WHERE ranking.user_id = new.player_id) /
                  (SELECT ranking.score FROM ranking WHERE ranking.user_id = new.opponent_id));
+
+#     set won = (SELECT count(matches.game_id) from matches WHERE matches.player_id = new.player_id AND matches.player_points = 2 );
+    set won = (select count(id) from (SELECT * from chess_game_app.matches WHERE matches.player_id = 5 AND matches.player_points = 2 group by game_id,player_id) as won);
+    set draw = (select count(id) from (SELECT * from chess_game_app.matches WHERE matches.player_id = 5 AND matches.player_points = 1 group by game_id,player_id) as won);
+    set lost = (select count(id) from (SELECT * from chess_game_app.matches WHERE matches.player_id = 5 AND matches.player_points = 0 group by game_id,player_id) as won);
     IF (pnkEX > 1.75)
     THEN
       SET pnkEX = 1.75;
@@ -136,7 +148,7 @@ CREATE TRIGGER `TR_game_after_update`
       set result = 0.0;
     END IF;
 
-    UPDATE ranking set ranking.score = result WHERE ranking.user_id = new.player_id;
+    UPDATE ranking set ranking.score = result, ranking.won = won, ranking.lost = lost, ranking.draw = draw WHERE ranking.user_id = new.player_id;
 
   END//
 DELIMITER ;

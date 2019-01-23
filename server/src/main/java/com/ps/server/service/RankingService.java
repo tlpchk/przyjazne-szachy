@@ -1,6 +1,8 @@
 package com.ps.server.service;
 
+import com.ps.server.dto.UserDetailsDTO;
 import com.ps.server.entity.RankingEntity;
+import com.ps.server.exception.UserNotFoundException;
 import com.ps.server.repository.RankingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,7 +23,7 @@ public class RankingService {
     private RankingRepository rankingRepository;
 
     public Page<RankingEntity> findPaginated(Integer page, Integer size) {
-        Pageable pageable = PageRequest.of(page,size);
+        Pageable pageable = PageRequest.of(page, size);
         int pageSize = pageable.getPageSize();
         int currentPage = pageable.getPageNumber();
         int startItem = currentPage * pageSize;
@@ -40,5 +42,21 @@ public class RankingService {
                 = new PageImpl<RankingEntity>(list, PageRequest.of(currentPage, pageSize), allRanking.size());
 
         return rankingEntityPage;
+    }
+
+    public UserDetailsDTO getUserDetails(String username) throws UserNotFoundException {
+        RankingEntity rankingEntity = rankingRepository.findByUser(username);
+        UserDetailsDTO userDetailsDTO = new UserDetailsDTO();
+        if (rankingEntity == null) {
+            throw new UserNotFoundException();
+        }
+        userDetailsDTO.setUsername(username);
+        userDetailsDTO.setWonGames(rankingEntity.getNumberOfWonGames());
+        userDetailsDTO.setLostGames(rankingEntity.getNumberOfLostGames());
+        userDetailsDTO.setDrawGames(rankingEntity.getNumberOfDrawGames());
+        Long allGames = rankingEntity.getNumberOfWonGames() + rankingEntity.getNumberOfLostGames() + rankingEntity.getNumberOfDrawGames();
+        userDetailsDTO.setGames(allGames);
+        return userDetailsDTO;
+
     }
 }

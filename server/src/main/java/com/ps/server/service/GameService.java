@@ -49,7 +49,7 @@ public class GameService {
 
     private GameCreator gameCreator = new GameCreator();
 
-    private HashMap<Long, Game> gamesMap = new HashMap<>();
+    private final HashMap<Long, Game> gamesMap = new HashMap<>();
 
     private HashMap<Long, List<MoveUpdateDTO>> updates = new HashMap<>();
 
@@ -340,7 +340,7 @@ public class GameService {
     }
 
 
-    private void saveFinishedGame(GameEntity gameEntity, Result result) {
+    public void saveFinishedGame(GameEntity gameEntity, Result result) {
         gameEntity.setFinished(true);
         gameEntity.setResult(result);
         matchService.saveResultForGameEntity(gameEntity, result);
@@ -354,5 +354,16 @@ public class GameService {
             Player player = playerservice.createPlayerFromEntity(playerEntity);
             return game.getLeftTimeInSeconds(player);
         }
+    }
+
+    public List<GameEntity> getAllUnfinishedGamesForPlayer(PlayerEntity playerEntity) {
+        Iterable<GameEntity> games = gameRepository.findAll();
+        List<GameEntity> gamesToReturn = new LinkedList<>();
+        for (GameEntity g : games) {
+            if (!g.isFinished() && (g.getFirstPlayer().getId().equals(playerEntity.getId()) || g.getSecondPlayer().getId().equals(playerEntity.getId()))) {
+                gamesToReturn.add(g);
+            }
+        }
+        return gamesToReturn;
     }
 }
