@@ -4,6 +4,8 @@ import com.ps.server.dto.LoginResponseDTO;
 import com.ps.server.dto.UserDTO;
 import com.ps.server.dto.UserDetailsDTO;
 import com.ps.server.entity.UserEntity;
+import com.ps.server.exception.EmailNotAvailableException;
+import com.ps.server.exception.GameNotExistException;
 import com.ps.server.exception.UserNotFoundException;
 import com.ps.server.exception.UsernameNotAvailableException;
 import com.ps.server.service.PlayerService;
@@ -28,7 +30,6 @@ public class UserController {
     private RankingService rankingService;
 
 
-    //TODO RS: instead of sending message should send authentication token, or using session
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public LoginResponseDTO loginUser(@RequestBody UserDTO userDTO) {
         String message = "Hello!";
@@ -44,16 +45,18 @@ public class UserController {
         }
     }
 
-    //TODO RS: instead of sending message should send authentication token, or using session
-    //and should autologin
+
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public LoginResponseDTO registerPlayer(@RequestBody UserDTO userDTO) {
         String message = "Hello!";
         boolean success = true;
         try {
-            userService.createNewUser(userDTO.getUsername(), userDTO.getPassword());
+            userService.createNewUser(userDTO.getUsername(), userDTO.getPassword(),userDTO.getEmail());
         } catch (UsernameNotAvailableException e) {
-            message = "Nazwa użtykownika zajęta";
+            message = "Nazwa użytkownika zajęta";
+            success = false;
+        } catch (EmailNotAvailableException e) {
+            message = "Email zajęty";
             success = false;
         }
         LoginResponseDTO response = new LoginResponseDTO(success, message);
@@ -65,9 +68,8 @@ public class UserController {
         return rankingService.getUserDetails(username);
     }
 
-    @RequestMapping(value = "/logout", method = RequestMethod.POST)
-    public void logoutUser(@RequestBody String username) throws UserNotFoundException {
-        System.out.println("TATADASDASD");
+    @RequestMapping(value = "/bye", method = RequestMethod.POST)
+    public void logoutUser(@RequestBody String username) throws UserNotFoundException, GameNotExistException {
         UserEntity userEntity = userService.findByUsername(username);
         playerService.finishAllGamesForUser(userEntity);
     }

@@ -325,6 +325,13 @@ public class GameService {
 
     }
 
+    public void setResultForGame(Long gameId, Result result) throws GameNotExistException {
+        synchronized (gamesMap){
+            Game game = getGameFromGames(gameId);
+            game.setResult(result);
+        }
+    }
+
     private String getOpponent(GameEntity gameEntity, PlayerEntity playerEntity) {
         PlayerEntity opponent = (gameEntity.getFirstPlayer() == playerEntity) ? gameEntity.getSecondPlayer() : gameEntity.getFirstPlayer();
         String opponentUsername = "";
@@ -340,7 +347,7 @@ public class GameService {
     }
 
 
-    public void saveFinishedGame(GameEntity gameEntity, Result result) {
+    private void saveFinishedGame(GameEntity gameEntity, Result result) {
         gameEntity.setFinished(true);
         gameEntity.setResult(result);
         matchService.saveResultForGameEntity(gameEntity, result);

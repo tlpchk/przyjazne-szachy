@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 
 
 CREATE TABLE IF NOT EXISTS `player` (
-  `id`          bigint(11)                                         NOT NULL AUTO_INCREMENT,
+  `id`          bigint(11)                                      NOT NULL AUTO_INCREMENT,
   `color`       enum ('WHITE', 'BLACK') COLLATE utf16_polish_ci NOT NULL,
   `player_type` enum ('HUMAN', 'BOT') COLLATE utf16_polish_ci   NOT NULL,
   `user_id`     int(11),
@@ -59,8 +59,8 @@ CREATE TABLE IF NOT EXISTS `player` (
   COLLATE = utf16_polish_ci;
 
 CREATE TABLE IF NOT EXISTS `matches` (
-  `id`            bigint(11)    NOT NULL AUTO_INCREMENT,
-  `game_id`       bigint(11)    NOT NULL,
+  `id`            bigint(11)  NOT NULL AUTO_INCREMENT,
+  `game_id`       bigint(11)  NOT NULL,
   `player_id`     int(11),
   `opponent_id`   int(11),
   `player_points` smallint(4) NOT NULL,
@@ -72,12 +72,12 @@ CREATE TABLE IF NOT EXISTS `matches` (
   COLLATE = utf16_polish_ci;
 
 CREATE TABLE IF NOT EXISTS `ranking` (
-  `id`      int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
-  `won` bigint(11) NOT NULL DEFAULT 0,
-  `lost` bigint(11) NOT NULL DEFAULT 0,
-  `draw` bigint(11) NOT NULL DEFAULT 0,
-  `score`   double  NOT NULL DEFAULT 1000,
+  `id`      int(11)    NOT NULL AUTO_INCREMENT,
+  `user_id` int(11)    NOT NULL,
+  `won`     bigint(11) NOT NULL DEFAULT 0,
+  `lost`    bigint(11) NOT NULL DEFAULT 0,
+  `draw`    bigint(11) NOT NULL DEFAULT 0,
+  `score`   double     NOT NULL DEFAULT 1000,
   PRIMARY KEY (`id`),
   CONSTRAINT `FK_ranking_user_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 )
@@ -87,14 +87,17 @@ CREATE TABLE IF NOT EXISTS `ranking` (
 
 
 CREATE VIEW `ranking_view` AS
-  SELECT RANK() OVER(ORDER BY ranking.score DESC) AS `position`, user.nick AS `nick`, ranking.won AS `won`, ranking.lost AS `lost`, ranking.draw AS `draw`, ranking.score AS `score`
+  SELECT RANK() OVER(ORDER BY ranking.score DESC) AS `position`,
+         user.nick                                AS `nick`,
+         ranking.won                              AS `won`,
+         ranking.lost                             AS `lost`,
+         ranking.draw                             AS `draw`,
+         ranking.score                            AS `score`
   FROM `user`,
        `ranking`
   WHERE user.id = ranking.user_id
-    AND user.id NOT IN (SELECT user.id
-                        FROM `user`
-                        WHERE user.nick = "bot"
-                           OR user.nick = "noname")
+    AND user.id NOT IN (SELECT user.id FROM `user` WHERE user.nick = "bot"
+                                                      OR user.nick = "noname")
   ORDER BY ranking.score ASC;
 
 DELIMITER //
@@ -113,42 +116,66 @@ CREATE TRIGGER `TR_game_after_update`
   ON `matches`
   FOR EACH ROW
   BEGIN
-    --     #     set isRanked = (SELECT game.is_ranked FROM game WHERE game.id = new.game_id);
-    --     #     IF(isRanked = TRUE )
-    --     #       THEN
-    --     #     END IF ;
-    declare current float;
-    declare pnkGet float;
-    declare pnkEX float;
-    declare result float;
-    declare won int;
-    declare lost int;
-    declare draw int;
 
-    set current = (SELECT ranking.score FROM ranking WHERE ranking.user_id = new.player_id);
-    set pnkGet = (SELECT matches.player_points FROM matches WHERE matches.id = new.id);
-    set pnkEX = ((SELECT ranking.score FROM ranking WHERE ranking.user_id = new.player_id) /
-                 (SELECT ranking.score FROM ranking WHERE ranking.user_id = new.opponent_id));
-
-#     set won = (SELECT count(matches.game_id) from matches WHERE matches.player_id = new.player_id AND matches.player_points = 2 );
-    set won = (select count(id) from (SELECT * from chess_game_app.matches WHERE matches.player_id = 5 AND matches.player_points = 2 group by game_id,player_id) as won);
-    set draw = (select count(id) from (SELECT * from chess_game_app.matches WHERE matches.player_id = 5 AND matches.player_points = 1 group by game_id,player_id) as won);
-    set lost = (select count(id) from (SELECT * from chess_game_app.matches WHERE matches.player_id = 5 AND matches.player_points = 0 group by game_id,player_id) as won);
-    IF (pnkEX > 1.75)
+    declare isRanked boolean;
+    set isRanked = (SELECT game.is_ranked FROM game WHERE game.id = new.game_id);
+    IF (isRanked = TRUE)
     THEN
-      SET pnkEX = 1.75;
-    ELSEIF (pnkEX < 0.25)
-      THEN
-        SET pnkEX = 0.25;
-    END IF;
-    set result = current + 10 * (pnkGet - pnkEX);
+      BEGIN
+        declare current float;
+        declare pnkGet float;
+        declare pnkEX float;
+        declare result float;
+        declare won int;
+        declare lost int;
+        declare draw int;
 
-    IF (result < 0.0)
-    THEN
-      set result = 0.0;
+        set current = (SELECT ranking.score FROM ranking WHERE ranking.user_id = new.player_id);
+        set pnkGet = (SELECT matches.player_points FROM matches WHERE matches.id = new.id);
+        set pnkEX = ((SELECT ranking.score FROM ranking WHERE ranking.user_id = new.player_id) /
+                     (SELECT ranking.score FROM ranking WHERE ranking.user_id = new.opponent_id));
+
+        set won = (select count(id)
+                   from (SELECT *
+                         from chess_game_app.matches
+                         WHERE matches.player_id = 5
+                           AND matches.player_points = 2
+                         group by game_id, player_id) as won);
+        set draw = (select count(id)
+                    from (SELECT *
+                          from chess_game_app.matches
+                          WHERE matches.player_id = 5
+                            AND matches.player_points = 1
+                          group by game_id, player_id) as won);
+        set lost = (select count(id)
+                    from (SELECT *
+                          from chess_game_app.matches
+                          WHERE matches.player_id = 5
+                            AND matches.player_points = 0
+                          group by game_id, player_id) as won);
+        IF (pnkEX > 1.75)
+        THEN
+          SET pnkEX = 1.75;
+        ELSEIF (pnkEX < 0.25)
+          THEN
+            SET pnkEX = 0.25;
+        END IF;
+        set result = current + 10 * (pnkGet - pnkEX);
+
+        IF (result < 0.0)
+        THEN
+          set result = 0.0;
+        END IF;
+
+        UPDATE ranking
+        set ranking.score = result,
+            ranking.won   = won,
+            ranking.lost  = lost,
+            ranking.draw  = draw
+        WHERE ranking.user_id = new.player_id;
+      END;
     END IF;
 
-    UPDATE ranking set ranking.score = result, ranking.won = won, ranking.lost = lost, ranking.draw = draw WHERE ranking.user_id = new.player_id;
 
   END//
 DELIMITER ;

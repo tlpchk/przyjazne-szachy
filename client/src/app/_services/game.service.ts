@@ -30,7 +30,7 @@ export class GameService {
     }
 
     createNewGame(firstPlayerId: number, secondPlayerId: number): Observable<number> {
-        let createGameDTO = new CreateGameDTO(firstPlayerId, secondPlayerId, false);
+        let createGameDTO = new CreateGameDTO(firstPlayerId, secondPlayerId, true);
         return this.http.post<number>(this.gamesUrl, createGameDTO, httpOptions);
     }
 

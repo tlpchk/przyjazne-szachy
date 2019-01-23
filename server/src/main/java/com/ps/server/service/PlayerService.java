@@ -4,6 +4,7 @@ import com.ps.server.entity.GameEntity;
 import com.ps.server.entity.UserEntity;
 import com.ps.server.enums.PlayerType;
 import com.ps.server.enums.Result;
+import com.ps.server.exception.GameNotExistException;
 import com.ps.server.exception.InvalidRequiredArgumentException;
 import com.ps.server.Logic.Color;
 import com.ps.server.entity.PlayerEntity;
@@ -96,7 +97,7 @@ public class PlayerService {
         return playersToReturn;
     }
 
-    private void finishAllGamesForPlayer(PlayerEntity playerEntity) {
+    private void finishAllGamesForPlayer(PlayerEntity playerEntity) throws GameNotExistException {
         List<GameEntity> games = gameService.getAllUnfinishedGamesForPlayer(playerEntity);
         for (GameEntity g : games) {
             Result result;
@@ -105,11 +106,11 @@ public class PlayerService {
             } else {
                 result = Result.SECOND_PLAYER_WON;
             }
-            gameService.saveFinishedGame(g,result);
+            gameService.setResultForGame(g.getId(),result);
         }
     }
 
-    public void finishAllGamesForUser(UserEntity userEntity){
+    public void finishAllGamesForUser(UserEntity userEntity) throws GameNotExistException {
         List<PlayerEntity> players = getPlayersForUser(userEntity);
         for(PlayerEntity p : players){
             finishAllGamesForPlayer(p);
