@@ -113,7 +113,6 @@ public class GameService {
      *
      * @return list of games to join
      */
-    //TODO RS: break it into ran and unranked game
     public List<Long> getGamesToJoin() {
         synchronized (gamesMap) {
             logger.info("Returned list of games.");
@@ -208,17 +207,32 @@ public class GameService {
         }
     }
 
+    /**
+     * Runs bot in game if it is applicable.
+     *
+     * @param gameId Id of the Game in which  bot Move has to be made.
+     * @throws GameNotExistException when Game with given Game id does not exist
+     */
     public void runBotIfRelevant(Long gameId) throws GameNotExistException {
         synchronized (gamesMap) {
             Game game = getGameFromGames(gameId);
             if (game.getSecondPlayer() instanceof BotPlayer) {
-                Thread t = new Thread(new BotRunner(this,gameId));
+                Thread t = new Thread(new BotRunner(this, gameId));
                 t.start();
             }
         }
     }
 
-
+    /**
+     * Promotes.
+     *
+     * @param gameId Id of the Game in which promotion has to be made.
+     * @param playerEntity PlayerEntity describes Player who wants to make promotion.
+     * @param pieceType PieceType describes to which PieceType promotion should be made
+     * @return
+     * @throws GameNotExistException when Game with given Game id does not exist
+     * @throws InvalidRequiredArgumentException
+     */
     public MoveResponseDTO promote(Long gameId, PlayerEntity playerEntity, Piece.PieceType pieceType) throws GameNotExistException, InvalidRequiredArgumentException {
         synchronized (gamesMap) {
             Game game = getGameFromGames(gameId);
@@ -232,6 +246,14 @@ public class GameService {
         }
     }
 
+    /**
+     * Makes bot move in game.
+     *
+     * @param gameId Id of the Game in which bot move should be made.
+     * @throws GameNotExistException when Game with given Game id does not exist
+     * @throws NotPlayerTurnException when its not Bot turn to move
+     * @throws GameHasFinishedException when game with given id has finished
+     */
     public void makeMoveBot(Long gameId) throws GameNotExistException, NotPlayerTurnException, GameHasFinishedException {
         synchronized (gamesMap) {
             Game game = getGameFromGames(gameId);
@@ -297,11 +319,27 @@ public class GameService {
         }
     }
 
+    /**
+     * Returns move update.
+     *
+     * @param gameId for which updated is wanted
+     * @param updateId id of the move update
+     * @return MoveUpdateDTO describing update
+     */
     public MoveUpdateDTO getUpdate(Long gameId, Integer updateId) {
         List<MoveUpdateDTO> updateList = updates.get(gameId);
         return updateList.get(updateId);
     }
 
+    /**
+     * Returns info about game.
+     *
+     * @param gameId id of the game
+     * @param playerEntity PlayerEntity describes Player who wants to get game info.
+     * @return GameInfoDTO describing game
+     * @throws GameNotExistException when Game with given Game id does not exist
+     * @throws InvalidRequiredArgumentException
+     */
     public GameInfoDTO getGameInfo(Long gameId, PlayerEntity playerEntity) throws GameNotExistException, InvalidRequiredArgumentException {
         checkForFinishedTimer(gameId);
         synchronized (gamesMap) {
@@ -325,8 +363,15 @@ public class GameService {
 
     }
 
+    /**
+     * Sets result for game.
+     *
+     * @param gameId id of game
+     * @param result result of game
+     * @throws GameNotExistException when Game with given Game id does not exist
+     */
     public void setResultForGame(Long gameId, Result result) throws GameNotExistException {
-        synchronized (gamesMap){
+        synchronized (gamesMap) {
             Game game = getGameFromGames(gameId);
             game.setResult(result);
         }
@@ -338,11 +383,6 @@ public class GameService {
         if (opponent != null) {
             opponentUsername = opponent.getUser().getUsername();
         }
-//        if (opponent != null && opponent.getPlayerType() == PlayerType.BOT) {
-//            opponentUsername = "BOT";
-//        } else if (opponent != null && opponent.getUser() != null) {
-//            opponentUsername = opponent.getUser().getUsername();
-//        }
         return opponentUsername;
     }
 
@@ -354,7 +394,15 @@ public class GameService {
         gameRepository.save(gameEntity);
     }
 
-
+    /**
+     * Returns left time for player.
+     *
+     * @param gameId id of game
+     * @param playerEntity PlayerEntity describes player
+     * @return Time left in game for player
+     * @throws GameNotExistException when Game with given Game id does not exist
+     * @throws InvalidRequiredArgumentException
+     */
     public Long getTimer(Long gameId, PlayerEntity playerEntity) throws GameNotExistException, InvalidRequiredArgumentException {
         synchronized (gamesMap) {
             Game game = getGameFromGames(gameId);
@@ -363,6 +411,12 @@ public class GameService {
         }
     }
 
+    /**
+     * Returns list of all unfinished game for player
+     *
+     * @param playerEntity PlayerEntity describes player
+     * @return List of all unfinished games for player
+     */
     public List<GameEntity> getAllUnfinishedGamesForPlayer(PlayerEntity playerEntity) {
         Iterable<GameEntity> games = gameRepository.findAll();
         List<GameEntity> gamesToReturn = new LinkedList<>();

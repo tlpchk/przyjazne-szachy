@@ -20,7 +20,12 @@ public class PlayerController {
     @Autowired
     PlayerService playerService;
 
-    //TODO RS: add checking for started game
+    /**
+     * Creates new Player
+     *
+     * @param createPlayerDTO describes newPlayer parameters.
+     * @return Id of newly created player.
+     */
     @RequestMapping(method = RequestMethod.POST)
     public Long createPlayer(@RequestBody CreatePlayerDTO createPlayerDTO) {
         String username;

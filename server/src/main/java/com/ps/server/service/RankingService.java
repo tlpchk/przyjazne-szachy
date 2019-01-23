@@ -22,6 +22,13 @@ public class RankingService {
     @Autowired
     private RankingRepository rankingRepository;
 
+    /**
+     * Return paginated Ranking
+     *
+     * @param page number of ranking page
+     * @param size number of records per page
+     * @return Page of ranking described by params
+     */
     public Page<RankingEntity> findPaginated(Integer page, Integer size) {
         Pageable pageable = PageRequest.of(page, size);
         int pageSize = pageable.getPageSize();
@@ -44,6 +51,13 @@ public class RankingService {
         return rankingEntityPage;
     }
 
+    /**
+     * Returns info about user.
+     *
+     * @param username Username of user for whom info should be returned
+     * @return UserDetailsDTO describing info about user
+     * @throws UserNotFoundException when there is no User with given username
+     */
     public UserDetailsDTO getUserDetails(String username) throws UserNotFoundException {
         RankingEntity rankingEntity = rankingRepository.findByUser(username);
         UserDetailsDTO userDetailsDTO = new UserDetailsDTO();

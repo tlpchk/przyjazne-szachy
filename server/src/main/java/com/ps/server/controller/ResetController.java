@@ -2,11 +2,8 @@ package com.ps.server.controller;
 
 import com.ps.server.dto.LoginResponseDTO;
 import com.ps.server.dto.ResetPasswordDTO;
-import com.ps.server.dto.UserDTO;
 import com.ps.server.entity.UserEntity;
-import com.ps.server.exception.EmailNotAvailableException;
 import com.ps.server.exception.UserNotFoundException;
-import com.ps.server.exception.UsernameNotAvailableException;
 import com.ps.server.service.EmailService;
 import com.ps.server.service.TokenService;
 import com.ps.server.service.UserService;
@@ -28,11 +25,24 @@ public class ResetController {
     @Autowired
     private EmailService emailService;
 
+    /**
+     * Verifies reset token.
+     *
+     * @param token to be verified
+     * @return true when token is valid, false otherwise
+     */
     @RequestMapping(method = RequestMethod.GET)
     public boolean verifyResetToken(@RequestParam(name = "token") String token) {
         return tokenService.checkResetToken(token);
     }
 
+    /**
+     * Sends password reset mail.
+     *
+     * @param email on which mail should be sent
+     * @param request
+     * @return true if mail was valid, false otherwise
+     */
     @RequestMapping(method = RequestMethod.POST)
     public boolean sendMail(@RequestBody String email, HttpServletRequest request) {
         try {
@@ -45,6 +55,13 @@ public class ResetController {
         }
     }
 
+    /**
+     * Resets password for user.
+     *
+     * @param resetPasswordDTO describes new password.
+     * @param request
+     * @return true when success, false otherwise
+     */
     @RequestMapping(value = "/change", method = RequestMethod.POST)
     public LoginResponseDTO resetPassword(@RequestBody ResetPasswordDTO resetPasswordDTO, HttpServletRequest request) {
         String message = "OK!";

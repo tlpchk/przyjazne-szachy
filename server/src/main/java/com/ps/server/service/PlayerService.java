@@ -34,6 +34,14 @@ public class PlayerService {
     @Autowired
     private GameService gameService;
 
+    /**
+     * Creates new player
+     *
+     * @param username   Username of user for who player should be created
+     * @param color      Color of Player
+     * @param playerType Type of Player
+     * @return PlayerEntity describing Player
+     */
     public PlayerEntity createNewPlayer(String username, Color color, PlayerType playerType) {
         PlayerEntity newPlayer = new PlayerEntity();
         if (username != null) {
@@ -82,6 +90,12 @@ public class PlayerService {
         return player;
     }
 
+    /**
+     * Returns user for given Player
+     *
+     * @param playerEntity PlayerEntity describes player
+     * @return UserEntity describing user
+     */
     public UserEntity getUserForPlayer(PlayerEntity playerEntity) {
         return playerEntity.getUser();
     }
@@ -106,13 +120,19 @@ public class PlayerService {
             } else {
                 result = Result.SECOND_PLAYER_WON;
             }
-            gameService.setResultForGame(g.getId(),result);
+            gameService.setResultForGame(g.getId(), result);
         }
     }
 
+    /**
+     * Terminates all games for given User
+     *
+     * @param userEntity UserEntity describes User
+     * @throws GameNotExistException when games for user not exist
+     */
     public void finishAllGamesForUser(UserEntity userEntity) throws GameNotExistException {
         List<PlayerEntity> players = getPlayersForUser(userEntity);
-        for(PlayerEntity p : players){
+        for (PlayerEntity p : players) {
             finishAllGamesForPlayer(p);
         }
     }

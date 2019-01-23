@@ -19,6 +19,14 @@ public class MoveService {
     @Autowired
     private MoveRepository moveRepository;
 
+    /**
+     * Saves move in database
+     *
+     * @param game Game for which Move should be saved
+     * @param player Player who made Move
+     * @param origin Origin of Move
+     * @param destination Destination of Move
+     */
     public void persistMove(GameEntity game, PlayerEntity player, Position origin, Position destination) {
         MoveEntity moveEntity = new MoveEntity();
         moveEntity.setCreationDate(new Timestamp(new Date().getTime()));

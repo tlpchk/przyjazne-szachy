@@ -15,6 +15,12 @@ public class TokenService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    /**
+     * Checks verify token
+     *
+     * @param token token to be verified
+     * @return true when token was valid, false otherwise
+     */
     public boolean checkVerifyToken(String token) {
         UserEntity userEntity = userRepository.findByVerificationToken(token);
         if (userEntity != null) {
@@ -26,6 +32,12 @@ public class TokenService {
         return false;
     }
 
+    /**
+     * Checks reste token
+     *
+     * @param token token to be checked
+     * @return true when token is valid, false otherwise
+     */
     public boolean checkResetToken(String token) {
         UserEntity userEntity = userRepository.findByResetToken(token);
         if (userEntity != null) {
@@ -34,7 +46,14 @@ public class TokenService {
         return false;
     }
 
-    public boolean changePassword(String token, String password){
+    /**
+     * Changes password to new password with given token.
+     *
+     * @param token    token for password change
+     * @param password new password
+     * @return true if success, false oterwise
+     */
+    public boolean changePassword(String token, String password) {
         UserEntity userEntity = userRepository.findByResetToken(token);
         if (userEntity != null) {
             userEntity.setIsActive(true);

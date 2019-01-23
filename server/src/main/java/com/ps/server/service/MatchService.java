@@ -24,6 +24,12 @@ public class MatchService {
     private final short DRAWER_POINTS = 1;
     private final short LOSER_POINTS = 0;
 
+    /**
+     * Saves final result for Game
+     *
+     * @param gameEntity GameEntity describes game for which result is saved
+     * @param result Result of game
+     */
     public void saveResultForGameEntity(GameEntity gameEntity, Result result) {
         MatchEntity firstPlayerMatch = new MatchEntity();
         MatchEntity secondPlayerMatch = new MatchEntity();

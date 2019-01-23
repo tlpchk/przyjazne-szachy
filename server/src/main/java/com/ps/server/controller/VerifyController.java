@@ -14,6 +14,12 @@ public class VerifyController {
     @Autowired
     private TokenService tokenService;
 
+    /**
+     * Verifies email token and activates account.
+     *
+     * @param token to be verified
+     * @return true when success, false otherwise
+     */
     @RequestMapping(method = RequestMethod.GET)
     public boolean verifyEmail(@RequestParam(name = "token") String token) {
         return tokenService.checkVerifyToken(token);

@@ -22,6 +22,11 @@ public class EmailService {
     }
 
 
+    /**
+     * Sends verification email
+     * @param user for which email should be sent
+     * @param appUrl url of app
+     */
     public void sendVerificationEmail(UserEntity user, String appUrl) {
         SimpleMailMessage verificationEmail = new SimpleMailMessage();
         verificationEmail.setFrom(FROM);
@@ -32,6 +37,12 @@ public class EmailService {
         sendEmail(verificationEmail);
     }
 
+    /**
+     * Sends password reset email
+     *
+     * @param user for which email should be sent
+     * @param appUrl url of app
+     */
     public void sendPasswordResetEmail(UserEntity user, String appUrl) {
         SimpleMailMessage passwordResetEmail = new SimpleMailMessage();
         passwordResetEmail.setFrom(FROM);

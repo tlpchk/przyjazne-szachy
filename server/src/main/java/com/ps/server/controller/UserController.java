@@ -37,6 +37,12 @@ public class UserController {
     private RankingService rankingService;
 
 
+    /**
+     * Log in user.
+     *
+     * @param userDTO describes user to be logged in
+     * @return LoginResponseDTO which contains info about success or fail
+     */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public LoginResponseDTO loginUser(@RequestBody UserDTO userDTO) {
         String message = "Hello!";
@@ -56,6 +62,13 @@ public class UserController {
     }
 
 
+    /**
+     * Registers user.
+     *
+     * @param userDTO describes user to be registered
+     * @param request
+     * @return LoginResponseDTO which contains info about success or fail
+     */
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public LoginResponseDTO registerPlayer(@RequestBody UserDTO userDTO, HttpServletRequest request) {
         String message = "Hello!";
@@ -75,11 +88,25 @@ public class UserController {
         return response;
     }
 
+    /**
+     * Reterns info about user.
+     *
+     * @param username username of user
+     * @return UserDetailsDTO which contains info about user
+     * @throws UserNotFoundException when there is no user with given username
+     */
     @RequestMapping(value = "/user", method = RequestMethod.POST)
     public UserDetailsDTO getUserInfo(@RequestBody String username) throws UserNotFoundException {
         return rankingService.getUserDetails(username);
     }
 
+    /**
+     * Logouts user and finished all his started games.
+     *
+     * @param username username of user
+     * @throws UserNotFoundException when there is no user with given username
+     * @throws GameNotExistException when there is no game for user
+     */
     @RequestMapping(value = "/bye", method = RequestMethod.POST)
     public void logoutUser(@RequestBody String username) throws UserNotFoundException, GameNotExistException {
         UserEntity userEntity = userService.findByUsername(username);

@@ -23,9 +23,16 @@ public class RankingController {
     @Autowired
     private RankingService service;
 
+    /**
+     * Returns ranking in paginated way.
+     *
+     * @param page number of page from ranking
+     * @param size number of records per page
+     * @return List of RankingEntity for given parameters
+     */
     @RequestMapping(params = {"page", "size"}, method = RequestMethod.GET)
     public List<RankingEntity> findPaginated(
-            @RequestParam("page")Optional<Integer> page, @RequestParam("size")Optional<Integer> size) {
+            @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size) {
 
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(5);
@@ -33,12 +40,6 @@ public class RankingController {
         Page<RankingEntity> resultPage = service.findPaginated(currentPage - 1, pageSize);
 
         int totalPages = resultPage.getTotalPages();
-//        if (totalPages > 0) {
-//            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
-//                    .boxed()
-//                    .collect(Collectors.toList());
-//            model.addAttribute("pageNumbers", pageNumbers);
-//        }
 
 
         if (page.get() > resultPage.getTotalPages()) {

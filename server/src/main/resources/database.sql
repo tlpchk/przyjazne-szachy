@@ -35,20 +35,19 @@ CREATE TABLE IF NOT EXISTS `move` (
   COLLATE = utf16_polish_ci;
 
 CREATE TABLE IF NOT EXISTS `user` (
-  `id`          int(11)                              NOT NULL AUTO_INCREMENT,
-  `nick`        varchar(64) COLLATE utf16_polish_ci  NOT NULL,
-  `e_mail`      varchar(128) COLLATE utf16_polish_ci,
-  `password`    varchar(128) COLLATE utf16_polish_ci NOT NULL DEFAULT '0',
-  `is_active`   bool                                          DEFAULT FALSE,
+  `id`                 int(11)                              NOT NULL AUTO_INCREMENT,
+  `nick`               varchar(64) COLLATE utf16_polish_ci  NOT NULL,
+  `e_mail`             varchar(128) COLLATE utf16_polish_ci,
+  `password`           varchar(128) COLLATE utf16_polish_ci NOT NULL DEFAULT '0',
+  `is_active`          bool                                          DEFAULT FALSE,
   `verification_token` VARCHAR(255),
-  `reset_token` VARCHAR(255),
+  `reset_token`        VARCHAR(255),
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
   AUTO_INCREMENT = 2
   DEFAULT CHARSET = utf16
   COLLATE = utf16_polish_ci;
-
 
 
 CREATE TABLE IF NOT EXISTS `player` (
@@ -185,9 +184,9 @@ CREATE TRIGGER `TR_game_after_update`
 DELIMITER ;
 
 # password: noname
-INSERT INTO `user` (`nick`, `password`)
-VALUES ("noname", "$2a$10$rEPSup5zQg2RdJ32hn6Ud.bKTghrKrbYZ4zmBRB1sY8oiXiYsECFy");
+INSERT INTO `user` (`nick`, `password`, `is_active`)
+VALUES ("noname", "$2a$10$rEPSup5zQg2RdJ32hn6Ud.bKTghrKrbYZ4zmBRB1sY8oiXiYsECFy", TRUE);
 
 # password: bot
-INSERT INTO `user` (`nick`, `password`)
-VALUES ("bot", "$2a$10$0Y0mJx7gIx6/2Cyc4TkUne6T8.S1cHD3BcGMICsecvr2rqA6OMjv2");
+INSERT INTO `user` (`nick`, `password`, `is_active`)
+VALUES ("bot", "$2a$10$0Y0mJx7gIx6/2Cyc4TkUne6T8.S1cHD3BcGMICsecvr2rqA6OMjv2", TRUE);
