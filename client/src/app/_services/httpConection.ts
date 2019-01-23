@@ -19,6 +19,8 @@ export const resetUrl = 'http://localhost:8080/reset';
 /** @ignore*/
 export const changeUrl = 'http://localhost:8080/reset/change';
 /** @ignore*/
+export const rankingUrl = 'http://localhost:8080/ranking';
+/** @ignore*/
 export const  moveSubUrl = '/move';
 /** @ignore*/
 export const  boardSubUrl = '/board';
@@ -32,9 +34,6 @@ export const  promotionSubUrl = '/promote';
 export const joinSubUrl = "/join";
 /** @ignore*/
 export const timerSubUrl = '/timer';
-
-
-
 
 
 /** @ignore*/

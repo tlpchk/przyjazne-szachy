@@ -5,6 +5,7 @@ import {HomeComponent} from "./home/home.component";
 import {UserComponent} from "./user.component";
 import {AuthGuard} from "./auth.guard";
 import {ProfileComponent} from './profile/profile.component';
+import {RankingComponent} from "./ranking/ranking.component";
 
 
 const routes: Routes = [
@@ -27,6 +28,11 @@ const routes: Routes = [
             {
                 path: 'profile',
                 component: ProfileComponent,
+                canActivate: [AuthGuard]
+            },
+            {
+                path: 'ranking',
+                component: RankingComponent,
                 canActivate: [AuthGuard]
             },
         ]

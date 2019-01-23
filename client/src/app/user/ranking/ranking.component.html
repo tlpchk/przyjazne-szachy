@@ -1,0 +1,21 @@
+<table *ngIf="loading !== ''" id="ranking">
+  <tr>
+    <th>Position</th>
+    <th>Nick</th>
+    <th>Score</th>
+    <th>Won</th>
+    <th>Lost</th>
+    <th>Draw</th>
+  </tr>
+
+  <tr *ngFor="let record of ranking">
+      <td>{{record.position}}</td>
+      <td>{{record.user}}</td>
+      <td>{{record.score}}</td>
+      <td>{{record.numberOfWonGames}}</td>
+      <td>{{record.numberOfLostGames}}</td>
+      <td>{{record.numberOfDrawGames}}</td>
+  </tr>
+
+</table>
+
