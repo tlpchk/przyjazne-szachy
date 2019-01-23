@@ -1,11 +1,11 @@
-<table *ngIf="loading !== ''" id="ranking">
+<table *ngIf="loading == ''" id="ranking">
   <tr>
-    <th>Position</th>
+    <th>Pozycja</th>
     <th>Nick</th>
-    <th>Score</th>
-    <th>Won</th>
-    <th>Lost</th>
-    <th>Draw</th>
+    <th>Punkty</th>
+    <th>Wygrane</th>
+    <th>Przegrane</th>
+    <th>Remis</th>
   </tr>
 
   <tr *ngFor="let record of ranking">

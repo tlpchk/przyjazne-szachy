@@ -68,3 +68,12 @@ export class User {
         this.email = email;
     }
 }
+/**@ignore*/
+export interface RankingRecord{
+    position: number;
+    user: string;
+    score: number;
+    numberOfWonGames;
+    numberOfLostGames;
+    numberOfDrawGames
+}
