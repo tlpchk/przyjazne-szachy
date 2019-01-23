@@ -1,5 +1,6 @@
 import {Color} from './color';
 
+/** Dostępne typy figurek */
 export enum PieceType {
     PAWN = 'pawn',
     ROOK = 'rook',
@@ -9,8 +10,16 @@ export enum PieceType {
     KING = 'king'
 }
 
+/** Klasa do wyświetlenia figurki*/
 export class Piece {
-    constructor(public type: PieceType,
-                public color: Color) {
+    /** Typ figurki*/
+    public type: PieceType;
+    /** Kolor figurki*/
+    public color: Color;
+
+    /** @ignore*/
+    constructor(type: PieceType, color: Color) {
+        this.type = type;
+        this.color = color;
     }
 }

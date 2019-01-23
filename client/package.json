@@ -7,7 +7,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "compodoc": "npx compodoc -p src/tsconfig.app.json"
   },
   "private": true,
   "dependencies": {
@@ -34,7 +35,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.12.2",
-    "@angular/cli": "^6.2.9",
+    "@angular/cli": "^7.2.2",
     "@angular/compiler-cli": "^7.2.1",
     "@angular/language-service": "^6.1.0",
     "@types/jasmine": "^2.8.12",

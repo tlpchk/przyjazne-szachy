@@ -1,9 +1,39 @@
 <div>
     <h1> Zaprzyjaźnij się z szachami!</h1>
     <nav>
-        <ul>
-            <li><a (click)="createNewCompetitionGame()" routerLink="/user/board">Nowa gra(Człowiek vs. Człowiek)</a></li>
-            <li><a (click)="createNewBotGame()" routerLink="/user/board">Nowa gra(Człowiek vs. Bot)</a></li>
+        <ul class="fa-ul">
+            <li (click)="botGame = false">
+                <span class="fa-li" ><i class="material-icons">face</i></span>
+                Nowa gra(Człowiek vs. Człowiek)
+            </li>
+
+            <ul *ngIf="botGame == false" class="fa-ul">
+                <li>
+                    <span class="fa-li" ><i class="material-icons">trending_up</i></span>
+                    <a (click)="createNewCompetitionGame(true)" routerLink="/user/board">Gra Rankingowa</a>
+                </li>
+                <li>
+                    <span class="fa-li" ><i class="material-icons">trending_flat</i></span>
+                    <a (click)="createNewCompetitionGame(false)" routerLink="/user/board">Gra Nierankingowa</a>
+                </li>
+            </ul>
+            <li (click)="botGame = true">
+                <span class="fa-li" ><i class="material-icons">computer</i></span>
+                Nowa gra(Człowiek vs. Bot)
+            </li>
+
+            <ul class *ngIf="botGame == true" class="fa-ul">
+                <li>
+
+                    <span class="fa-li" ><i class="material-icons">trending_up</i></span>
+                    <a (click)="createNewBotGame(true)" routerLink="/user/board">Gra Rankingowa</a>
+                </li>
+                <li>
+
+                    <span class="fa-li" ><i class="material-icons">trending_flat</i></span>
+                    <a (click)="createNewBotGame(false)" routerLink="/user/board">Gra Nierankingowa</a>
+                </li>
+            </ul>
         </ul>
     </nav>
 
@@ -11,5 +41,5 @@
     <ul *ngIf="gameList">
         <li *ngFor="let game of gameList">{{game}} <button (click)="joinGame(game)" routerLink="/user/board">Dołącz</button></li>
     </ul>
-    <p *ngIf="!gameList">Brak gier</p>
+    <p *ngIf="gameList.length == 0">Brak gier</p>
 </div>

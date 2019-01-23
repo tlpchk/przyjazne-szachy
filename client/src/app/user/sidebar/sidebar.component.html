@@ -1,7 +1,7 @@
 <nav>
   <ul>
     <li>
-      <a routerLink="/user/home" (click)="clearMessages()">
+      <a routerLink="/user/home">
         <i class="material-icons">
           home
         </i>
@@ -22,7 +22,7 @@
       </a>
     </li>
     <li>
-      <a routerLink="/auth/login" (click)="logout()">
+      <a (click)="logout()" routerLink="/auth/login">
         <i class="material-icons">
           meeting_room
         </i>

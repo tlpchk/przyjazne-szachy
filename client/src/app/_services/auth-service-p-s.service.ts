@@ -1,96 +1,101 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http'
+import {Injectable, OnInit} from '@angular/core';
+import {HttpClient} from '@angular/common/http'
 import {Observable, of} from "rxjs";
-import {AuthService, GoogleLoginProvider} from 'angularx-social-login';
-import {SocialUser} from 'angularx-social-login';
-import {validate} from "codelyzer/walkerFactory/walkerFn";
+import {
+    authResponse,
+    httpOptions,
+    loginUrl,
+    logoutUrl,
+    profileUrl,
+    registerUrl,
+    User,
+    UserDetails
+} from "./httpConection";
 
-
-const httpOptions = {
-    headers: new HttpHeaders({'Content-Type': 'application/json'})
-};
-
-
-interface myData {
-    success: boolean;
-    message: string;
-}
-
-interface UserDetails {
-    username: string;
-    games: number;
-    wonGames: number;
-    lostGames: number;
-    drawGames: number;
-}
-
-class User {
-    username: string;
-    password: string;
-    email: string;
-}
-
+/** Serwis służący do logowania i rejestracji*/
 @Injectable()
-export class AuthServicePS {
-    public username = "";
-    public password = "";
-    private loginUrl = 'http://localhost:8080/login';
-    private logoutUrl = 'http://localhost:8080/bye';
-    private registerUrl = 'http://localhost:8080/register';
-    private loggedInStatus = false;
-    private profileUrl = 'http://localhost:8080/user';
+export class AuthServicePS implements OnInit{
+    /** Obecnie zalogowany użytkownik*/
+    public currentUser: User;
+    /** Status zalogowania*/
+    private loggedInStatus : boolean;
 
+    /** Ustawia początkowy status logowania*/
+    ngOnInit(): void {
+         this.loggedInStatus = false;
+    }
+
+    /** @ignore*/
     constructor(private http: HttpClient) {
     }
 
+    /**
+     * Ustawia status zalogowania
+     * @param value status zalogowania
+     */
     setLoggedIn(value: boolean) {
         this.loggedInStatus = value;
     }
 
-    get isLoggedIn() {
-        return this.loggedInStatus;
+    /**
+     * Przesyła dane logowania do serwera
+     * @param username username użytkownika
+     * @param password hasło użytkownika
+     */
+    logInUser(username, password): Observable<authResponse> {
+        this.currentUser = new User(username,password);
+        return this.http.post<authResponse>(loginUrl, this.currentUser, httpOptions);
     }
 
-    logOutUser() {
-        console.log("BYE");
-        this.http.post<Object>(this.logoutUrl, this.username, httpOptions);
+    /**
+     * Procedura wylogowania się
+     */
+    logOutUser(): Observable<Object> {
+        this.setLoggedIn(false);
+        return this.http.post<Object>(logoutUrl, this.currentUser.username, httpOptions);
     }
 
-
-    logInUser(username, password): Observable<myData> {
-        let user = new User();
-        user.username = username;
-        user.password = password;
-        return this.http.post<myData>(this.loginUrl, user, httpOptions);
-    }
-
+    /**
+     * Walidacja adresu skrzyńki pocztowej
+     * @param email skrzyńka pocztowa
+     */
     validateEmail(email: string): boolean {
-        let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(String(email).toLowerCase());
     }
 
-    registerUser(username: string, email: string, password: string, passwordConfirmation: string): Observable<myData> {
-        let newUser = new User();
-        newUser.username = username;
-        newUser.password = password;
-        newUser.email = email;
+    /**
+     * Przesyła dane rejestracji do serwera
+     * @param username nazwa użytkownika
+     * @param email skrzyńka pocztowa
+     * @param password hasło
+     * @param passwordConfirmation hasło weryfikacyjne
+     */
+    registerUser(username: string, email: string, password: string, passwordConfirmation: string): Observable<authResponse> {
+        this.currentUser = new User(username, password, email);
         if (password != passwordConfirmation) {
-            return of(<myData>{
+            return of(<authResponse>{
                 success: false,
                 message: "Confirm password error"
             })
         } else if (!this.validateEmail(email)) {
-            return of(<myData>{
+            return of(<authResponse>{
                 success: false,
                 message: "False email"
             })
-        }
-        else {
-            return this.http.post<myData>(this.registerUrl, newUser, httpOptions);
+        } else {
+            return this.http.post<authResponse>(registerUrl, this.currentUser, httpOptions);
         }
     }
 
+    /**
+     * Pobiera dane o użytkownku z serweru
+     */
     getUserData(): Observable<UserDetails> {
-        return this.http.post<UserDetails>(this.profileUrl, this.username, httpOptions);
+        return this.http.post<UserDetails>(profileUrl, this.currentUser.username, httpOptions);
+    }
+
+    get isLoggedIn() {
+        return this.loggedInStatus;
     }
 }

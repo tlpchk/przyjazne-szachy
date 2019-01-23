@@ -15,7 +15,7 @@ interface myData {
     success: boolean;
     message: string;
 }
-
+/** Serwis, śłużący do weryfikacji użytkownika*/
 @Injectable({
     providedIn: 'root'
 })
@@ -25,14 +25,20 @@ export class TokenService {
     private resetUrl = 'http://localhost:8080/reset';
     private changeUrl = 'http://localhost:8080/reset/change';
 
+    /** @ignore*/
     constructor(private http: HttpClient) {
     }
-
+    /** Weryfikować użytkownika
+     *@param token token weryfikacji
+     */
     verifyUser(token: string): Observable<boolean> {
         let params = new HttpParams().set('token', token);
         return this.http.get<boolean>(this.verifyUrl, {params});
     }
 
+    /** Resetowanie
+     * @param token token weryfikacji
+     */
     checkResetToken(token: string): Observable<boolean> {
         let params = new HttpParams().set('token', token);
         return this.http.get<boolean>(this.resetUrl, {params});

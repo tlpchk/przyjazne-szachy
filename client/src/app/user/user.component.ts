@@ -1,6 +1,7 @@
 import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {PopupComponent} from './popup/popup.component';
+import {AuthServicePS} from "../_services/auth-service-p-s.service";
 
 @Component({
   selector: 'app-user',
@@ -9,10 +10,22 @@ import {PopupComponent} from './popup/popup.component';
 })
 export class UserComponent implements OnInit {
 
-  constructor() { }
+  constructor( private auth: AuthServicePS) { }
 
   ngOnInit() {
-
+    const userComponent = this;
+      window.onbeforeunload = function() {
+      userComponent.auth.logOutUser().subscribe(response => {
+        console.log('Loged out')
+      });
+    };
+    window.onclose = function() {
+      userComponent.auth.logOutUser().subscribe(response => {
+          console.log('Loged out')
+      });
+    };
   }
+
+
 
 }

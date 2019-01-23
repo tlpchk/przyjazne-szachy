@@ -1,15 +1,12 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Cell} from '../../_models/cell';
 import {BoardService} from '../../_services/board.service';
-import {ChangeDTO} from '../../_models/changeDTO';
+import {ChangeDTO} from '../../DTO/changeDTO';
 import {CoordinatesAdapterService} from '../../_services/coordinates-adapter.service';
 import {Piece, PieceType} from '../../_models/piece';
 import {PopupComponent} from '../popup/popup.component';
-import {Result} from '../../_models/gameInfoDTO';
+import {Result} from '../../DTO/gameInfoDTO';
 import {Move} from '../../_models/move';
-import {combineAll} from 'rxjs/operators';
-import {error} from '@angular/compiler/src/util';
-import {TimeInterval} from 'rxjs';
 import {TimerService} from "../../_services/timer.service";
 import {Color} from "../../_models/color";
 
@@ -44,11 +41,6 @@ export class BoardComponent implements OnInit {
         this.move = new Move();
         this.selectedCell = null;
         this.timerService.startTimer();
-
-        /*if (this.board.length === 0) {
-            this.popup.routerLink = '/user/home';
-            this.popup.show('Stwórz nową grę');
-        }*/
     }
 
     onSelect(cell: Cell) {
@@ -93,16 +85,17 @@ export class BoardComponent implements OnInit {
                 if (boardComponent.result == null) {
                     boardComponent.getGameInfo();
                 } else {
-                    boardComponent.showEndGameMessage(boardComponent);
+                    boardComponent.showEndGameMessage();
                     boardComponent.resetUpdator();
                 }
             }, 500);
         });
     }
 
-    private showEndGameMessage(boardComponent: BoardComponent) {
+
+    private showEndGameMessage() {
         let resultText;
-        switch (boardComponent.result) {
+        switch (this.result) {
             case Result.first_player_won:
                 resultText = "Wygrały białe";
                 break;
@@ -113,7 +106,7 @@ export class BoardComponent implements OnInit {
                 resultText = "Remis";
                 break;
         }
-        boardComponent.popup.showMessage(resultText);
+        this.popup.showMessage(resultText);
     }
 
     getBoard(): void {
