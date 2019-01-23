@@ -1,28 +1,14 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Observable, of} from "rxjs";
-import {changeUrl, resetUrl, verifyUrl} from "./httpConection";
+import {authResponse, changeUrl, httpOptions, PasswordReset, resetUrl, verifyUrl} from "./httpConection";
 
-const httpOptions = {
-    headers: new HttpHeaders({'Content-Type': 'application/json'})
-};
-
-class PasswordReset {
-    token: string;
-    password: string;
-}
-
-interface myData {
-    success: boolean;
-    message: string;
-}
 
 /** Serwis, śłużący do weryfikacji użytkownika*/
 @Injectable({
     providedIn: 'root'
 })
 export class TokenService {
-
 
     /** @ignore*/
     constructor(private http: HttpClient) {
@@ -44,21 +30,23 @@ export class TokenService {
         return this.http.get<boolean>(resetUrl, {params});
     }
 
-    changePassword(token: string, password: string, passwordConfirmation: string): Observable<myData> {
+    /** Zmiana hasła*/
+    changePassword(token: string, password: string, passwordConfirmation: string): Observable<authResponse> {
         let passReset = new PasswordReset();
         passReset.token = token;
         passReset.password = password;
         if (password != passwordConfirmation) {
-            return of(<myData>{
+            return of(<authResponse>{
                 success: false,
                 message: "Confirm password error"
             })
         }
         else {
-            return this.http.post<myData>(changeUrl, passReset, httpOptions);
+            return this.http.post<authResponse>(changeUrl, passReset, httpOptions);
         }
     }
 
+    /** Wysyłanie potwierdzenie zmiany hasła na maila*/
     sendResetMail(email: string): Observable<boolean> {
         return this.http.post<boolean>(resetUrl, email, httpOptions);
     }

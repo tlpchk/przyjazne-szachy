@@ -17,9 +17,9 @@ export const verifyUrl = 'http://localhost:8080/verify';
 /** @ignore*/
 export const resetUrl = 'http://localhost:8080/reset';
 /** @ignore*/
-export const changeUrl = 'http://localhost:8080/reset/change';
-/** @ignore*/
 export const rankingUrl = 'http://localhost:8080/ranking';
+/** @ignore*/
+export const changeUrl = 'http://localhost:8080/reset/change';
 /** @ignore*/
 export const  moveSubUrl = '/move';
 /** @ignore*/
@@ -54,6 +54,22 @@ export interface UserDetails {
     wonGames: number;
     lostGames: number;
     drawGames: number;
+}
+
+/** @ignore*/
+export interface RankingRecord{
+    position: number;
+    user: string;
+    score: number;
+    numberOfWonGames;
+    numberOfLostGames;
+    numberOfDrawGames
+}
+
+/** @ignore*/
+export class PasswordReset {
+    token: string;
+    password: string;
 }
 
 /** @ignore*/

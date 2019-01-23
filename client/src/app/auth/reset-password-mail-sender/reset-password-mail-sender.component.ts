@@ -2,22 +2,22 @@ import {Component, OnInit} from '@angular/core';
 import {TokenService} from "../../_services/token.service";
 import {Router} from "@angular/router";
 
+/** Komponent wyświetlający okno do wpisania emailu dla resetowania hasła*/
 @Component({
     selector: 'app-reset-password-mail-sender',
     templateUrl: './reset-password-mail-sender.component.html',
     styleUrls: ['./reset-password-mail-sender.component.css']
 })
-export class ResetPasswordMailSenderComponent implements OnInit {
-
+export class ResetPasswordMailSenderComponent {
+    /** Skrzyńka pocztowa*/
     email: string;
 
+    /** @ignore*/
     constructor(private tokenService: TokenService,
                 private router: Router) {
     }
 
-    ngOnInit() {
-    }
-
+    /** Wysyłanie nowego hasła na podany email*/
     sendResetMail() {
         this.tokenService.sendResetMail(this.email).subscribe(success => {
             if (success) {
