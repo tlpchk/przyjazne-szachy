@@ -38,7 +38,7 @@ public class PlayerService {
     }
 
     /**
-     * Returns Player with given {@param playerId}
+     * Returns Player with given playerId
      *
      * @param playerId Id of Player.
      * @return Player with given Id if such a Player exists, null otherwise (includes case when playerId is null).

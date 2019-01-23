@@ -125,7 +125,7 @@ public class GameService {
     }
 
     /**
-     * Joins {@param secondPlayer} to the Game with {@param gameId}
+     * Joins secondPlayer to the Game with gameId
      *
      * @param gameId             Id of the Game to join
      * @param secondPlayerEntity SecondPlayerEntity describes Player who wants to join the Game
@@ -159,10 +159,10 @@ public class GameService {
     }
 
     /**
-     * Returns GameEntity with given {@param gameId}
+     * Returns GameEntity with given gameId
      *
      * @param gameId Id of the Game
-     * @return GameEntity with given {@param gameId}, null if such a GameEntity does not exist
+     * @return GameEntity with given gameId, null if such a GameEntity does not exist
      */
     public GameEntity getGameEntity(Long gameId) {
         return gameRepository.findById(gameId).orElse(null);
@@ -178,8 +178,9 @@ public class GameService {
      * @param destination  Destination of the Move.
      * @return
      * @throws InvalidRequiredArgumentException when Player does not have playerType set
-     * @throws NotPlayerTurnException           when {@param playerEntity} wants to make Move when it is not its turn
+     * @throws NotPlayerTurnException           when playerEntity wants to make Move when it is not its turn
      * @throws GameNotExistException            when Game with given Game id does not exist
+     * @throws GameHasFinishedException         when Game with given Game id is finished
      */
     public MoveResponseDTO makeMove(Long gameId, PlayerEntity playerEntity, Position origin, Position destination) throws InvalidRequiredArgumentException, NotPlayerTurnException, GameNotExistException, GameHasFinishedException {
         synchronized (gamesMap) {

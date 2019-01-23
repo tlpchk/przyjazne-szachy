@@ -50,8 +50,8 @@ public class Game {
      * @param destination Destination of the Move.
      * @param player      Player who wants to make a Move.
      * @return List of Changes on Board, which occur after Move, e.g. PROMOTION.
-     * @throws NotPlayerTurnException when {@param Player} wants to make Move when it is not its turn
-     * @throws NotValidMoveException  when {@param Move} is not valid
+     * @throws NotPlayerTurnException when Player wants to make Move when it is not its turn
+     * @throws NotValidMoveException  when Move is not valid
      */
     public List<Change> makeMove(Position origin, Position destination, Player player) throws NotPlayerTurnException, NotValidMoveException, GameHasFinishedException {
         if (isPlayerTurn(player)) {
