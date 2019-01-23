@@ -61,6 +61,7 @@ public class GameService {
      *
      * @param firstPlayerEntity  FirstPlayerEntity describes first Player in Game.
      * @param secondPlayerEntity SecondPlayerEntity describes second Player in Game.
+     * @param isRanked describes if game should be ranked
      * @return Id of newly created Game.
      * @throws InvalidRequiredArgumentException when players do not have playerType set
      * @throws SamePlayerException              when firstPlayer is the same as secondPlayer (which means they have the same color)
@@ -126,7 +127,7 @@ public class GameService {
     }
 
     /**
-     * Joins {@param secondPlayer} to the Game with {@param gameId}
+     * Joins secondPlayer to the Game with gameId
      *
      * @param gameId             Id of the Game to join
      * @param secondPlayerEntity SecondPlayerEntity describes Player who wants to join the Game
@@ -161,10 +162,10 @@ public class GameService {
     }
 
     /**
-     * Returns GameEntity with given {@param gameId}
+     * Returns GameEntity with given gameId
      *
      * @param gameId Id of the Game
-     * @return GameEntity with given {@param gameId}, null if such a GameEntity does not exist
+     * @return GameEntity with given gameId, null if such a GameEntity does not exist
      */
     public GameEntity getGameEntity(Long gameId) {
         return gameRepository.findById(gameId).orElse(null);
@@ -178,10 +179,11 @@ public class GameService {
      * @param playerEntity PlayerEntity describes Player who wants to make Move.
      * @param origin       Origin of the Move.
      * @param destination  Destination of the Move.
-     * @return
+     * @return MoveResponseDTO
      * @throws InvalidRequiredArgumentException when Player does not have playerType set
-     * @throws NotPlayerTurnException           when {@param playerEntity} wants to make Move when it is not its turn
+     * @throws NotPlayerTurnException           when playerEntity wants to make Move when it is not its turn
      * @throws GameNotExistException            when Game with given Game id does not exist
+     * @throws GameHasFinishedException         when game has finished
      */
     public MoveResponseDTO makeMove(Long gameId, PlayerEntity playerEntity, Position origin, Position destination) throws InvalidRequiredArgumentException, NotPlayerTurnException, GameNotExistException, GameHasFinishedException {
         synchronized (gamesMap) {
@@ -226,12 +228,12 @@ public class GameService {
     /**
      * Promotes.
      *
-     * @param gameId Id of the Game in which promotion has to be made.
+     * @param gameId       Id of the Game in which promotion has to be made.
      * @param playerEntity PlayerEntity describes Player who wants to make promotion.
-     * @param pieceType PieceType describes to which PieceType promotion should be made
-     * @return
-     * @throws GameNotExistException when Game with given Game id does not exist
-     * @throws InvalidRequiredArgumentException
+     * @param pieceType    PieceType describes to which PieceType promotion should be made
+     * @return MoveResponseDTO
+     * @throws GameNotExistException            when Game with given Game id does not exist
+     * @throws InvalidRequiredArgumentException when
      */
     public MoveResponseDTO promote(Long gameId, PlayerEntity playerEntity, Piece.PieceType pieceType) throws GameNotExistException, InvalidRequiredArgumentException {
         synchronized (gamesMap) {
@@ -250,8 +252,8 @@ public class GameService {
      * Makes bot move in game.
      *
      * @param gameId Id of the Game in which bot move should be made.
-     * @throws GameNotExistException when Game with given Game id does not exist
-     * @throws NotPlayerTurnException when its not Bot turn to move
+     * @throws GameNotExistException    when Game with given Game id does not exist
+     * @throws NotPlayerTurnException   when its not Bot turn to move
      * @throws GameHasFinishedException when game with given id has finished
      */
     public void makeMoveBot(Long gameId) throws GameNotExistException, NotPlayerTurnException, GameHasFinishedException {
@@ -322,7 +324,7 @@ public class GameService {
     /**
      * Returns move update.
      *
-     * @param gameId for which updated is wanted
+     * @param gameId   for which updated is wanted
      * @param updateId id of the move update
      * @return MoveUpdateDTO describing update
      */
@@ -334,10 +336,10 @@ public class GameService {
     /**
      * Returns info about game.
      *
-     * @param gameId id of the game
+     * @param gameId       id of the game
      * @param playerEntity PlayerEntity describes Player who wants to get game info.
      * @return GameInfoDTO describing game
-     * @throws GameNotExistException when Game with given Game id does not exist
+     * @throws GameNotExistException            when Game with given Game id does not exist
      * @throws InvalidRequiredArgumentException
      */
     public GameInfoDTO getGameInfo(Long gameId, PlayerEntity playerEntity) throws GameNotExistException, InvalidRequiredArgumentException {
@@ -397,11 +399,11 @@ public class GameService {
     /**
      * Returns left time for player.
      *
-     * @param gameId id of game
+     * @param gameId       id of game
      * @param playerEntity PlayerEntity describes player
      * @return Time left in game for player
-     * @throws GameNotExistException when Game with given Game id does not exist
-     * @throws InvalidRequiredArgumentException
+     * @throws GameNotExistException            when Game with given Game id does not exist
+     * @throws InvalidRequiredArgumentException when
      */
     public Long getTimer(Long gameId, PlayerEntity playerEntity) throws GameNotExistException, InvalidRequiredArgumentException {
         synchronized (gamesMap) {
