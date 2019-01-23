@@ -12,6 +12,7 @@ import { PopupComponent } from './popup/popup.component';
 import { ProfileComponent } from './profile/profile.component';
 import { RankingComponent } from './ranking/ranking.component';
 
+
 @NgModule({
     imports: [
         CommonModule,

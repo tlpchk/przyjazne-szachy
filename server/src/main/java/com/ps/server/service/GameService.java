@@ -61,7 +61,6 @@ public class GameService {
      *
      * @param firstPlayerEntity  FirstPlayerEntity describes first Player in Game.
      * @param secondPlayerEntity SecondPlayerEntity describes second Player in Game.
-     * @param isRanked describes if game should be ranked
      * @return Id of newly created Game.
      * @throws InvalidRequiredArgumentException when players do not have playerType set
      * @throws SamePlayerException              when firstPlayer is the same as secondPlayer (which means they have the same color)

@@ -8,8 +8,14 @@ Aby zainstalować tę aplikację, uruchom następujące polecenia:
 	npm install --save angularx-social-login
 Aby uruchomić serwer, przejdź do folderu server i uruchom:
 
-    bash ./server.sh
+    ./mvnw spring-boot:run
+    
+Klient będzie znajdował się pod adresem:
 
-Aby uruchomić klienta, przejdź do folderu client i uruchom:
+    localhost:4200
+    
+    
+Deploy na Heroku:
 
-   	npm start
+    mvn clean heroku:deploy
+    heroku open

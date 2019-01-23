@@ -1,0 +1,13 @@
+com.ps.server
+com.ps.server.AI
+com.ps.server.Logic
+com.ps.server.Logic.Pieces
+com.ps.server.Logic.game
+com.ps.server.Logic.player
+com.ps.server.controller
+com.ps.server.dto
+com.ps.server.entity
+com.ps.server.enums
+com.ps.server.exception
+com.ps.server.repository
+com.ps.server.service
