@@ -5,23 +5,28 @@ import {AuthService, GoogleLoginProvider} from 'angularx-social-login';
 import {HttpClient} from '@angular/common/http';
 import {User} from "../../_services/httpConection";
 
+/** Komponent do wyświetlania strony zalogowania użytkownika*/
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['../auth.component.scss'],
 })
 export class LoginComponent{
-
+    /** Pole dla nazwy użytkownika*/
     username = '';
+    /** Pole dla hasła*/
     password = '';
+    /** Pole dla błędów*/
     error = '';
 
+    /** @ignore*/
     constructor(private auth: AuthServicePS,
                 private authSocial: AuthService,
                 private router: Router,
                 private http: HttpClient) {
     }
 
+    /** Wysyła informację użytkownika do serwisu*/
     loginUser() {
         this.auth.logInUser(this.username, this.password).subscribe(data => {
                 console.log(this.username, this.password);
@@ -37,6 +42,7 @@ export class LoginComponent{
         );
     }
 
+    /** Zalogowanie przez Google*/
     public signinWithGoogle () {
         const socialPlatformProvider = GoogleLoginProvider.PROVIDER_ID;
         console.log('sing in');
@@ -47,6 +53,8 @@ export class LoginComponent{
             }
         );
     }
+
+    /** Wysyłą informacje o zalogowaniu przez Google*/
     sendToRestApiMethod(token: string): void {
         this.http.post('http://localhost:8080/googlesingin', { token: token }).subscribe(onSuccess => {
         console.log('You are logged in with google'); // login was successful save
@@ -58,6 +66,8 @@ export class LoginComponent{
         }
     );
     }
+
+    /** Gra bez zalogowania*/
     noName() {
         this.username = 'noname';
         this.password = 'noname';

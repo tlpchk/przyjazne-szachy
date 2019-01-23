@@ -1,5 +1,6 @@
 import { SocialLoginModule, AuthServiceConfig, GoogleLoginProvider } from "angularx-social-login";
 
+/** Pobieranie configu dla logowania z innych sieci socjalnych*/
 export function getAuthServiceConfigs() {
     let config = new AuthServiceConfig([{
         id: GoogleLoginProvider.PROVIDER_ID,

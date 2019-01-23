@@ -7,43 +7,52 @@ import {Observable} from "rxjs";
 import {CreateGameDTO} from "../../DTO/createGameDTO";
 import {AuthServicePS} from "../../_services/auth-service-p-s.service";
 
-
+/** Kolor pierwszego gracza*/
 const firstPlayerColor = Color.white;
+/** Kolor drugiego gracza*/
 const secondPlayerColor = Color.black;
 
+
+/** Komponent służący do wyświetlania strony głównej użytkownika*/
 @Component({
     selector: 'app-start',
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
+    /** Flaga czy nowa gra będzie rankingowa*/
     isRanked: boolean;
+    /** Flaga czy nowa gra będzie z botem*/
     botGame: boolean;
+    /** Lista dostępnych gier*/
     gameList: number[];
     isLoggedUser: boolean;
 
+    /** @ignore*/
     constructor(private gameService: GameService,
                 private boardService: BoardService,
                 private authService: AuthServicePS) {
     }
 
+    /** @ignore*/
     ngOnInit() {
         this.isLoggedUser = (this.authService.currentUser.username != "noname");
         this.gameList = [];
         const homeComponent = this;
         setInterval(function () {
             homeComponent.getGameList()
-        }, 1000);
+        },1000);
     }
 
+    /** Pobieranie listy dostępnych gier*/
     getGameList() {
         this.gameService.getGameList().subscribe(list => {
             this.gameList = list;
         });
     }
 
-
-    createNewCompetitionGame(isRanked: boolean) {
+    /** Stworzyć nową grę z człowiekiem*/
+    createNewCompetitionGame(isRanked:boolean) {
         this.gameService.createPlayer(firstPlayerColor, PlayerType.human).subscribe(playerId => {
             this.gameService.createNewGame(playerId, null, isRanked).subscribe(gameId => {
                 this.boardService.playerId = playerId;
@@ -53,10 +62,11 @@ export class HomeComponent implements OnInit {
         });
     }
 
-    createNewBotGame(isRanked: boolean) {
+    /** Stworzyć nową grę z botem*/
+    createNewBotGame(isRanked:boolean) {
         this.gameService.createPlayer(firstPlayerColor, PlayerType.human).subscribe(playerId => {
             this.gameService.createPlayer(secondPlayerColor, PlayerType.bot).subscribe(botId => {
-                this.gameService.createNewGame(playerId, botId, isRanked).subscribe(gameId => {
+                this.gameService.createNewGame(playerId, botId,isRanked).subscribe(gameId => {
                     this.boardService.playerId = playerId;
                     this.boardService.playerColor = firstPlayerColor;
                     this.boardService.gameId.next(gameId);
@@ -65,6 +75,7 @@ export class HomeComponent implements OnInit {
         });
     }
 
+    /** Dołączyć się do gry */
     joinGame(gameId: number) {
         this.gameService.createPlayer(secondPlayerColor, PlayerType.human).subscribe(playerId => {
             this.gameService.joinGame(gameId, playerId).subscribe(wasSuccessful => {

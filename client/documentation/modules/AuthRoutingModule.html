@@ -77,6 +77,7 @@ import {LoginComponent} from &quot;./login/login.component&quot;;
 import {RegistComponent} from &quot;./regist/regist.component&quot;;
 import {VerifyMailComponent} from &quot;./verify-mail/verify-mail.component&quot;;
 import {ResetPasswordComponent} from &quot;./reset-password/reset-password.component&quot;;
+import {ResetPasswordMailSenderComponent} from &quot;./reset-password-mail-sender/reset-password-mail-sender.component&quot;;
 
 
 const routes: Routes &#x3D; [
@@ -104,6 +105,10 @@ const routes: Routes &#x3D; [
             {
                 path: &#x27;reset-password&#x27;,
                 component: ResetPasswordComponent
+            },
+            {
+                path: &#x27;reset-mail&#x27;,
+                component: ResetPasswordMailSenderComponent
             },
         ]
     },

@@ -82,7 +82,13 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                <a href="#changePassword">changePassword</a>
+                            </li>
+                            <li>
                                 <a href="#checkResetToken">checkResetToken</a>
+                            </li>
+                            <li>
+                                <a href="#sendResetMail">sendResetMail</a>
                             </li>
                             <li>
                                 <a href="#verifyUser">verifyUser</a>
@@ -109,6 +115,101 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
+                        <a name="changePassword"></a>
+                        <span class="name">
+                            <b>
+                            changePassword
+                            </b>
+                            <a href="#changePassword"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>changePassword(token: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, password: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, passwordConfirmation: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/app/_services/token.service.ts:34</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Zmiana hasła</p>
+</div>
+
+                            <div class="io-description">
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>token</td>
+                                                        <td>
+                                                                    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+
+                                                </tr>
+                                                <tr>
+                                                        <td>password</td>
+                                                        <td>
+                                                                    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+
+                                                </tr>
+                                                <tr>
+                                                        <td>passwordConfirmation</td>
+                                                        <td>
+                                                                    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code>Observable&lt;authResponse&gt;</code>
+
+                            </div>
+                                <div class="io-description">
+                                    
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
                         <a name="checkResetToken"></a>
                         <span class="name">
                             <b>
@@ -127,7 +228,7 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/_services/token.service.ts:26</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/_services/token.service.ts:28</a></div>
                             </td>
                         </tr>
 
@@ -185,6 +286,77 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
+                        <a name="sendResetMail"></a>
+                        <span class="name">
+                            <b>
+                            sendResetMail
+                            </b>
+                            <a href="#sendResetMail"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>sendResetMail(email: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="50" class="link-to-prism">src/app/_services/token.service.ts:50</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Wysyłanie potwierdzenie zmiany hasła na maila</p>
+</div>
+
+                            <div class="io-description">
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>email</td>
+                                                        <td>
+                                                                    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code>Observable&lt;boolean&gt;</code>
+
+                            </div>
+                                <div class="io-description">
+                                    
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
                         <a name="verifyUser"></a>
                         <span class="name">
                             <b>
@@ -203,7 +375,7 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/app/_services/token.service.ts:18</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">src/app/_services/token.service.ts:20</a></div>
                             </td>
                         </tr>
 
@@ -266,8 +438,8 @@
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {Injectable} from &#x27;@angular/core&#x27;;
 import {HttpClient, HttpHeaders, HttpParams} from &quot;@angular/common/http&quot;;
-import {Observable} from &quot;rxjs&quot;;
-import {resetUrl, verifyUrl} from &quot;./httpConection&quot;;
+import {Observable, of} from &quot;rxjs&quot;;
+import {authResponse, changeUrl, httpOptions, PasswordReset, resetUrl, verifyUrl} from &quot;./httpConection&quot;;
 
 
 /** Serwis, śłużący do weryfikacji użytkownika*/
@@ -275,8 +447,10 @@ import {resetUrl, verifyUrl} from &quot;./httpConection&quot;;
     providedIn: &#x27;root&#x27;
 })
 export class TokenService {
+
     /** @ignore*/
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) {
+    }
 
     /** Weryfikować użytkownika
      *@param token token weryfikacji
@@ -291,7 +465,28 @@ export class TokenService {
      */
     checkResetToken(token: string): Observable&lt;boolean&gt; {
         let params &#x3D; new HttpParams().set(&#x27;token&#x27;, token);
-        return this.http.get&lt;boolean&gt;( resetUrl, {params});
+        return this.http.get&lt;boolean&gt;(resetUrl, {params});
+    }
+
+    /** Zmiana hasła*/
+    changePassword(token: string, password: string, passwordConfirmation: string): Observable&lt;authResponse&gt; {
+        let passReset &#x3D; new PasswordReset();
+        passReset.token &#x3D; token;
+        passReset.password &#x3D; password;
+        if (password !&#x3D; passwordConfirmation) {
+            return of(&lt;authResponse&gt;{
+                success: false,
+                message: &quot;Confirm password error&quot;
+            })
+        }
+        else {
+            return this.http.post&lt;authResponse&gt;(changeUrl, passReset, httpOptions);
+        }
+    }
+
+    /** Wysyłanie potwierdzenie zmiany hasła na maila*/
+    sendResetMail(email: string): Observable&lt;boolean&gt; {
+        return this.http.post&lt;boolean&gt;(resetUrl, email, httpOptions);
     }
 }
 </code></pre>
