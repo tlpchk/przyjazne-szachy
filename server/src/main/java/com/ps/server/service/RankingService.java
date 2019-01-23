@@ -64,6 +64,7 @@ public class RankingService {
         if (rankingEntity == null) {
             throw new UserNotFoundException();
         }
+        userDetailsDTO.setPosition(rankingEntity.getPosition());
         userDetailsDTO.setUsername(username);
         userDetailsDTO.setWonGames(rankingEntity.getNumberOfWonGames());
         userDetailsDTO.setLostGames(rankingEntity.getNumberOfLostGames());

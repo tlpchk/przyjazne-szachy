@@ -9,6 +9,7 @@ export class ProfileComponent implements OnInit {
 
   constructor(private auth: AuthServicePS) { }
 
+  position: number;
   username: string;
   games: number;
   wonGames: number;
@@ -16,6 +17,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this.auth.getUserData().subscribe( userData => {
+      this.position = userData.position;
       this.username = userData.username;
       this.games = userData.games;
       this.wonGames = userData.wonGames;

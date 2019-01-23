@@ -10,6 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDetailsDTO {
+    private Long position;
     private String username;
     private Long games;
     private Long wonGames;

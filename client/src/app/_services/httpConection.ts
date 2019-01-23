@@ -49,6 +49,7 @@ export interface authResponse {
 
 /** @ignore*/
 export interface UserDetails {
+    position: number;
     username: string;
     games: number;
     wonGames: number;
