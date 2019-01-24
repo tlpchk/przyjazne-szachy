@@ -37,6 +37,5 @@ public class UserEntity {
 
     public UserEntity() {
         verificationToken = UUID.randomUUID().toString();
-        System.out.println(verificationToken);
     }
 }

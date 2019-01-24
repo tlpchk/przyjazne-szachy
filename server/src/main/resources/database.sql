@@ -55,7 +55,10 @@ CREATE TABLE IF NOT EXISTS `player` (
   `color`       enum ('WHITE', 'BLACK') COLLATE utf16_polish_ci NOT NULL,
   `player_type` enum ('HUMAN', 'BOT') COLLATE utf16_polish_ci   NOT NULL,
   `user_id`     int(11),
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`user_id`)
+  REFERENCES `user` (`id`)
+    ON DELETE CASCADE
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf16

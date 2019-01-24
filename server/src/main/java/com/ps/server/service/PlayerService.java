@@ -46,6 +46,11 @@ public class PlayerService {
         PlayerEntity newPlayer = new PlayerEntity();
         if (username != null) {
             UserEntity userEntity = userRepository.findByUsername(username);
+            System.out.println("--------------------");
+            System.out.println("--------------------");
+            System.out.println("--------------------");
+            System.out.println("--------------------");
+            System.out.println("------>>>>>>" + userEntity);
             newPlayer.setUser(userEntity);
         }
         newPlayer.setColor(color);
