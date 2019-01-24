@@ -62,7 +62,7 @@ public class UserService {
      */
     public boolean areCredentialsValid(String username, String password) throws UserNotFoundException, UserNotActiveException {
         UserEntity user = findByUsername(username);
-        if (!user.getIsActive()) {
+        if (!user.isActive()) {
             throw new UserNotActiveException();
         }
         return bCryptPasswordEncoder.matches(password, user.getPassword());
@@ -89,7 +89,7 @@ public class UserService {
         newUser.setUsername(username);
         newUser.setPassword(bCryptPasswordEncoder.encode(password));
         newUser.setEmail(email);
-        newUser.setIsActive(false);
+        newUser.setActive(false);
         newUser.setVerificationToken(UUID.randomUUID().toString());
         userRepository.save(newUser);
         return newUser;

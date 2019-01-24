@@ -24,7 +24,7 @@ public class TokenService {
     public boolean checkVerifyToken(String token) {
         UserEntity userEntity = userRepository.findByVerificationToken(token);
         if (userEntity != null) {
-            userEntity.setIsActive(true);
+            userEntity.setActive(true);
             userEntity.setVerificationToken("");
             userRepository.save(userEntity);
             return true;
@@ -56,7 +56,7 @@ public class TokenService {
     public boolean changePassword(String token, String password) {
         UserEntity userEntity = userRepository.findByResetToken(token);
         if (userEntity != null) {
-            userEntity.setIsActive(true);
+            userEntity.setActive(true);
             userEntity.setResetToken("");
             userEntity.setPassword(bCryptPasswordEncoder.encode(password));
             userRepository.save(userEntity);
