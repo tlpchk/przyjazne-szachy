@@ -624,7 +624,7 @@ export class LoginComponent{
         &lt;a class&#x3D;&quot;form-control&quot; routerLink&#x3D;&quot;/auth/reset-mail&quot;&gt;Reset hasła&lt;/a&gt;
     &lt;/form&gt;
 
-    &lt;button (click)&#x3D;&quot;signinWithGoogle()&quot; &gt;Sign in with Google&lt;/button&gt;
+    &lt;!--&lt;button (click)&#x3D;&quot;signinWithGoogle()&quot; &gt;Sign in with Google&lt;/button&gt;--&gt;
 &lt;/div&gt;
 </code></pre>
     </div>
@@ -706,7 +706,7 @@ form{
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><div class="text-center fade-bottom background">    <h1>Przyjazne szachy</h1>    <form (submit)="loginUser()">        <input class="form-control" type="text" [(ngModel)]="username" name="username" placeholder="Username">        <input class="form-control" type="password" [(ngModel)]="password"  name="password" placeholder="Hasło">        <input class="btn btn-primary form-control" type="submit" value="Zaloguj się">        <a class="form-control" routerLink="/auth/regist">Zarejestruj się</a>        <a class="form-control" (click)="noName()">Gra bez zalogowania</a>        <a class="form-control" routerLink="/auth/reset-mail">Reset hasła</a>    </form>    <button (click)="signinWithGoogle()" >Sign in with Google</button></div></div>'
+        var COMPONENT_TEMPLATE = '<div><div class="text-center fade-bottom background">    <h1>Przyjazne szachy</h1>    <form (submit)="loginUser()">        <input class="form-control" type="text" [(ngModel)]="username" name="username" placeholder="Username">        <input class="form-control" type="password" [(ngModel)]="password"  name="password" placeholder="Hasło">        <input class="btn btn-primary form-control" type="submit" value="Zaloguj się">        <a class="form-control" routerLink="/auth/regist">Zarejestruj się</a>        <a class="form-control" (click)="noName()">Gra bez zalogowania</a>        <a class="form-control" routerLink="/auth/reset-mail">Reset hasła</a>    </form>    <!--<button (click)="signinWithGoogle()" >Sign in with Google</button>--></div></div>'
     var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AuthComponent', 'selector': 'app-auth'},{'name': 'BoardComponent', 'selector': 'app-board'},{'name': 'HomeComponent', 'selector': 'app-start'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'PopupComponent', 'selector': 'app-popup'},{'name': 'ProfileComponent', 'selector': 'app-profile'},{'name': 'RankingComponent', 'selector': 'app-ranking'},{'name': 'RegistComponent', 'selector': 'app-regist'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'ResetPasswordMailSenderComponent', 'selector': 'app-reset-password-mail-sender'},{'name': 'SidebarComponent', 'selector': 'sidebar'},{'name': 'TimerComponent', 'selector': 'app-timer'},{'name': 'UserComponent', 'selector': 'app-user'},{'name': 'VerifyMailComponent', 'selector': 'app-verify-mail'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'LoginComponent'};

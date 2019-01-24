@@ -291,7 +291,7 @@ export class VerifyMailComponent implements OnInit {
     </div>
 
     <div class="tab-pane fade " id="c-templateData">
-        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;text-center&quot;&gt;
+        <pre class="line-numbers"><code class="language-html">&lt;div align&#x3D;&quot;center&quot; class&#x3D;&quot;text-center&quot;&gt;
     &lt;p&gt;
         {{text}}
     &lt;/p&gt;
@@ -305,7 +305,11 @@ export class VerifyMailComponent implements OnInit {
                 <p class="comment">
                     <code>./verify-mail.component.css</code>
                 </p>
-                <pre class="line-numbers"><code class="language-scss"></code></pre>
+                <pre class="line-numbers"><code class="language-scss">div{
+    width: 50%;
+    text-align: center;
+    margin: auto;
+}</code></pre>
     </div>
 
     <div class="tab-pane fade " id="c-tree">
@@ -333,7 +337,7 @@ export class VerifyMailComponent implements OnInit {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><div class="text-center">    <p>        {{text}}    </p>    <a class="form-control" routerLink="/auth/login">Zaloguj się</a></div></div>'
+        var COMPONENT_TEMPLATE = '<div><div align="center" class="text-center">    <p>        {{text}}    </p>    <a class="form-control" routerLink="/auth/login">Zaloguj się</a></div></div>'
     var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AuthComponent', 'selector': 'app-auth'},{'name': 'BoardComponent', 'selector': 'app-board'},{'name': 'HomeComponent', 'selector': 'app-start'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'PopupComponent', 'selector': 'app-popup'},{'name': 'ProfileComponent', 'selector': 'app-profile'},{'name': 'RankingComponent', 'selector': 'app-ranking'},{'name': 'RegistComponent', 'selector': 'app-regist'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'ResetPasswordMailSenderComponent', 'selector': 'app-reset-password-mail-sender'},{'name': 'SidebarComponent', 'selector': 'sidebar'},{'name': 'TimerComponent', 'selector': 'app-timer'},{'name': 'UserComponent', 'selector': 'app-user'},{'name': 'VerifyMailComponent', 'selector': 'app-verify-mail'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'VerifyMailComponent'};

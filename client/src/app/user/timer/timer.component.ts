@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {TimerService} from '../../_services/timer.service';
 
-/** */
+/** Komponent służący do wyświetlania pozpstałego czasu*/
 @Component({
     selector: 'app-timer',
     templateUrl: './timer.component.html',
@@ -9,20 +9,23 @@ import {TimerService} from '../../_services/timer.service';
 })
 export class TimerComponent implements OnInit {
 
-    constructor(private timer: TimerService) {
-    }
+    /** @ignore*/
+    constructor(private timer: TimerService) {}
 
+    /** Wartość tajmera w postaci string MM:SS*/
     timerValue: string;
 
+    /** Object służący do odświeżania czasu*/
     updator;
 
+    /** Tworzenie odświeżacza*/
     ngOnInit() {
         const timerComponent = this;
         this.updator = setInterval(function () {
             let minutes = Math.floor(timerComponent.timer.timeLeftInSeconds / 60);
             let seconds = timerComponent.timer.timeLeftInSeconds % 60;
 
-            timerComponent.saveValue(minutes, seconds);
+            timerComponent.formatTimer(minutes, seconds);
 
             if (timerComponent.timer.timeLeftInSeconds < 0) {
                 timerComponent.clearTimer();
@@ -32,7 +35,8 @@ export class TimerComponent implements OnInit {
 
     }
 
-    saveValue(minutes, seconds) {
+    /** Formatowanie tajmeru*/
+    formatTimer(minutes, seconds) {
         if (minutes < 10) {
             minutes = "0" + minutes;
         }
@@ -42,6 +46,7 @@ export class TimerComponent implements OnInit {
         this.timerValue = minutes + ":" + seconds;
     }
 
+    /** Zerowanie timeru*/
     clearTimer() {
         this.timerValue = "00:00";
         clearInterval(this.updator);
