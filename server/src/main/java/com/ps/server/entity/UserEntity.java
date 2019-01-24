@@ -27,7 +27,7 @@ public class UserEntity {
     private String password ;
 
     @Column(name = "is_active")
-    private Boolean isActive;
+    private boolean isActive;
 
     @Column(name = "verification_token")
     private String verificationToken;
