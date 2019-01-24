@@ -6,7 +6,7 @@ import {Router} from "@angular/router";
 @Component({
     selector: 'app-reset-password-mail-sender',
     templateUrl: './reset-password-mail-sender.component.html',
-    styleUrls: ['./reset-password-mail-sender.component.css']
+    styleUrls: ['../auth.component.scss']
 })
 export class ResetPasswordMailSenderComponent {
     /** Skrzyńka pocztowa*/

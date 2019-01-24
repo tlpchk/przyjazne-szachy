@@ -4,6 +4,7 @@ import {Router} from '@angular/router';
 import {AuthService, GoogleLoginProvider} from 'angularx-social-login';
 import {HttpClient} from '@angular/common/http';
 import {User} from "../../_services/httpConection";
+import {$} from "protractor";
 
 /** Komponent do wyświetlania strony zalogowania użytkownika*/
 @Component({
