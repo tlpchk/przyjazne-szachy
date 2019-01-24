@@ -1,25 +1,25 @@
 import {HttpHeaders} from "@angular/common/http";
 
 /** @ignore*/
-export const loginUrl = 'https://przyjazne-szachy.herokuapp.com:8080/api/login';
+export const loginUrl = 'https://przyjazne-szachy.herokuapp.com/api/login';
 /** @ignore*/
-export const registerUrl = 'https://przyjazne-szachy.herokuapp.com:8080/api/register';
+export const registerUrl = 'https://przyjazne-szachy.herokuapp.com/api/register';
 /** @ignore*/
-export const  logoutUrl = 'https://przyjazne-szachy.herokuapp.com:8080/api/bye';
+export const  logoutUrl = 'https://przyjazne-szachy.herokuapp.com/api/bye';
 /** @ignore*/
-export const  profileUrl = 'https://przyjazne-szachy.herokuapp.com:8080/api/user';
+export const  profileUrl = 'https://przyjazne-szachy.herokuapp.com/api/user';
 /** @ignore*/
-export const  gamesUrl = 'https://przyjazne-szachy.herokuapp.com:8080/api/games';
+export const  gamesUrl = 'https://przyjazne-szachy.herokuapp.com/api/games';
 /** @ignore*/
-export const playersUrl = 'https://przyjazne-szachy.herokuapp.com:8080/api/players';
+export const playersUrl = 'https://przyjazne-szachy.herokuapp.com/api/players';
 /** @ignore*/
-export const verifyUrl = 'https://przyjazne-szachy.herokuapp.com:8080/api/verify';
+export const verifyUrl = 'https://przyjazne-szachy.herokuapp.com/api/verify';
 /** @ignore*/
-export const resetUrl = 'https://przyjazne-szachy.herokuapp.com:8080/api/reset';
+export const resetUrl = 'https://przyjazne-szachy.herokuapp.com/api/reset';
 /** @ignore*/
-export const changeUrl = 'https://przyjazne-szachy.herokuapp.com:8080/api/reset/change';
+export const changeUrl = 'https://przyjazne-szachy.herokuapp.com/api/reset/change';
 /** @ignore*/
-export const rankingUrl = 'https://przyjazne-szachy.herokuapp.com:8080/api/ranking';
+export const rankingUrl = 'https://przyjazne-szachy.herokuapp.com/api/ranking';
 /** @ignore*/
 export const  moveSubUrl = '/move';
 /** @ignore*/
