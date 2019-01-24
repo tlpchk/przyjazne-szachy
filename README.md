@@ -11,7 +11,7 @@ Przed uruchomieniem aplikacji lokalnie należy zbudować bazę skryptem SQL(MySQ
     
 Następnie w pliku
 
-    C:\git\przyjazne-szachy\server\src\main\resources\application.properties
+    \przyjazne-szachy\server\src\main\resources\application.properties
     
  należy zmienić hasło i uzytkownika do lokalnej bazy danych
 	
