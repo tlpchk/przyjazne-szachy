@@ -64,6 +64,13 @@
     <code>src/app/app.component.ts</code>
 </p>
 
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Komponent główny wyświetlający zawartość aplikacji</p>
+
+    </p>
 
 
 
@@ -182,10 +189,16 @@
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">src/app/app.component.ts:10</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="12" class="link-to-prism">src/app/app.component.ts:12</a></div>
                             </td>
                         </tr>
 
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Tytuł zakładki aplikacji</p>
+</div>
+                    </td>
+                </tr>
 
             </tbody>
         </table>
@@ -197,12 +210,14 @@
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component } from &#x27;@angular/core&#x27;;
 
+/** Komponent główny wyświetlający zawartość aplikacji*/
 @Component({
   selector: &#x27;app-root&#x27;,
   templateUrl: &#x27;./app.component.html&#x27;,
   styleUrls: [&#x27;./app.component.scss&#x27;]
 })
 export class AppComponent {
+  /** Tytuł zakładki aplikacji*/
   title &#x3D; &#x27;client&#x27;;
 }
 </code></pre>

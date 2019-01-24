@@ -64,6 +64,13 @@
     <code>src/app/user/timer/timer.component.ts</code>
 </p>
 
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Komponent służący do wyświetlania pozpstałego czasu</p>
+
+    </p>
 
 
     <p class="comment">
@@ -151,10 +158,10 @@
                                 <a href="#clearTimer">clearTimer</a>
                             </li>
                             <li>
-                                <a href="#ngOnInit">ngOnInit</a>
+                                <a href="#formatTimer">formatTimer</a>
                             </li>
                             <li>
-                                <a href="#saveValue">saveValue</a>
+                                <a href="#ngOnInit">ngOnInit</a>
                             </li>
                         </ul>
                     </td>
@@ -168,54 +175,6 @@
     </table>
 </section>
 
-    <section>
-    <h3 id="constructor">Constructor</h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-<code>constructor(timer: <a href="../injectables/TimerService.html">TimerService</a>)</code>
-                    </td>
-                </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">src/app/user/timer/timer.component.ts:10</a></div>
-                            </td>
-                        </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                            <div>
-                                    <b>Parameters :</b>
-                                    <table class="params">
-                                        <thead>
-                                            <tr>
-                                                <td>Name</td>
-                                                    <td>Type</td>
-                                                <td>Optional</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                                <tr>
-                                                        <td>timer</td>
-                                                  
-                                                        <td>
-                                                                    <code><a href="../injectables/TimerService.html" target="_self" >TimerService</a></code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                </tr>
-                                        </tbody>
-                                    </table>
-                            </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-</section>
 
 
 
@@ -248,13 +207,15 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/app/user/timer/timer.component.ts:45</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="50" class="link-to-prism">src/app/user/timer/timer.component.ts:50</a></div>
                             </td>
                         </tr>
 
 
                 <tr>
                     <td class="col-md-4">
+                            <div class="io-description"><p>Zerowanie timeru</p>
+</div>
 
                             <div class="io-description">
                                 <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
@@ -268,69 +229,33 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="ngOnInit"></a>
+                        <a name="formatTimer"></a>
                         <span class="name">
                             <b>
-                            ngOnInit
+                            formatTimer
                             </b>
-                            <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                            <a href="#formatTimer"><span class="icon ion-ios-link"></span></a>
                         </span>
                     </td>
                 </tr>
                 <tr>
                     <td class="col-md-4">
-<code>ngOnInit()</code>
+<code>formatTimer(minutes, seconds)</code>
                     </td>
                 </tr>
 
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/app/user/timer/timer.component.ts:19</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/app/user/timer/timer.component.ts:39</a></div>
                             </td>
                         </tr>
 
 
                 <tr>
                     <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                            </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="saveValue"></a>
-                        <span class="name">
-                            <b>
-                            saveValue
-                            </b>
-                            <a href="#saveValue"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-<code>saveValue(minutes, seconds)</code>
-                    </td>
-                </tr>
-
-
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">src/app/user/timer/timer.component.ts:35</a></div>
-                            </td>
-                        </tr>
-
-
-                <tr>
-                    <td class="col-md-4">
+                            <div class="io-description"><p>Formatowanie tajmeru</p>
+</div>
 
                             <div class="io-description">
                                     <b>Parameters :</b>
@@ -376,6 +301,46 @@
                 </tr>
             </tbody>
         </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="ngOnInit"></a>
+                        <span class="name">
+                            <b>
+                            ngOnInit
+                            </b>
+                            <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>ngOnInit()</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/app/user/timer/timer.component.ts:22</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Tworzenie odświeżacza</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 </section>
 
     <section>
@@ -410,10 +375,16 @@
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/app/user/timer/timer.component.ts:15</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/app/user/timer/timer.component.ts:16</a></div>
                             </td>
                         </tr>
 
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Wartość tajmera w postaci string MM:SS</p>
+</div>
+                    </td>
+                </tr>
 
             </tbody>
         </table>
@@ -438,10 +409,16 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/app/user/timer/timer.component.ts:17</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/app/user/timer/timer.component.ts:19</a></div>
                             </td>
                         </tr>
 
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Object służący do odświeżania czasu</p>
+</div>
+                    </td>
+                </tr>
 
             </tbody>
         </table>
@@ -454,7 +431,7 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {Component, OnInit} from &#x27;@angular/core&#x27;;
 import {TimerService} from &#x27;../../_services/timer.service&#x27;;
 
-/** */
+/** Komponent służący do wyświetlania pozpstałego czasu*/
 @Component({
     selector: &#x27;app-timer&#x27;,
     templateUrl: &#x27;./timer.component.html&#x27;,
@@ -462,20 +439,23 @@ import {TimerService} from &#x27;../../_services/timer.service&#x27;;
 })
 export class TimerComponent implements OnInit {
 
-    constructor(private timer: TimerService) {
-    }
+    /** @ignore*/
+    constructor(private timer: TimerService) {}
 
+    /** Wartość tajmera w postaci string MM:SS*/
     timerValue: string;
 
+    /** Object służący do odświeżania czasu*/
     updator;
 
+    /** Tworzenie odświeżacza*/
     ngOnInit() {
         const timerComponent &#x3D; this;
         this.updator &#x3D; setInterval(function () {
             let minutes &#x3D; Math.floor(timerComponent.timer.timeLeftInSeconds / 60);
             let seconds &#x3D; timerComponent.timer.timeLeftInSeconds % 60;
 
-            timerComponent.saveValue(minutes, seconds);
+            timerComponent.formatTimer(minutes, seconds);
 
             if (timerComponent.timer.timeLeftInSeconds &lt; 0) {
                 timerComponent.clearTimer();
@@ -485,7 +465,8 @@ export class TimerComponent implements OnInit {
 
     }
 
-    saveValue(minutes, seconds) {
+    /** Formatowanie tajmeru*/
+    formatTimer(minutes, seconds) {
         if (minutes &lt; 10) {
             minutes &#x3D; &quot;0&quot; + minutes;
         }
@@ -495,6 +476,7 @@ export class TimerComponent implements OnInit {
         this.timerValue &#x3D; minutes + &quot;:&quot; + seconds;
     }
 
+    /** Zerowanie timeru*/
     clearTimer() {
         this.timerValue &#x3D; &quot;00:00&quot;;
         clearInterval(this.updator);
@@ -504,9 +486,7 @@ export class TimerComponent implements OnInit {
     </div>
 
     <div class="tab-pane fade " id="c-templateData">
-        <pre class="line-numbers"><code class="language-html">&lt;h1&gt; {{timerValue}} &lt;/h1&gt;
-
-</code></pre>
+        <pre class="line-numbers"><code class="language-html">&lt;h1&gt; {{timerValue}} &lt;/h1&gt;</code></pre>
     </div>
 
     <div class="tab-pane fade " id="c-styleData">

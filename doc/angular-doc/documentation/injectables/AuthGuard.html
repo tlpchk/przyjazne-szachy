@@ -175,7 +175,7 @@
                                     <a href="../classes/MoveResponseDTO.html" >MoveResponseDTO</a>
                                 </li>
                                 <li class="link">
-                                    <a href="../classes/MoveUpdateDTO.html"  class="active" >MoveUpdateDTO</a>
+                                    <a href="../classes/MoveUpdateDTO.html" >MoveUpdateDTO</a>
                                 </li>
                                 <li class="link">
                                     <a href="../classes/PasswordReset.html" >PasswordReset</a>
@@ -217,7 +217,7 @@
                                 id="xs-injectables-links"
                             >
                                 <li class="link">
-                                    <a href="../injectables/AuthGuard.html" >AuthGuard</a>
+                                    <a href="../injectables/AuthGuard.html"  class="active" >AuthGuard</a>
                                 </li>
                                 <li class="link">
                                     <a href="../injectables/AuthServicePS.html" >AuthServicePS</a>
@@ -447,7 +447,7 @@
                                            <a href="../classes/MoveResponseDTO.html" >MoveResponseDTO</a>
                                        </li>
                                        <li class="link">
-                                           <a href="../classes/MoveUpdateDTO.html"  class="active" >MoveUpdateDTO</a>
+                                           <a href="../classes/MoveUpdateDTO.html" >MoveUpdateDTO</a>
                                        </li>
                                        <li class="link">
                                            <a href="../classes/PasswordReset.html" >PasswordReset</a>
@@ -489,7 +489,7 @@
                                        id="injectables-links"
                    >
                                        <li class="link">
-                                           <a href="../injectables/AuthGuard.html" >AuthGuard</a>
+                                           <a href="../injectables/AuthGuard.html"  class="active" >AuthGuard</a>
                                        </li>
                                        <li class="link">
                                            <a href="../injectables/AuthServicePS.html" >AuthServicePS</a>
@@ -558,17 +558,15 @@
                    
                    </nav>
                </div>
-               <div class="content class">
+               <div class="content injectable">
                    <div class="content-data">
 
 
 
 
-
-
 <ol class="breadcrumb">
-  <li>Classes</li>
-  <li>MoveUpdateDTO</li>
+  <li>Injectables</li>
+  <li>AuthGuard</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -586,7 +584,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/app/DTO/moveUpdateDTO.ts</code>
+            <code>src/app/user/auth.guard.ts</code>
         </p>
 
 
@@ -596,13 +594,35 @@
                         <tbody>
                             <tr>
                                 <td class="col-md-4">
-                                    <code>constructor(updateId: number, moveDTO: <a href="../classes/MoveResponseDTO.html" >MoveResponseDTO</a>)</code>
+                                    <code>constructor(auth: <a href="../injectables/AuthServicePS.html" >AuthServicePS</a>, router: <a href="https://angular.io/docs/ts/latest/api/router/index/Router-class.html" target="_blank" >Router</a>)</code>
+                                </td>
+                            </tr>
+            
+                        </tbody>
+                    </table>
+            </section>
+
+            <section>
+                <h3 id="methods">Methods</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b> canActivate</b>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+            <code>canActivate(next: <a href="https://angular.io/docs/ts/latest/api/router/index/ActivatedRouteSnapshot-interface.html" target="_blank" >ActivatedRouteSnapshot</a>, state: <a href="https://angular.io/docs/ts/latest/api/router/index/RouterStateSnapshot-interface.html" target="_blank" >RouterStateSnapshot</a>)</code>
                                 </td>
                             </tr>
             
                             <tr>
                                 <td class="col-md-4">
                                         <div class="io-description">
+                                            <b>Returns: </b>    <code>any</code>
+            
                                         </div>
                                 </td>
                             </tr>
@@ -610,60 +630,33 @@
                     </table>
             </section>
 
-
-
-            <section>
-                <h3 id="inputs">Properties</h3>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                            <tr>
-                                <td class="col-md-4">
-                                    <b><span class="modifier">Public</span> moveDTO</b>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <span class="modifier-icon fa fa-circle"></span><code>moveDTO:     <code><a href="../classes/MoveResponseDTO.html" target="_self" >MoveResponseDTO</a></code>
-            </bcode>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                            <tr>
-                                <td class="col-md-4">
-                                    <b><span class="modifier">Public</span> updateId</b>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <span class="modifier-icon fa fa-circle"></span><code>updateId:     <code>number</code>
-            </bcode>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-            </section>
     </div>
     <div class="tab-pane fade tab-source-code" id="source">
-        <pre><code class="hljs javascript">import {MoveResponseDTO} from &quot;./moveResponseDTO&quot;;
+        <pre><code class="hljs javascript">import { Injectable } from &#x27;@angular/core&#x27;;
+import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivateChild, Router} from &#x27;@angular/router&#x27;;
+import { Observable } from &#x27;rxjs&#x27;;
+import {AuthServicePS} from &quot;../_services/auth-service-p-s.service&quot;;
 
-/** @ignore*/
-export class MoveUpdateDTO {
-    /** */
-    public updateId: number;
-    /** */
-    public moveDTO: MoveResponseDTO;
+@Injectable({
+  providedIn: &#x27;root&#x27;
+})
+export class AuthGuard implements CanActivate {
+  constructor(private auth: AuthServicePS,
+              private router: Router){}
 
-    /** @ignore*/
-    constructor(updateId: number, moveDTO: MoveResponseDTO) {
-        this.updateId &#x3D; updateId;
-        this.moveDTO &#x3D; moveDTO;
-    }
-}</code></pre>
+  canActivate(
+      next: ActivatedRouteSnapshot,
+      state: RouterStateSnapshot): Observable&lt;boolean&gt; | Promise&lt;boolean&gt; | boolean {
+
+    console.log(&#x27;User loged in? :&#x27; + this.auth.isLoggedIn);
+    return this.auth.isLoggedIn;
+  }
+}
+</code></pre>
     </div>
 </div>
+
+
 
 
 

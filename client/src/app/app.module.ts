@@ -10,7 +10,7 @@ import { SocialLoginModule, AuthServiceConfig } from 'angularx-social-login';
 import {AuthModule} from './auth/auth.module';
 import {getAuthServiceConfigs} from '../socialloginConfig';
 
-/** App module*/
+/** App module: moduł główny*/
 @NgModule({
     imports: [
       BrowserModule,

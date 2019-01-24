@@ -64,6 +64,13 @@
     <code>src/app/user/sidebar/sidebar.component.ts</code>
 </p>
 
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Komponent służący do wyświetlania paseku nawigacyjnego</p>
+
+    </p>
 
 
     <p class="comment">
@@ -121,6 +128,20 @@
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#isLoggedUser">isLoggedUser</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
 
                 <tr>
                     <td class="col-md-4">
@@ -148,54 +169,6 @@
     </table>
 </section>
 
-    <section>
-    <h3 id="constructor">Constructor</h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-<code>constructor(authService: <a href="../injectables/AuthServicePS.html">AuthServicePS</a>)</code>
-                    </td>
-                </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="9" class="link-to-prism">src/app/user/sidebar/sidebar.component.ts:9</a></div>
-                            </td>
-                        </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                            <div>
-                                    <b>Parameters :</b>
-                                    <table class="params">
-                                        <thead>
-                                            <tr>
-                                                <td>Name</td>
-                                                    <td>Type</td>
-                                                <td>Optional</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                                <tr>
-                                                        <td>authService</td>
-                                                  
-                                                        <td>
-                                                                    <code><a href="../injectables/AuthServicePS.html" target="_self" >AuthServicePS</a></code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                </tr>
-                                        </tbody>
-                                    </table>
-                            </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-</section>
 
 
 
@@ -228,13 +201,15 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/app/user/sidebar/sidebar.component.ts:17</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/user/sidebar/sidebar.component.ts:24</a></div>
                             </td>
                         </tr>
 
 
                 <tr>
                     <td class="col-md-4">
+                            <div class="io-description"><p>Umożliwia wylogowanie się</p>
+</div>
 
                             <div class="io-description">
                                 <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
@@ -266,13 +241,15 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/app/user/sidebar/sidebar.component.ts:14</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/app/user/sidebar/sidebar.component.ts:19</a></div>
                             </td>
                         </tr>
 
 
                 <tr>
                     <td class="col-md-4">
+                            <div class="io-description"><p>Ustawienie flagi zalogowanego użytkownika</p>
+</div>
 
                             <div class="io-description">
                                 <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
@@ -284,6 +261,52 @@
         </table>
 </section>
 
+    <section>
+    
+        <h3 id="inputs">
+            Properties
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="isLoggedUser"></a>
+                        <span class="name">
+                            <b>
+                            isLoggedUser
+                            </b>
+                            <a href="#isLoggedUser"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <code>isLoggedUser:     <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">src/app/user/sidebar/sidebar.component.ts:13</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Czy jest użytkownik jest zalogowany</p>
+</div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+</section>
 
 </div>
 
@@ -292,6 +315,7 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {Component, OnInit} from &#x27;@angular/core&#x27;;
 import {AuthServicePS} from &quot;../../_services/auth-service-p-s.service&quot;;
 
+/** Komponent służący do wyświetlania paseku nawigacyjnego*/
 @Component({
     selector: &#x27;sidebar&#x27;,
     templateUrl: &#x27;./sidebar.component.html&#x27;,
@@ -299,14 +323,22 @@ import {AuthServicePS} from &quot;../../_services/auth-service-p-s.service&quot;
 })
 export class SidebarComponent implements OnInit {
 
-    constructor(private authService: AuthServicePS) {
-    }
+    /** Czy jest użytkownik jest zalogowany*/
+    isLoggedUser: boolean;
 
+    /** @ignore*/
+    constructor(private authService: AuthServicePS) {}
+
+    /** Ustawienie flagi zalogowanego użytkownika*/
     ngOnInit() {
+        this.isLoggedUser &#x3D; (this.authService.currentUser.username !&#x3D; &quot;noname&quot;);
     }
 
+    /** Umożliwia wylogowanie się*/
     logout() {
-        this.authService.logOutUser().subscribe( response &#x3D;&gt; { console.log(&#x27;OK&#x27;)});
+        this.authService.logOutUser().subscribe(response &#x3D;&gt; {
+            console.log(&#x27;OK&#x27;)
+        });
     }
 
 }
@@ -331,14 +363,14 @@ export class SidebarComponent implements OnInit {
       &lt;/a&gt;
     &lt;/li&gt;
     &lt;li&gt;
-      &lt;a routerLink&#x3D;&quot;/user/profile&quot;&gt;
+      &lt;a *ngIf&#x3D;&quot;isLoggedUser&quot; routerLink&#x3D;&quot;/user/profile&quot;&gt;
         &lt;i class&#x3D;&quot;material-icons&quot;&gt;
           account_circle
         &lt;/i&gt;
       &lt;/a&gt;
     &lt;/li&gt;
     &lt;li&gt;
-      &lt;a routerLink&#x3D;&quot;/user/ranking&quot;&gt;
+      &lt;a *ngIf&#x3D;&quot;isLoggedUser&quot; routerLink&#x3D;&quot;/user/ranking&quot;&gt;
         &lt;i class&#x3D;&quot;material-icons&quot;&gt;
           show_chart
         &lt;/i&gt;
@@ -412,7 +444,7 @@ export class SidebarComponent implements OnInit {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><nav>  <ul>    <li>      <a routerLink="/user/home">        <i class="material-icons">          home        </i>      </a>    </li>    <li>      <a routerLink="/user/board">        <i class="material-icons">          videogame_asset        </i>      </a>    </li>    <li>      <a routerLink="/user/profile">        <i class="material-icons">          account_circle        </i>      </a>    </li>    <li>      <a routerLink="/user/ranking">        <i class="material-icons">          show_chart        </i>      </a>    </li>    <li>      <a (click)="logout()" routerLink="/auth/login">        <i class="material-icons">          meeting_room        </i>      </a>    </li>  </ul></nav></div>'
+        var COMPONENT_TEMPLATE = '<div><nav>  <ul>    <li>      <a routerLink="/user/home">        <i class="material-icons">          home        </i>      </a>    </li>    <li>      <a routerLink="/user/board">        <i class="material-icons">          videogame_asset        </i>      </a>    </li>    <li>      <a *ngIf="isLoggedUser" routerLink="/user/profile">        <i class="material-icons">          account_circle        </i>      </a>    </li>    <li>      <a *ngIf="isLoggedUser" routerLink="/user/ranking">        <i class="material-icons">          show_chart        </i>      </a>    </li>    <li>      <a (click)="logout()" routerLink="/auth/login">        <i class="material-icons">          meeting_room        </i>      </a>    </li>  </ul></nav></div>'
     var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AuthComponent', 'selector': 'app-auth'},{'name': 'BoardComponent', 'selector': 'app-board'},{'name': 'HomeComponent', 'selector': 'app-start'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'PopupComponent', 'selector': 'app-popup'},{'name': 'ProfileComponent', 'selector': 'app-profile'},{'name': 'RankingComponent', 'selector': 'app-ranking'},{'name': 'RegistComponent', 'selector': 'app-regist'},{'name': 'ResetPasswordComponent', 'selector': 'app-reset-password'},{'name': 'ResetPasswordMailSenderComponent', 'selector': 'app-reset-password-mail-sender'},{'name': 'SidebarComponent', 'selector': 'sidebar'},{'name': 'TimerComponent', 'selector': 'app-timer'},{'name': 'UserComponent', 'selector': 'app-user'},{'name': 'VerifyMailComponent', 'selector': 'app-verify-mail'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'SidebarComponent'};

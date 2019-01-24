@@ -10,31 +10,46 @@ import {Move} from '../../_models/move';
 import {TimerService} from "../../_services/timer.service";
 import {Color} from "../../_models/color";
 
+
+/** Komponent służący do wyświetlania planszy gry*/
 @Component({
     selector: 'app-board',
     templateUrl: './board.component.html',
     styleUrls: ['./board.component.scss']
 })
 export class BoardComponent implements OnInit {
+    /** Цyskakujące okienko*/
     @ViewChild(PopupComponent)
     private popup: PopupComponent;
 
+    /** Aktualnie wybrana komórka*/
     selectedCell: Cell;
+    /** Aktulny ruch*/
     move: Move;
+    /** Tablica z komórkami planszy*/
     board: Cell[];
+    /** Identyfikator gry*/
     gameId: number;
+    /** Identyfikator ostatniej aktualizacji planszy*/
     lastUpdateId: number;
+    /** Wynik gry*/
     result: Result;
+    /** Flaga promocji*/
     isPromotion: boolean;
-    opponent = '';
+    /** Nazwa użytkownika-przeciwnika*/
+    opponent : string;
+    /** Flaga tury*/
     isMyTurn: boolean;
+    /** Odświeżacz planszy*/
     updator;
 
+    /** @ignore*/
     constructor(private boardService: BoardService,
                 private coordinateService: CoordinatesAdapterService,
                 private timerService: TimerService) {
     }
 
+    /** Pobieranie planszy oraz czasu*/
     ngOnInit() {
         this.board = [];
         this.getGameId();
@@ -43,11 +58,13 @@ export class BoardComponent implements OnInit {
         this.timerService.startTimer();
     }
 
+    /** Zaznaczenie aktualnej komórki oraz robienie ruch*/
     onSelect(cell: Cell) {
         this.selectedCell = cell;
         this.makeMove();
     }
 
+    /** Robienie ruchu*/
     makeMove(): void {
         if (this.move.srcCell == null) {
             this.move.srcCell = this.selectedCell;
@@ -73,6 +90,7 @@ export class BoardComponent implements OnInit {
         }
     }
 
+    /** Pobieranie identyfikatora gry*/
     getGameId(): void {
         this.boardService.gameId$.subscribe(gameId => {
             this.gameId = gameId;
@@ -92,7 +110,7 @@ export class BoardComponent implements OnInit {
         });
     }
 
-
+    /** Pokazywanie komunikatu końcowego*/
     private showEndGameMessage() {
         let resultText;
         switch (this.result) {
@@ -109,6 +127,7 @@ export class BoardComponent implements OnInit {
         this.popup.showMessage(resultText);
     }
 
+    /** Pobieranie planszy*/
     getBoard(): void {
         this.boardService.getPieces(this.gameId)
             .subscribe(pieces => {
@@ -124,6 +143,7 @@ export class BoardComponent implements OnInit {
             });
     }
 
+    /** Obsługa promocji*/
     promotion(pieceType: PieceType): void {
         this.boardService.promote(this.gameId, pieceType).subscribe(moveResponse => {
             const changes: ChangeDTO[] = moveResponse.listOfChanges;
@@ -132,6 +152,7 @@ export class BoardComponent implements OnInit {
         });
     }
 
+    /** Aktualizacja stanu gry*/
     getGameInfo(): void {
         console.log('GET GAME INFO');
         this.boardService.getGameInfo(this.gameId).subscribe(gameInfo => {
@@ -139,11 +160,7 @@ export class BoardComponent implements OnInit {
             this.isMyTurn = gameInfo.myTurn;
             this.isPromotion = gameInfo.promotion;
             this.opponent = gameInfo.opponent;
-            // if (this.isMyTurn) {
-            //     this.timerService.startTimer();
-            // } else {
-            //     this.timerService.pauseTimer();
-            // }
+
             if (gameInfo.lastUpdateId > this.lastUpdateId) {
                 while (gameInfo.lastUpdateId > this.lastUpdateId) {
                     this.lastUpdateId = this.lastUpdateId + 1;
@@ -161,7 +178,7 @@ export class BoardComponent implements OnInit {
         });
     }
 
-
+    /** Aktualizacja planszy*/
     private updateBoard(changes: ChangeDTO[]) {
         for (const c in changes) {
             let location = changes[c].location;
@@ -182,6 +199,7 @@ export class BoardComponent implements OnInit {
         }
     }
 
+    /** Usuwanie aktualizatoras*/
     resetUpdator() {
         clearInterval(this.updator);
     }
