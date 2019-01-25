@@ -33,7 +33,7 @@
 
     <h2>Dostępne gry</h2>
     <ul *ngIf="gameList">
-        <li *ngFor="let game of gameList">{{game}} <button (click)="joinGame(game)" routerLink="/user/board">Dołącz</button></li>
+        <li class="games" *ngFor="let game of gameList"><button (click)="joinGame(game)" routerLink="/user/board">{{game}}</button></li>
     </ul>
     <p *ngIf="gameList.length == 0">Brak gier</p>
 </div>
